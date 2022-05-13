@@ -52,9 +52,11 @@ fun MainScreen(
                             textAlign = TextAlign.Center
                         )
                     }
+
                     item {
                         CategoryBlock()
                     }
+
                     item {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -63,6 +65,7 @@ fun MainScreen(
                             textAlign = TextAlign.Center
                         )
                     }
+
                     item {
                         TimeRangePicker(selectedTimeRange = selectedRange, onTimeRangeClicked = { viewModel.getUiInfo(it) })
                     }
