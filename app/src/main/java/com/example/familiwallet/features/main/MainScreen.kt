@@ -1,46 +1,83 @@
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.material.FabPosition
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.familiwallet.components.TimeRangePicker
-import com.example.familiwallet.components.TransactionRow
-import com.example.familiwallet.components.transactions
+import androidx.compose.ui.unit.sp
+import com.example.familiwallet.components.*
+import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.main.MainViewModel
+import com.example.familiwallet.features.main.data.Transaction
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val scrollState = rememberScrollState()
 
     val uiState = viewModel.getUiState()
-
+    var floatingActionState by remember {
+        mutableStateOf(FloatingActionState.COLLAPSED)
+    }
     when (uiState.value) {
         is UiState.Success -> {
             val selectedRange = (uiState.value as UiState.Success<TimeRangeType>).data
-            Surface(
-                modifier = Modifier.fillMaxSize()
+            val transactionList: List<Transaction> = when (selectedRange) {
+                TimeRangeType.DAY -> transactions.filter { it.type == CategoryType.INCOMES }
+                TimeRangeType.WEEK -> transactions.filter { it.type == CategoryType.EXPENSES }
+                TimeRangeType.MONTH -> transactions
+            }
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                floatingActionButton = {
+                    ActionButton(
+                        floatingActionState
+                    ) { floatingActionState = it }
+                },
+                floatingActionButtonPosition = FabPosition.Center
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                LazyColumn() {
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Заголовок 1",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                     item {
                         CategoryBlock()
+                    }
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Заголовок 2",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
                     item {
                         TimeRangePicker(selectedTimeRange = selectedRange, onTimeRangeClicked = { viewModel.getUiInfo(it) })
                     }
 
-                    items(transactions.windowed(1, 1, true)) { items ->
-                        items.forEach { item ->
-                            TransactionRow(transaction = item)
-                        }
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Заголовок 3",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    items(transactionList.windowed(1, 1, true)) { list ->
+                        list.forEach { item -> TransactionRow(item) }
                     }
                 }
             }

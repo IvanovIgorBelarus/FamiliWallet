@@ -2,10 +2,9 @@ package com.example.familiwallet.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +21,10 @@ import com.example.familiwallet.ui.theme.incomesColor
 
 @Composable
 fun TransactionsList(
-    modifier: Modifier
+    transactionList: List<Transaction>
 ) {
-    LazyColumn {
-        items(transactions) { item ->
+    LazyRow {
+        items(transactionList) { item ->
             TransactionRow(transaction = item)
         }
     }
@@ -43,12 +42,12 @@ fun TransactionRow(
                 shape = RoundedCornerShape(16.dp)
             )
             .fillMaxWidth()
-            .height(50.dp),
+            .height(80.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.padding(start= 10.dp),
+            modifier = Modifier.padding(start = 10.dp),
             text = transaction.value,
             color = if (transaction.type == CategoryType.INCOMES) incomesColor else expensesColor,
             fontSize = 18.sp,
@@ -56,7 +55,9 @@ fun TransactionRow(
 
         )
         Text(
-            modifier = Modifier.weight(1f).padding(10.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
             text = transaction.category,
             color = if (transaction.type == CategoryType.INCOMES) incomesColor else expensesColor,
             fontSize = 16.sp,
@@ -71,10 +72,10 @@ val transactions = listOf(
     Transaction(CategoryType.EXPENSES, "-100", "Еда"),
     Transaction(CategoryType.INCOMES, "100", "Еда"),
     Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
+    Transaction(CategoryType.EXPENSES, "100", "Еда"),
+    Transaction(CategoryType.EXPENSES, "100", "Еда"),
     Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
+    Transaction(CategoryType.EXPENSES, "100", "Еда"),
     Transaction(CategoryType.EXPENSES, "-100", "Еда"),
     Transaction(CategoryType.INCOMES, "100", "Еда"),
     Transaction(CategoryType.EXPENSES, "-100", "Еда"),
