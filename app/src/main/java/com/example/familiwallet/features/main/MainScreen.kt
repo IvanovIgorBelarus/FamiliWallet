@@ -10,6 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.familiwallet.components.*
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.TimeRangeType
@@ -19,7 +22,8 @@ import com.example.familiwallet.features.main.data.Transaction
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel
+    viewModel: MainViewModel = viewModel(),
+    navigation: NavHostController = rememberNavController()
 ) {
 
     val uiState = viewModel.getUiState()
@@ -38,12 +42,13 @@ fun MainScreen(
                 modifier = Modifier.fillMaxSize(),
                 floatingActionButton = {
                     ActionButton(
-                        floatingActionState
+                        floatingActionState,
+                        navigation
                     ) { floatingActionState = it }
                 },
                 floatingActionButtonPosition = FabPosition.Center
             ) {
-                LazyColumn() {
+                LazyColumn {
                     item {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -95,5 +100,6 @@ fun MainScreen(
 private fun MainScreenPreview() {
     MainScreen(MainViewModel())
 }
+
 
 

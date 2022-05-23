@@ -19,6 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.Purple200
 import com.example.familiwallet.ui.theme.Purple500
 import com.example.familiwallet.ui.theme.Purple700
@@ -31,6 +34,7 @@ enum class FloatingActionState {
 @Composable
 fun ActionButton(
     floatingActionState: FloatingActionState,
+    navigation: NavHostController = rememberNavController(),
     onStateChange: (FloatingActionState) -> Unit
 ) {
     val transition = updateTransition(targetState = floatingActionState, label = "transition")
@@ -42,7 +46,7 @@ fun ActionButton(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ChildActionButton(icon = Icons.Default.Add, color = Purple500, animSize)
+            ChildActionButton(icon = Icons.Default.Add, color = Purple500, animSize) { navigation.navigate(Screen.NewCategoryScreen.route) }
             Spacer(modifier = Modifier.size(96.dp))
             ChildActionButton(icon = Icons.Default.Delete, color = Purple700, animSize)
         }
@@ -79,10 +83,9 @@ private fun ActionButtonView(
 }
 
 @Composable
-private fun ChildActionButton(icon: ImageVector, color: Color, size: Dp) {
+private fun ChildActionButton(icon: ImageVector, color: Color, size: Dp, onclickListener: () -> Unit = {}) {
     FloatingActionButton(
-        onClick = {
-        },
+        onClick = { onclickListener() },
         modifier = Modifier.size(size),
         backgroundColor = color
     ) {
