@@ -7,9 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NewCategoryScreen(modifier: Modifier = Modifier){
+fun NewTransactionScreen(modifier: Modifier = Modifier, text: String){
     Text(modifier = modifier.fillMaxSize(),
-        text = "Новая категория",
+        text = text,
         fontSize = 40.sp
     )
 }

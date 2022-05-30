@@ -9,7 +9,8 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,9 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.familiwallet.navigation.Screen
-import com.example.familiwallet.ui.theme.Purple200
-import com.example.familiwallet.ui.theme.Purple500
-import com.example.familiwallet.ui.theme.Purple700
+import com.example.familiwallet.ui.theme.*
 
 enum class FloatingActionState {
     EXPANDED,
@@ -38,7 +37,7 @@ fun ActionButton(
     onStateChange: (FloatingActionState) -> Unit
 ) {
     val transition = updateTransition(targetState = floatingActionState, label = "transition")
-    val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.COLLAPSED) 0.dp else 60.dp)
+    val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.COLLAPSED) 0.dp else 96.dp)
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -46,14 +45,15 @@ fun ActionButton(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ChildActionButton(icon = Icons.Default.Add, color = Purple500, animSize) { navigation.navigate(Screen.NewCategoryScreen.route) }
+            ChildActionButton(icon = Icons.Default.KeyboardArrowUp, color = incomesColor, animSize) { navigation.navigate(Screen.NewIncomeScreen.route) }
             Spacer(modifier = Modifier.size(96.dp))
-            ChildActionButton(icon = Icons.Default.Delete, color = Purple700, animSize)
+            ChildActionButton(icon = Icons.Default.KeyboardArrowDown, color = expensesColor, animSize) { navigation.navigate(Screen.NewExpanseScreen.route) }
         }
 
         Spacer(modifier = Modifier.size(24.dp))
         ActionButtonView(
             transition = transition,
+            floatingActionState = floatingActionState,
             onStateChange = onStateChange
         )
     }
@@ -62,12 +62,13 @@ fun ActionButton(
 @Composable
 private fun ActionButtonView(
     transition: Transition<FloatingActionState>,
+    floatingActionState: FloatingActionState,
     onStateChange: (FloatingActionState) -> Unit
 ) {
     val rotate by transition.animateFloat(label = "rotate") {
         if (it == FloatingActionState.EXPANDED) 315f else 0f
     }
-
+    val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.EXPANDED) 60.dp else 96.dp)
     FloatingActionButton(
         onClick = {
             onStateChange(
@@ -75,7 +76,7 @@ private fun ActionButtonView(
             )
         },
         modifier = Modifier
-            .size(75.dp),
+            .size(animSize),
         backgroundColor = Purple200
     ) {
         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.rotate(rotate))
