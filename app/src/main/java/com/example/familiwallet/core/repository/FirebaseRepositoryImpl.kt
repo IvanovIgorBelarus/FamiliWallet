@@ -6,13 +6,11 @@ import com.example.familiwallet.core.common.*
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirebaseRepositoryImpl (private val db: FirebaseFirestore) {
+class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
 
     fun addPartner(accountModel: UIModel.AccountModel) {
         db.collection(USERS).add(
@@ -37,7 +35,8 @@ class FirebaseRepositoryImpl (private val db: FirebaseFirestore) {
         ).addOnSuccessListener {
             CoroutineScope(Dispatchers.IO).launch {
                 if (isSms) {
-                    deleteItem(UIModel.SmsModel(id = transactionModel.id))}
+                    deleteItem(UIModel.SmsModel(id = transactionModel.id))
+                }
                 DataInteractor.update(transactionModel)
             }
 
@@ -94,7 +93,7 @@ class FirebaseRepositoryImpl (private val db: FirebaseFirestore) {
 
 
     suspend fun getPartner(): UIModel.AccountModel = suspendCoroutine { continuation ->
-        var partner = UIModel.AccountModel()
+        val partner = UIModel.AccountModel()
         db.collection(USERS).get().addOnSuccessListener { result ->
             result.forEach { doc ->
                 if (doc.getString(UID) == UserUtils.getUsersUid() && doc.getString(PARTNER_UID) != null) {
@@ -133,24 +132,46 @@ class FirebaseRepositoryImpl (private val db: FirebaseFirestore) {
         }
     }
 
-    suspend fun getCategoriesList(): List<UIModel.CategoryModel> = suspendCoroutine { continuation ->
+    suspend fun getCategoriesList(partner: UIModel.AccountModel): List<UIModel.CategoryModel> = withContext(Dispatchers.IO) {
         val list = mutableListOf<UIModel.CategoryModel>()
-        db.collection(CATEGORIES).get()
-            .addOnSuccessListener { result ->
-                result.forEach { doc ->
-                    list.add(
-                        UIModel.CategoryModel(
-                            id = doc.id,
-                            uid = doc.getString(UID),
-                            category = doc.getString(CATEGORY),
-                            type = doc.getString(TRANSACTION_TYPE),
-                            icon = doc.getString(ICON) ?: Icons.Default.List.name
-                        )
-                    )
-                }
-                continuation.resume(list)
-            }
+        val getUserList = async { getPersonCategoriesList(partner.uid.orEmpty()) }
+        val getPartnerList = async { getPersonCategoriesList(partner.partnerUid.orEmpty()) }
+
+        val userList = getUserList.await()
+        val partnerList = getPartnerList.await()
+        list.addAll(userList)
+        list.addAll(partnerList)
+
+        list.sortBy { it.type == EXPENSES }
+        list
     }
+
+    private suspend fun getPersonCategoriesList(uid: String): List<UIModel.CategoryModel> = suspendCoroutine { continuation ->
+        if (uid.isNotEmpty()) {
+            db.collection(CATEGORIES)
+                .whereEqualTo("uid", uid)
+                .get()
+                .addOnSuccessListener { result ->
+                    val list = mutableListOf<UIModel.CategoryModel>()
+                    result.forEach { doc ->
+                        list.add(
+                            UIModel.CategoryModel(
+                                id = doc.id,
+                                uid = doc.getString(UID),
+                                category = doc.getString(CATEGORY),
+                                type = doc.getString(TRANSACTION_TYPE),
+                                icon = doc.getString(ICON) ?: Icons.Default.List.name
+                            )
+                        )
+                    }
+                    continuation.resume(list)
+                }
+                .addOnFailureListener { continuation.resume(emptyList()) }
+        }else{
+            continuation.resume(emptyList())
+        }
+    }
+
 
     fun deleteItem(item: Any?) {
         var category = when (item) {
@@ -163,7 +184,7 @@ class FirebaseRepositoryImpl (private val db: FirebaseFirestore) {
         db.collection(category)
             .document("${(item as UIModel.BaseModel).itemId}")
             .delete()
-            .addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch {DataInteractor.update(item)} }
+            .addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch { DataInteractor.update(item) } }
     }
 
     fun upDateItem(item: Any?) {

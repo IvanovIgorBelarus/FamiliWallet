@@ -40,7 +40,7 @@ object DataInteractor : DataRepository {
     }
 
     override suspend fun getCategoriesList(forceLoad: Boolean): List<UIModel.CategoryModel> {
-        return get(CategoriesCache, firebaseRepository.getCategoriesList(), forceLoad)
+        return get(CategoriesCache, firebaseRepository.getCategoriesList(getPartner()), forceLoad)
     }
 
     override suspend fun deleteItem(item: Any?) {

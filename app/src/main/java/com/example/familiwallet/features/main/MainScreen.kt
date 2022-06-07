@@ -17,6 +17,7 @@ import com.example.familiwallet.components.*
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.features.main.MainScreenViewState
 import com.example.familiwallet.features.main.MainViewModel
 import com.example.familiwallet.features.main.data.Transaction
 
@@ -26,18 +27,15 @@ fun MainScreen(
     navigation: NavHostController = rememberNavController()
 ) {
 
-    val uiState = viewModel.getUiState()
+    val uiState by viewModel.getUiState()
+
     var floatingActionState by remember {
         mutableStateOf(FloatingActionState.COLLAPSED)
     }
-    when (uiState.value) {
+    when (uiState) {
         is UiState.Success -> {
-            val selectedRange = (uiState.value as UiState.Success<TimeRangeType>).data
-            val transactionList: List<Transaction> = when (selectedRange) {
-                TimeRangeType.DAY -> transactions.filter { it.type == CategoryType.INCOMES }
-                TimeRangeType.WEEK -> transactions.filter { it.type == CategoryType.EXPENSES }
-                TimeRangeType.MONTH -> transactions
-            }
+
+            val viewState = (uiState as UiState.Success<MainScreenViewState>).data
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 floatingActionButton = {
@@ -72,7 +70,7 @@ fun MainScreen(
                     }
 
                     item {
-                        TimeRangePicker(selectedTimeRange = selectedRange, onTimeRangeClicked = { viewModel.getUiInfo(it) })
+                        TimeRangePicker(selectedTimeRange = TimeRangeType.MONTH, onTimeRangeClicked = { viewModel.setUiRangeState(it) })
                     }
 
                     item {
@@ -84,7 +82,7 @@ fun MainScreen(
                         )
                     }
 
-                    items(transactionList.windowed(1, 1, true)) { list ->
+                    items(viewState.categoryList.windowed(1, 1, true)) { list ->
                         list.forEach { item -> TransactionRow(item) }
                     }
                 }

@@ -13,6 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familiwallet.core.common.CategoryType
+import com.example.familiwallet.core.common.INCOMES
+import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.features.main.data.Transaction
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
 import com.example.familiwallet.ui.theme.expensesColor
@@ -21,24 +23,24 @@ import com.example.familiwallet.ui.theme.incomesColor
 
 @Composable
 fun TransactionsList(
-    transactionList: List<Transaction>
+    transactionList: List<UIModel.CategoryModel>
 ) {
     LazyRow {
         items(transactionList) { item ->
-            TransactionRow(transaction = item)
+            TransactionRow(category = item)
         }
     }
 }
 
 @Composable
 fun TransactionRow(
-    transaction: Transaction
+    category: UIModel.CategoryModel
 ) {
     Row(
         modifier = Modifier
             .padding(4.dp)
             .background(
-                color = if (transaction.type == CategoryType.INCOMES) incomesBackgroundColor else expensesBackgroundColor,
+                color = if (category.type == INCOMES) incomesBackgroundColor else expensesBackgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
             .fillMaxWidth()
@@ -48,19 +50,9 @@ fun TransactionRow(
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp),
-            text = transaction.value,
-            color = if (transaction.type == CategoryType.INCOMES) incomesColor else expensesColor,
+            text = category.category.orEmpty(),
+            color = if (category.type == INCOMES) incomesColor else expensesColor,
             fontSize = 18.sp,
-            textAlign = TextAlign.Center
-
-        )
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(10.dp),
-            text = transaction.category,
-            color = if (transaction.type == CategoryType.INCOMES) incomesColor else expensesColor,
-            fontSize = 16.sp,
             textAlign = TextAlign.Center
         )
     }

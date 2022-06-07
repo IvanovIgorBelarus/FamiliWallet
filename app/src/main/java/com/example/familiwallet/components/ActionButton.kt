@@ -37,7 +37,7 @@ fun ActionButton(
     onStateChange: (FloatingActionState) -> Unit
 ) {
     val transition = updateTransition(targetState = floatingActionState, label = "transition")
-    val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.COLLAPSED) 0.dp else 96.dp)
+    val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.COLLAPSED) 0.dp else 96.dp) //for child buttons
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -46,16 +46,15 @@ fun ActionButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ChildActionButton(icon = Icons.Default.KeyboardArrowUp, color = incomesColor, animSize) { navigation.navigate(Screen.NewIncomeScreen.route) }
-            Spacer(modifier = Modifier.size(96.dp))
+            Spacer(modifier = Modifier.size(24.dp))
+            ActionButtonView(
+                transition = transition,
+                floatingActionState = floatingActionState,
+                onStateChange = onStateChange
+            )
+            Spacer(modifier = Modifier.size(24.dp))
             ChildActionButton(icon = Icons.Default.KeyboardArrowDown, color = expensesColor, animSize) { navigation.navigate(Screen.NewExpanseScreen.route) }
         }
-
-        Spacer(modifier = Modifier.size(24.dp))
-        ActionButtonView(
-            transition = transition,
-            floatingActionState = floatingActionState,
-            onStateChange = onStateChange
-        )
     }
 }
 
