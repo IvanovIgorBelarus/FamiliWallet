@@ -7,12 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.features.main.domain.usecase.MainScreenInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val mainScreenInfoUseCase: MainScreenInfoUseCase
+) : ViewModel() {
 
     private val uiRangeState = mutableStateOf<UiState<TimeRangeType>>(UiState.Success(TimeRangeType.WEEK))
     private val uiState = mutableStateOf<UiState<MainScreenViewState>>(UiState.Loading)
@@ -37,7 +40,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
             try {
                 uiState.value = UiState.Success(
-                    MainScreenViewState(categoryList = DataInteractor.getCategoriesList())
+                    MainScreenViewState(
+                        incomesList = mainScreenInfoUseCase.getIncomesCategoriesList(),
+                        expensesList = mainScreenInfoUseCase.getExpensesCategoriesList()
+                    )
                 )
             }catch (e:Exception){
                 uiState.value = UiState.Error(e)

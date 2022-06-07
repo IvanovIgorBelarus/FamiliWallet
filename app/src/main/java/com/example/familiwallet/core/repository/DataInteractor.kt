@@ -4,8 +4,9 @@ import android.util.Log
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.repository.domain.*
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 
-object DataInteractor : DataRepository {
+class DataInteractor @Inject constructor() : DataRepository {
 
     private val firebaseRepository = FirebaseRepositoryImpl(FirebaseFirestore.getInstance())
 
@@ -40,6 +41,7 @@ object DataInteractor : DataRepository {
     }
 
     override suspend fun getCategoriesList(forceLoad: Boolean): List<UIModel.CategoryModel> {
+        Log.d("REQUEST13", "===================getCategoriesList=======================")
         return get(CategoriesCache, firebaseRepository.getCategoriesList(getPartner()), forceLoad)
     }
 

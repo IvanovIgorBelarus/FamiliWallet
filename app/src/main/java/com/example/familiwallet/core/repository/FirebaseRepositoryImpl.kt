@@ -37,7 +37,7 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
                 if (isSms) {
                     deleteItem(UIModel.SmsModel(id = transactionModel.id))
                 }
-                DataInteractor.update(transactionModel)
+//                DataInteractor.update(transactionModel)
             }
 
         }
@@ -59,7 +59,9 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
                 DATE to transactionModel.date
             )
         ).addOnSuccessListener {
-            CoroutineScope(Dispatchers.IO).launch { DataInteractor.update(transactionModel) }
+            CoroutineScope(Dispatchers.IO).launch {
+//                DataInteractor.update(transactionModel)
+            }
         }
     }
 
@@ -71,7 +73,10 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
                 TRANSACTION_TYPE to categoryItem.type,
                 ICON to categoryItem.icon
             )
-        ).addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch { DataInteractor.update(categoryItem) } }
+        ).addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch {
+//            DataInteractor.update(categoryItem)
+        }
+        }
     }
 
     suspend fun getSmsList(): List<UIModel.SmsModel> = suspendCoroutine { continuation ->
@@ -184,7 +189,9 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
         db.collection(category)
             .document("${(item as UIModel.BaseModel).itemId}")
             .delete()
-            .addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch { DataInteractor.update(item) } }
+            .addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch {
+//                DataInteractor.update(item)
+            } }
     }
 
     fun upDateItem(item: Any?) {

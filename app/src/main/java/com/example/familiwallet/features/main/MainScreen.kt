@@ -17,13 +17,14 @@ import com.example.familiwallet.components.*
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.features.main.MainScreenViewState
 import com.example.familiwallet.features.main.MainViewModel
 import com.example.familiwallet.features.main.data.Transaction
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = viewModel(),
+    viewModel: MainViewModel = hiltViewModel(),
     navigation: NavHostController = rememberNavController()
 ) {
 
@@ -63,7 +64,7 @@ fun MainScreen(
                     item {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Заголовок 2",
+                            text = "Период",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )
@@ -76,27 +77,47 @@ fun MainScreen(
                     item {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Заголовок 3",
+                            text = "Доходы",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )
                     }
 
-                    items(viewState.categoryList.windowed(1, 1, true)) { list ->
-                        list.forEach { item -> TransactionRow(item) }
+                    item {
+                        CategoryList(list = viewState.incomesList)
                     }
+
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Расходы",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    item {
+                        CategoryList(list = viewState.expensesList)
+                    }
+
+                    //for transactions
+//                    items(viewState.incomesList.windowed(1, 1, true)) { list ->
+//                        list.forEach { item -> TransactionRow(item) }
+//                    }
                 }
             }
         }
         is UiState.Error -> {}
-        is UiState.Loading -> {}
+        is UiState.Loading -> {
+            LoadingScreen()
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun MainScreenPreview() {
-    MainScreen(MainViewModel())
+    MainScreen()
 }
 
 
