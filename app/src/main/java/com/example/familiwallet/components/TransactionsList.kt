@@ -12,10 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.features.main.data.Transaction
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
 import com.example.familiwallet.ui.theme.expensesColor
 import com.example.familiwallet.ui.theme.incomesBackgroundColor
@@ -23,53 +21,48 @@ import com.example.familiwallet.ui.theme.incomesColor
 
 @Composable
 fun TransactionsList(
-    transactionList: List<UIModel.CategoryModel>
+    transactionList: List<UIModel.TransactionModel>
 ) {
     LazyRow {
         items(transactionList) { item ->
-            TransactionRow(category = item)
+            TransactionRow(transaction = item)
         }
     }
 }
 
 @Composable
 fun TransactionRow(
-    category: UIModel.CategoryModel
+    transaction: UIModel.TransactionModel
 ) {
     Row(
         modifier = Modifier
             .padding(4.dp)
             .background(
-                color = if (category.type == INCOMES) incomesBackgroundColor else expensesBackgroundColor,
+                color = if (transaction.type == INCOMES) incomesBackgroundColor else expensesBackgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
-            .fillMaxWidth()
+            .requiredWidth(200.dp)
             .height(80.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.padding(start = 10.dp),
-            text = category.category.orEmpty(),
-            color = if (category.type == INCOMES) incomesColor else expensesColor,
-            fontSize = 18.sp,
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
+            text = transaction.value.toString(),
+            color = if (transaction.type == INCOMES) incomesColor else expensesColor,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
+            text = transaction.category.orEmpty(),
+            color = if (transaction.type == INCOMES) incomesColor else expensesColor,
+            fontSize = 16.sp,
             textAlign = TextAlign.Center
         )
     }
 }
-
-
-val transactions = listOf(
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда"),
-    Transaction(CategoryType.EXPENSES, "-100", "Еда"),
-    Transaction(CategoryType.INCOMES, "100", "Еда")
-)

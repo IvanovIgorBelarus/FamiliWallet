@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class FamilyWalletApp: Application(){
+class App: Application(){
     companion object {
         var dateFilterType: String = ""
         var startDate: Long? = null

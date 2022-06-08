@@ -7,11 +7,13 @@ import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
+class FirebaseRepositoryImpl @Inject constructor() {
 
+    private val db = FirebaseFirestore.getInstance()
     fun addPartner(accountModel: UIModel.AccountModel) {
         db.collection(USERS).add(
             mapOf(
@@ -73,9 +75,10 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
                 TRANSACTION_TYPE to categoryItem.type,
                 ICON to categoryItem.icon
             )
-        ).addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch {
+        ).addOnSuccessListener {
+            CoroutineScope(Dispatchers.IO).launch {
 //            DataInteractor.update(categoryItem)
-        }
+            }
         }
     }
 
@@ -116,38 +119,58 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
         }
     }
 
-    suspend fun getTransactionsList(): List<UIModel.TransactionModel> = suspendCoroutine { continuation ->
+    suspend fun getTransactionsList(partner: UIModel.AccountModel): List<UIModel.TransactionModel> = withContext(Dispatchers.IO) {
         val list = mutableListOf<UIModel.TransactionModel>()
-        db.collection(TRANSACTIONS).get().addOnSuccessListener { result ->
-            result.forEach { doc ->
-                list.add(
-                    UIModel.TransactionModel(
-                        id = doc.id,
-                        uid = doc.getString(UID),
-                        type = doc.getString(TRANSACTION_TYPE),
-                        category = doc.getString(CATEGORY),
-                        currency = doc.getString(CURRENCY),
-                        moneyType = doc.getString(MONEY_TYPE),
-                        value = doc.getDouble(VALUE),
-                        date = doc.getLong(DATE)
-                    )
-                )
-            }
-            continuation.resume(list)
+
+        val getUserList = async { getPersonTransactionList(partner.uid.orEmpty()) }
+        val getPartnerList = async { getPersonTransactionList(partner.partnerUid.orEmpty()) }
+
+        val userList = getUserList.await()
+        val partnerList = getPartnerList.await()
+
+        list.addAll(userList)
+        list.addAll(partnerList)
+
+        list
+    }
+
+    private suspend fun getPersonTransactionList(uid: String): List<UIModel.TransactionModel> = suspendCoroutine { continuation ->
+        if (uid.isNotEmpty()) {
+            db.collection(TRANSACTIONS)
+                .whereEqualTo("uid", uid)
+                .get().addOnSuccessListener { result ->
+                    val list = mutableListOf<UIModel.TransactionModel>()
+                    result.forEach { doc ->
+                        list.add(
+                            UIModel.TransactionModel(
+                                id = doc.id,
+                                uid = doc.getString(UID),
+                                type = doc.getString(TRANSACTION_TYPE),
+                                category = doc.getString(CATEGORY),
+                                currency = doc.getString(CURRENCY),
+                                moneyType = doc.getString(MONEY_TYPE),
+                                value = doc.getDouble(VALUE),
+                                date = doc.getLong(DATE)
+                            )
+                        )
+                    }
+                    continuation.resume(list)
+                }
         }
     }
 
     suspend fun getCategoriesList(partner: UIModel.AccountModel): List<UIModel.CategoryModel> = withContext(Dispatchers.IO) {
         val list = mutableListOf<UIModel.CategoryModel>()
+
         val getUserList = async { getPersonCategoriesList(partner.uid.orEmpty()) }
         val getPartnerList = async { getPersonCategoriesList(partner.partnerUid.orEmpty()) }
 
         val userList = getUserList.await()
         val partnerList = getPartnerList.await()
+
         list.addAll(userList)
         list.addAll(partnerList)
 
-        list.sortBy { it.type == EXPENSES }
         list
     }
 
@@ -172,7 +195,7 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
                     continuation.resume(list)
                 }
                 .addOnFailureListener { continuation.resume(emptyList()) }
-        }else{
+        } else {
             continuation.resume(emptyList())
         }
     }
@@ -189,9 +212,11 @@ class FirebaseRepositoryImpl(private val db: FirebaseFirestore) {
         db.collection(category)
             .document("${(item as UIModel.BaseModel).itemId}")
             .delete()
-            .addOnSuccessListener { CoroutineScope(Dispatchers.IO).launch {
+            .addOnSuccessListener {
+                CoroutineScope(Dispatchers.IO).launch {
 //                DataInteractor.update(item)
-            } }
+                }
+            }
     }
 
     fun upDateItem(item: Any?) {

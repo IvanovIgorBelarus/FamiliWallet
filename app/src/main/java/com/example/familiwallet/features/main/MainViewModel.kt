@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.familiwallet.core.common.TimeRangeType
-import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.main.domain.usecase.MainScreenInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,10 +41,11 @@ class MainViewModel @Inject constructor(
                 uiState.value = UiState.Success(
                     MainScreenViewState(
                         incomesList = mainScreenInfoUseCase.getIncomesCategoriesList(),
-                        expensesList = mainScreenInfoUseCase.getExpensesCategoriesList()
+                        expensesList = mainScreenInfoUseCase.getExpensesCategoriesList(),
+                        transactionsList = mainScreenInfoUseCase.getTransactionsList()
                     )
                 )
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
             }
         }

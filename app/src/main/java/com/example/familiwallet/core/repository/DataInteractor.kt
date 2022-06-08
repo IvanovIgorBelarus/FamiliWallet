@@ -6,9 +6,9 @@ import com.example.familiwallet.core.repository.domain.*
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
-class DataInteractor @Inject constructor() : DataRepository {
-
-    private val firebaseRepository = FirebaseRepositoryImpl(FirebaseFirestore.getInstance())
+class DataInteractor @Inject constructor(
+    private val firebaseRepository: FirebaseRepositoryImpl
+) : DataRepository {
 
     override suspend fun addPartner(accountModel: UIModel.AccountModel) {
         firebaseRepository.addPartner(accountModel)
@@ -37,11 +37,10 @@ class DataInteractor @Inject constructor() : DataRepository {
     }
 
     override suspend fun getTransactionsList(forceLoad: Boolean): List<UIModel.TransactionModel> {
-        return get(TransactionsCache, firebaseRepository.getTransactionsList(), forceLoad)
+        return get(TransactionsCache, firebaseRepository.getTransactionsList(getPartner()), forceLoad)
     }
 
     override suspend fun getCategoriesList(forceLoad: Boolean): List<UIModel.CategoryModel> {
-        Log.d("REQUEST13", "===================getCategoriesList=======================")
         return get(CategoriesCache, firebaseRepository.getCategoriesList(getPartner()), forceLoad)
     }
 
@@ -56,7 +55,6 @@ class DataInteractor @Inject constructor() : DataRepository {
 
     private fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T {
         return if (cache.isEmpty() || forceLoad) {
-            Log.d("REQUEST13", "FROM SERVER")
             cache.put(request)
             cache.get()
         } else {

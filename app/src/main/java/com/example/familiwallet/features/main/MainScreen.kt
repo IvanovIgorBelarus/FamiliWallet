@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -100,7 +101,20 @@ fun MainScreen(
                         CategoryList(list = viewState.expensesList)
                     }
 
-                    //for transactions
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Операции",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    item {
+                        TransactionsList(transactionList = viewState.transactionsList)
+                    }
+
+//                    for transactions
 //                    items(viewState.incomesList.windowed(1, 1, true)) { list ->
 //                        list.forEach { item -> TransactionRow(item) }
 //                    }

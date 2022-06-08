@@ -1,8 +1,8 @@
 package com.example.familiwallet.core.common
 
-import com.example.familiwallet.FamilyWalletApp.Companion.dateFilterType
-import com.example.familiwallet.FamilyWalletApp.Companion.endDate
-import com.example.familiwallet.FamilyWalletApp.Companion.startDate
+import com.example.familiwallet.App.Companion.dateFilterType
+import com.example.familiwallet.App.Companion.endDate
+import com.example.familiwallet.App.Companion.startDate
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.toEndOfDay
 import com.example.familiwallet.core.utils.toStartOfDay

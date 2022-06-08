@@ -88,6 +88,7 @@ dependencies {
 
     // Hilt dependency injection
     implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
 // When using Kotlin.
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
