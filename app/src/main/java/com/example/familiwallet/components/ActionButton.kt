@@ -1,6 +1,5 @@
 package com.example.familiwallet.components
 
-import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
@@ -18,12 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.familiwallet.navigation.Screen
-import com.example.familiwallet.ui.theme.*
+import com.example.familiwallet.ui.theme.Purple200
+import com.example.familiwallet.ui.theme.expensesColor
+import com.example.familiwallet.ui.theme.incomesColor
 
 enum class FloatingActionState {
     EXPANDED,
@@ -36,7 +38,6 @@ fun ActionButton(
     navigation: NavHostController = rememberNavController(),
     onStateChange: (FloatingActionState) -> Unit
 ) {
-    val transition = updateTransition(targetState = floatingActionState, label = "transition")
     val animSize by animateDpAsState(targetValue = if (floatingActionState == FloatingActionState.COLLAPSED) 0.dp else 96.dp) //for child buttons
     Column(
         verticalArrangement = Arrangement.Center,
@@ -48,7 +49,6 @@ fun ActionButton(
             ChildActionButton(icon = Icons.Default.KeyboardArrowUp, color = incomesColor, animSize) { navigation.navigate(Screen.NewIncomeScreen.route) }
             Spacer(modifier = Modifier.size(24.dp))
             ActionButtonView(
-                transition = transition,
                 floatingActionState = floatingActionState,
                 onStateChange = onStateChange
             )
@@ -60,10 +60,10 @@ fun ActionButton(
 
 @Composable
 private fun ActionButtonView(
-    transition: Transition<FloatingActionState>,
     floatingActionState: FloatingActionState,
     onStateChange: (FloatingActionState) -> Unit
 ) {
+    val transition = updateTransition(targetState = floatingActionState, label = "transition")
     val rotate by transition.animateFloat(label = "rotate") {
         if (it == FloatingActionState.EXPANDED) 315f else 0f
     }
@@ -91,4 +91,29 @@ private fun ChildActionButton(icon: ImageVector, color: Color, size: Dp, onclick
     ) {
         Icon(icon, contentDescription = null)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ActionButtonPreview() {
+    ActionButton(
+        floatingActionState = FloatingActionState.EXPANDED,
+        navigation = rememberNavController(),
+        onStateChange = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ActionButtonViewPreview() {
+    ActionButtonView(
+        floatingActionState = FloatingActionState.COLLAPSED,
+        onStateChange = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ChildActionButtonPreview() {
+    ChildActionButton(icon = Icons.Default.KeyboardArrowUp, color = incomesColor, 60.dp) { }
 }
