@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
@@ -21,7 +22,9 @@ fun TimeRangePicker(
     onTimeRangeClicked: (TimeRangeType) -> Unit
 ) {
     Row(
-        modifier = modifier.padding(8.dp).fillMaxWidth(),
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         TimeRangeBox(time = TimeRangeType.DAY.text, isSelected = selectedTimeRange == TimeRangeType.DAY) {
@@ -47,7 +50,8 @@ fun TimeRangeBox(
             .background(
                 color = if (isSelected) incomesBackgroundColor else expensesBackgroundColor,
                 shape = RoundedCornerShape(16.dp)
-            ).padding(4.dp)
+            )
+            .padding(4.dp)
             .clickable { onTimeRangeClicked() }
     ) {
         Text(
@@ -56,4 +60,24 @@ fun TimeRangeBox(
             modifier = Modifier.padding(4.dp),
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TimeRangePickerPreview(){
+    TimeRangePicker(
+        modifier = Modifier,
+        selectedTimeRange = TimeRangeType.MONTH,
+        onTimeRangeClicked = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TimeRangeBoxPreview(){
+    TimeRangeBox(
+        time = TimeRangeType.DAY.text,
+        isSelected = TimeRangeType.MONTH == TimeRangeType.DAY,
+        onTimeRangeClicked = {}
+    )
 }
