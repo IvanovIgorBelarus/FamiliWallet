@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
@@ -65,4 +67,28 @@ fun TransactionRow(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TransactionsListPreview() {
+    TransactionsList(
+        listOf(
+            UIModel.TransactionModel(type = INCOMES, category = "Получка", value = 12.5),
+            UIModel.TransactionModel(type = EXPENSES, category = "Мороженка", value = 10.5)
+        )
+    )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun TransactionRowPreview() {
+    TransactionRow(
+        UIModel.TransactionModel(
+            type = INCOMES,
+            category = "Получка",
+            value = 12.5
+        )
+    )
 }
