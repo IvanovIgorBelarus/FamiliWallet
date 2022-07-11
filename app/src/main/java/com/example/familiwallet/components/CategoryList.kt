@@ -10,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
@@ -29,7 +31,7 @@ fun CategoryList(list: List<UIModel.CategoryModel>){
 }
 
 @Composable
-fun CategoryRow(
+private fun CategoryRow(
     category: UIModel.CategoryModel
 ) {
     Row(
@@ -52,4 +54,23 @@ fun CategoryRow(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CategoryListPreview(){
+    CategoryList(listOf(
+        UIModel.CategoryModel(category = "Топливо", type = EXPENSES),
+        UIModel.CategoryModel(category = "Зарплатка", type = INCOMES)
+
+    ))
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun  CategoryRowPreview(){
+    CategoryRow(category = UIModel.CategoryModel(
+        category = "Топливо",
+        type = EXPENSES
+    ))
 }
