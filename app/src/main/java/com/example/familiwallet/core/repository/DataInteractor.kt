@@ -1,46 +1,45 @@
 package com.example.familiwallet.core.repository
 
-import android.util.Log
+import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.repository.domain.*
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.familiwallet.core.repository.domain.CacheRepository
+import com.example.familiwallet.core.repository.domain.CategoriesCache
+import com.example.familiwallet.core.repository.domain.PartnerCache
+import com.example.familiwallet.core.repository.domain.SmsCache
+import com.example.familiwallet.core.repository.domain.TransactionsCache
 import javax.inject.Inject
 
 class DataInteractor @Inject constructor(
     private val firebaseRepository: FirebaseRepositoryImpl
 ) : DataRepository {
 
-    override suspend fun addPartner(accountModel: UIModel.AccountModel) {
+    override suspend fun addPartner(accountModel: UIModel.AccountModel): DataResponse<Unit> =
         firebaseRepository.addPartner(accountModel)
-        update(accountModel)
-    }
 
-    override suspend fun doTransaction(transactionModel: UIModel.TransactionModel, isSms: Boolean) {
-        firebaseRepository.doTransaction(transactionModel, isSms)
-    }
+    override suspend fun doTransaction(transactionModel: UIModel.TransactionModel): DataResponse<Unit> =
+        firebaseRepository.doTransaction(transactionModel)
 
-    override suspend fun doBakTransactions(transactionModel: UIModel.TransactionModel) {
+    override suspend fun doBakTransactions(transactionModel: UIModel.TransactionModel): DataResponse<Unit> =
         firebaseRepository.doBakTransactions(transactionModel)
-    }
 
     override suspend fun addNewCategory(categoryItem: UIModel.CategoryModel) {
         firebaseRepository.addNewCategory(categoryItem)
     }
 
-    override suspend fun getSmsList(forceLoad: Boolean): List<UIModel.SmsModel> {
+    override suspend fun getSmsList(forceLoad: Boolean): DataResponse<List<UIModel.SmsModel>>? {
         return get(SmsCache, firebaseRepository.getSmsList(), forceLoad)
     }
 
 
-    override suspend fun getPartner(forceLoad: Boolean): UIModel.AccountModel {
+    override suspend fun getPartner(forceLoad: Boolean): DataResponse<UIModel.AccountModel>? {
         return get(PartnerCache, firebaseRepository.getPartner(), forceLoad)
     }
 
-    override suspend fun getTransactionsList(forceLoad: Boolean): List<UIModel.TransactionModel> {
+    override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
         return get(TransactionsCache, firebaseRepository.getTransactionsList(getPartner()), forceLoad)
     }
 
-    override suspend fun getCategoriesList(forceLoad: Boolean): List<UIModel.CategoryModel> {
+    override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? {
         return get(CategoriesCache, firebaseRepository.getCategoriesList(getPartner()), forceLoad)
     }
 
@@ -53,7 +52,7 @@ class DataInteractor @Inject constructor(
         update(item)
     }
 
-    private fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T {
+    private fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {
             cache.put(request)
             cache.get()

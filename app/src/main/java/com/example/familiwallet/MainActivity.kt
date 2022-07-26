@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.repository.DataRepository
@@ -81,7 +82,8 @@ class MainActivity : ComponentActivity() {
 
     private fun addUserInCloud() {
         CoroutineScope(Dispatchers.IO).launch {
-            val isPartner = repo.getPartner().uid.isNullOrEmpty()
+            val partner = repo.getPartner()
+            val isPartner = partner is DataResponse.Success && partner.data.uid.isNullOrEmpty()
             if (isPartner) {
                 repo.addPartner(UIModel.AccountModel(uid = UserUtils.getUsersUid()))
             }

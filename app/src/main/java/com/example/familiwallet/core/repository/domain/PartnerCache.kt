@@ -1,16 +1,17 @@
 package com.example.familiwallet.core.repository.domain
 
+import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 
-object PartnerCache: CacheRepository<UIModel.AccountModel> {
+object PartnerCache: CacheRepository<DataResponse<UIModel.AccountModel>> {
 
-    private  var partner: UIModel.AccountModel? = null
+    private  var partner: DataResponse<UIModel.AccountModel>? = null
 
-    override fun put(cache: UIModel.AccountModel) {
+    override fun put(cache: DataResponse<UIModel.AccountModel>) {
         partner = cache
     }
 
-    override fun get(): UIModel.AccountModel = partner!!
+    override fun get(): DataResponse<UIModel.AccountModel>? = partner
 
     override fun clear() {
        partner = null

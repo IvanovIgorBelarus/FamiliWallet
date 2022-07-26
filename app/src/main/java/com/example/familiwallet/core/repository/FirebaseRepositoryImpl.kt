@@ -1,12 +1,25 @@
 package com.example.familiwallet.core.repository
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
-import com.example.familiwallet.core.common.*
+import com.example.familiwallet.core.common.BANK_MINUS
+import com.example.familiwallet.core.common.CATEGORIES
+import com.example.familiwallet.core.common.CATEGORY
+import com.example.familiwallet.core.common.CURRENCY
+import com.example.familiwallet.core.common.DATE
+import com.example.familiwallet.core.common.ICON
+import com.example.familiwallet.core.common.MONEY_TYPE
+import com.example.familiwallet.core.common.NEW_SMS
+import com.example.familiwallet.core.common.PARTNER_UID
+import com.example.familiwallet.core.common.TRANSACTIONS
+import com.example.familiwallet.core.common.TRANSACTION_TYPE
+import com.example.familiwallet.core.common.UID
+import com.example.familiwallet.core.common.USERS
+import com.example.familiwallet.core.common.VALUE
+import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.utils.UserUtils
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -14,16 +27,19 @@ import kotlin.coroutines.suspendCoroutine
 class FirebaseRepositoryImpl @Inject constructor() {
 
     private val db = FirebaseFirestore.getInstance()
-    fun addPartner(accountModel: UIModel.AccountModel) {
+
+    suspend fun addPartner(accountModel: UIModel.AccountModel): DataResponse<Unit> = suspendCoroutine { continuation ->
         db.collection(USERS).add(
             mapOf(
                 UID to accountModel.uid,
                 PARTNER_UID to accountModel.partnerUid
             )
         )
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
-    fun doTransaction(transactionModel: UIModel.TransactionModel, isSms: Boolean) {
+    suspend fun doTransaction(transactionModel: UIModel.TransactionModel): DataResponse<Unit> = suspendCoroutine { continuation ->
         db.collection(TRANSACTIONS).add(
             mapOf(
                 UID to transactionModel.uid,
@@ -34,19 +50,13 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 VALUE to transactionModel.value,
                 DATE to transactionModel.date
             )
-        ).addOnSuccessListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                if (isSms) {
-                    deleteItem(UIModel.SmsModel(id = transactionModel.id))
-                }
-//                DataInteractor.update(transactionModel)
-            }
-
-        }
+        )
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
-    fun doBakTransactions(transactionModel: UIModel.TransactionModel) {
-        var value = if (transactionModel.moneyType == BANK_MINUS) {
+    suspend fun doBakTransactions(transactionModel: UIModel.TransactionModel): DataResponse<Unit> = suspendCoroutine { continuation ->
+        val value = if (transactionModel.moneyType == BANK_MINUS) {
             -transactionModel.value!!
         } else {
             transactionModel.value!!
@@ -60,14 +70,12 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 VALUE to value,
                 DATE to transactionModel.date
             )
-        ).addOnSuccessListener {
-            CoroutineScope(Dispatchers.IO).launch {
-//                DataInteractor.update(transactionModel)
-            }
-        }
+        )
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
-    fun addNewCategory(categoryItem: UIModel.CategoryModel) {
+    suspend fun addNewCategory(categoryItem: UIModel.CategoryModel): DataResponse<Unit> = suspendCoroutine { continuation ->
         db.collection(CATEGORIES).add(
             mapOf(
                 UID to categoryItem.uid,
@@ -75,134 +83,107 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 TRANSACTION_TYPE to categoryItem.type,
                 ICON to categoryItem.icon
             )
-        ).addOnSuccessListener {
-            CoroutineScope(Dispatchers.IO).launch {
-//            DataInteractor.update(categoryItem)
+        )
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+    }
+
+    suspend fun getSmsList(): DataResponse<List<UIModel.SmsModel>> = suspendCoroutine { continuation ->
+        db.collection(NEW_SMS).get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapSmsList(response))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+    }
+
+
+    suspend fun getPartner(): DataResponse<UIModel.AccountModel> = suspendCoroutine { continuation ->
+        db.collection(USERS).get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPartner(response))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+    }
+
+    suspend fun getTransactionsList(partner: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = withContext(Dispatchers.IO) {
+        if (partner is DataResponse.Success) {
+            val account = partner.data
+            val list = mutableListOf<UIModel.TransactionModel>()
+
+            val getUserList = async { getPersonTransactionList(account.uid.orEmpty()) }
+            val getPartnerList = async { getPersonTransactionList(account.partnerUid.orEmpty()) }
+
+            val userList = getUserList.await()
+            val partnerList = getPartnerList.await()
+
+            if (userList is DataResponse.Success) {
+                list.addAll(userList.data)
             }
+            if (partnerList is DataResponse.Success) {
+                list.addAll(partnerList.data)
+            }
+
+            val result = if (list.isEmpty()) {
+                DataResponse.Error(Throwable("Не удалось обновить данные"))
+            } else {
+                DataResponse.Success(list)
+            }
+            result
+        } else {
+            DataResponse.Error(Throwable("Ошибка получения данных аккаунта"))
         }
     }
 
-    suspend fun getSmsList(): List<UIModel.SmsModel> = suspendCoroutine { continuation ->
-        val list = mutableListOf<UIModel.SmsModel>()
-        db.collection(NEW_SMS).get().addOnSuccessListener { result ->
-            result.forEach { doc ->
-                list.add(
-                    UIModel.SmsModel(
-                        id = doc.id,
-                        date = doc.getLong(DATE),
-                        value = doc.getDouble(VALUE),
-                        currency = doc.getString(CURRENCY),
-                    )
-                )
-            }
-            continuation.resume(list)
-        }
-    }
-
-
-    suspend fun getPartner(): UIModel.AccountModel = suspendCoroutine { continuation ->
-        val partner = UIModel.AccountModel()
-        db.collection(USERS).get().addOnSuccessListener { result ->
-            result.forEach { doc ->
-                if (doc.getString(UID) == UserUtils.getUsersUid() && doc.getString(PARTNER_UID) != null) {
-                    partner.id = doc.id
-                    partner.uid = UserUtils.getUsersUid()
-                    partner.partnerUid = doc.getString(PARTNER_UID)
-                    return@forEach
-                } else if (doc.getString(UID) == UserUtils.getUsersUid()) {
-                    partner.id = doc.id
-                    partner.uid = UserUtils.getUsersUid()
-                    partner.partnerUid = doc.getString(PARTNER_UID)
-                }
-            }
-            continuation.resume(partner)
-        }
-    }
-
-    suspend fun getTransactionsList(partner: UIModel.AccountModel): List<UIModel.TransactionModel> = withContext(Dispatchers.IO) {
-        val list = mutableListOf<UIModel.TransactionModel>()
-
-        val getUserList = async { getPersonTransactionList(partner.uid.orEmpty()) }
-        val getPartnerList = async { getPersonTransactionList(partner.partnerUid.orEmpty()) }
-
-        val userList = getUserList.await()
-        val partnerList = getPartnerList.await()
-
-        list.addAll(userList)
-        list.addAll(partnerList)
-
-        list
-    }
-
-    private suspend fun getPersonTransactionList(uid: String): List<UIModel.TransactionModel> = suspendCoroutine { continuation ->
+    private suspend fun getPersonTransactionList(uid: String): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
         if (uid.isNotEmpty()) {
             db.collection(TRANSACTIONS)
                 .whereEqualTo("uid", uid)
-                .get().addOnSuccessListener { result ->
-                    val list = mutableListOf<UIModel.TransactionModel>()
-                    result.forEach { doc ->
-                        list.add(
-                            UIModel.TransactionModel(
-                                id = doc.id,
-                                uid = doc.getString(UID),
-                                type = doc.getString(TRANSACTION_TYPE),
-                                category = doc.getString(CATEGORY),
-                                currency = doc.getString(CURRENCY),
-                                moneyType = doc.getString(MONEY_TYPE),
-                                value = doc.getDouble(VALUE),
-                                date = doc.getLong(DATE)
-                            )
-                        )
-                    }
-                    continuation.resume(list)
-                }
+                .get()
+                .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
+                .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
         }
     }
 
-    suspend fun getCategoriesList(partner: UIModel.AccountModel): List<UIModel.CategoryModel> = withContext(Dispatchers.IO) {
-        val list = mutableListOf<UIModel.CategoryModel>()
+    suspend fun getCategoriesList(partner: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.CategoryModel>> = withContext(Dispatchers.IO) {
+        if (partner is DataResponse.Success) {
+            val account = partner.data
+            val list = mutableListOf<UIModel.CategoryModel>()
 
-        val getUserList = async { getPersonCategoriesList(partner.uid.orEmpty()) }
-        val getPartnerList = async { getPersonCategoriesList(partner.partnerUid.orEmpty()) }
+            val getUserList = async { getPersonCategoriesList(account.uid.orEmpty()) }
+            val getPartnerList = async { getPersonCategoriesList(account.partnerUid.orEmpty()) }
 
-        val userList = getUserList.await()
-        val partnerList = getPartnerList.await()
+            val userList = getUserList.await()
+            val partnerList = getPartnerList.await()
 
-        list.addAll(userList)
-        list.addAll(partnerList)
+            if (userList is DataResponse.Success) {
+                list.addAll(userList.data)
+            }
+            if (partnerList is DataResponse.Success) {
+                list.addAll(partnerList.data)
+            }
 
-        list
+            val result = if (list.isEmpty()) {
+                DataResponse.Error(Throwable("Не удалось обновить данные"))
+            } else {
+                DataResponse.Success(list)
+            }
+            result
+        } else {
+            DataResponse.Error(Throwable("Ошибка получения данных аккаунта"))
+        }
     }
 
-    private suspend fun getPersonCategoriesList(uid: String): List<UIModel.CategoryModel> = suspendCoroutine { continuation ->
+    private suspend fun getPersonCategoriesList(uid: String): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
         if (uid.isNotEmpty()) {
             db.collection(CATEGORIES)
                 .whereEqualTo("uid", uid)
                 .get()
-                .addOnSuccessListener { result ->
-                    val list = mutableListOf<UIModel.CategoryModel>()
-                    result.forEach { doc ->
-                        list.add(
-                            UIModel.CategoryModel(
-                                id = doc.id,
-                                uid = doc.getString(UID),
-                                category = doc.getString(CATEGORY),
-                                type = doc.getString(TRANSACTION_TYPE),
-                                icon = doc.getString(ICON) ?: Icons.Default.List.name
-                            )
-                        )
-                    }
-                    continuation.resume(list)
-                }
-                .addOnFailureListener { continuation.resume(emptyList()) }
+                .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
+                .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
         } else {
-            continuation.resume(emptyList())
+            continuation.resume(DataResponse.Error(Throwable("Нет данных")))
         }
     }
 
 
-    fun deleteItem(item: Any?) {
-        var category = when (item) {
+    suspend fun deleteItem(item: Any?): DataResponse<Unit> = suspendCoroutine { continuation ->
+        val category = when (item) {
             is UIModel.CategoryModel -> CATEGORIES
             is UIModel.AccountModel -> USERS
             is UIModel.TransactionModel -> TRANSACTIONS
@@ -212,31 +193,37 @@ class FirebaseRepositoryImpl @Inject constructor() {
         db.collection(category)
             .document("${(item as UIModel.BaseModel).itemId}")
             .delete()
-            .addOnSuccessListener {
-                CoroutineScope(Dispatchers.IO).launch {
-//                DataInteractor.update(item)
-                }
-            }
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
-    fun upDateItem(item: Any?) {
+    suspend fun upDateItem(item: Any?): DataResponse<Unit> = suspendCoroutine { continuation ->
+        var collectionPath = ""
+        var data = mapOf<String, Any?>()
+        var itemId = ""
         when (item) {
-            is UIModel.CategoryModel -> db.collection(CATEGORIES).document("${item.id}").update(
-                mapOf(
+            is UIModel.CategoryModel -> {
+                collectionPath = CATEGORIES
+                itemId = item.id.orEmpty()
+                data = mapOf(
                     UID to item.uid,
                     CATEGORY to item.category,
                     ICON to item.icon,
                     TRANSACTION_TYPE to item.type
                 )
-            )
-            is UIModel.AccountModel -> db.collection(USERS).document("${item.id}").update(
-                mapOf(
+            }
+            is UIModel.AccountModel -> {
+                collectionPath = USERS
+                itemId = item.id.orEmpty()
+                data = mapOf(
                     UID to item.uid,
                     PARTNER_UID to item.partnerUid
                 )
-            )
-            is UIModel.TransactionModel -> db.collection(TRANSACTIONS).document("${item.id}").update(
-                mapOf(
+            }
+            is UIModel.TransactionModel -> {
+                collectionPath = TRANSACTIONS
+                itemId = item.id.orEmpty()
+                data = mapOf(
                     UID to item.uid,
                     TRANSACTION_TYPE to item.type,
                     CATEGORY to item.category,
@@ -245,7 +232,11 @@ class FirebaseRepositoryImpl @Inject constructor() {
                     VALUE to item.value,
                     DATE to item.date
                 )
-            )
+            }
+            else -> continuation.resume(DataResponse.Error(Throwable("не удалось обновить запись")))
         }
+        db.collection(collectionPath).document(itemId).update(data)
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(Throwable("не удалось обновить запись"))) }
     }
 }
