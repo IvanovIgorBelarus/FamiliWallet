@@ -1,13 +1,13 @@
-package com.example.familiwallet.features.main.domain.usecase
+package com.example.familiwallet.features.start_screen.domain.usecase
 
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.repository.DataRepository
 import javax.inject.Inject
 
-class MainScreenInfoUseCaseImpl @Inject constructor(
+class StartScreenInfoUseCaseImpl @Inject constructor(
     private val repo: DataRepository
-) : MainScreenInfoUseCase {
+) : StartScreenInfoUseCase {
     override suspend fun getCategoriesList(): DataResponse<List<UIModel.CategoryModel>> {
         return when (val response = repo.getCategoriesList()) {
             is DataResponse.Success -> DataResponse.Success(

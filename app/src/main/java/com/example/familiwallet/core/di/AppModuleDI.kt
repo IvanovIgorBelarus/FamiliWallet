@@ -2,8 +2,8 @@ package com.example.familiwallet.core.di
 
 import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.repository.DataRepository
-import com.example.familiwallet.features.main.domain.usecase.MainScreenInfoUseCase
-import com.example.familiwallet.features.main.domain.usecase.MainScreenInfoUseCaseImpl
+import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
+import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,6 +19,6 @@ abstract class AppModule {
 
     @Binds
     abstract fun provideMainScreenInfoUseCase(
-        mainScreenInfoUseCaseImpl: MainScreenInfoUseCaseImpl
-    ): MainScreenInfoUseCase
+        mainScreenInfoUseCaseImpl: StartScreenInfoUseCaseImpl
+    ): StartScreenInfoUseCase
 }

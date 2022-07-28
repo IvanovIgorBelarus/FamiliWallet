@@ -18,13 +18,7 @@ fun NewTransactionScreen(
     text: String
 ) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navigation = navigation) },
-        floatingActionButton = {
-            ActionButton()
-        },
-        isFloatingActionButtonDocked = true,
-        floatingActionButtonPosition = FabPosition.Center
+        modifier = Modifier.fillMaxSize()
     ) {
         Text(
             modifier = modifier.fillMaxSize(),

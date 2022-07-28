@@ -1,4 +1,4 @@
-package com.example.familiwallet.features.main.data
+package com.example.familiwallet.features.start_screen.data
 
 import com.example.familiwallet.core.common.CategoryType
 
