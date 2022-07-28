@@ -64,6 +64,7 @@ class MainViewModel @Inject constructor(
                     is DataResponse.Error -> {
 
                     }
+                    else->{}
                 }
 
                 uiState.value = UiState.Success(

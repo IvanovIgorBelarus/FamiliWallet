@@ -1,17 +1,15 @@
 package com.example.familiwallet
 
+import MainScreen
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.repository.DataRepository
 import com.example.familiwallet.core.utils.UserUtils
-import com.example.familiwallet.navigation.FamilyWalletApp
 import com.example.familiwallet.ui.theme.FamiliWalletTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,6 +30,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+
     @Inject
     lateinit var repo: DataRepository
 
@@ -93,7 +92,7 @@ class MainActivity : ComponentActivity() {
     private fun openStartView() {
         setContent {
             FamiliWalletTheme {
-                FamilyWalletApp(rememberNavController())
+                MainScreen()
             }
         }
     }

@@ -1,32 +1,20 @@
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.familiwallet.components.ActionButton
 import com.example.familiwallet.components.BottomBar
-import com.example.familiwallet.components.CategoryList
-import com.example.familiwallet.components.FloatingActionState
-import com.example.familiwallet.components.TimeRangePicker
-import com.example.familiwallet.components.TransactionsList
-import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.features.main.MainScreenViewState
 import com.example.familiwallet.features.main.MainViewModel
+import com.example.familiwallet.navigation.MainScreenNavigation
 
 @Composable
 fun MainScreen(
@@ -35,96 +23,19 @@ fun MainScreen(
 ) {
     val uiState by viewModel.getUiState()
 
-    var floatingActionState by remember {
-        mutableStateOf(FloatingActionState.COLLAPSED)
-    }
     when (uiState) {
         is UiState.Success -> {
-
             val viewState = (uiState as UiState.Success<MainScreenViewState>).data
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 bottomBar = { BottomBar(navigation = navigation) },
                 floatingActionButton = {
-                    ActionButton(
-                        floatingActionState,
-                        navigation
-                    ) { floatingActionState = it }
+                    ActionButton(navigation = navigation)
                 },
                 isFloatingActionButtonDocked = true,
                 floatingActionButtonPosition = FabPosition.Center
             ) {
-                LazyColumn {
-                    item {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Заголовок 1",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    item {
-                        CategoryBlock()
-                    }
-
-                    item {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Период",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    item {
-                        TimeRangePicker(selectedTimeRange = TimeRangeType.MONTH, onTimeRangeClicked = { viewModel.setUiRangeState(it) })
-                    }
-
-                    item {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Доходы",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    item {
-                        CategoryList(list = viewState.incomesList)
-                    }
-
-                    item {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Расходы",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    item {
-                        CategoryList(list = viewState.expensesList)
-                    }
-
-                    item {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Операции",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    item {
-                        TransactionsList(transactionList = viewState.transactionsList)
-                    }
-
-//                    for transactions
-//                    items(viewState.incomesList.windowed(1, 1, true)) { list ->
-//                        list.forEach { item -> TransactionRow(item) }
-//                    }
-                }
+                MainScreenNavigation(navigation = navigation)
             }
         }
         is UiState.Error -> {}

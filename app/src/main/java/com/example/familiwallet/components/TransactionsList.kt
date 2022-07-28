@@ -2,10 +2,13 @@ package com.example.familiwallet.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +28,7 @@ import com.example.familiwallet.ui.theme.incomesColor
 fun TransactionsList(
     transactionList: List<UIModel.TransactionModel>
 ) {
-    LazyRow {
+    LazyColumn() {
         items(transactionList) { item ->
             TransactionRow(transaction = item)
         }
@@ -43,11 +46,12 @@ fun TransactionRow(
                 color = if (transaction.type == INCOMES) incomesBackgroundColor else expensesBackgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
-            .requiredWidth(200.dp)
-            .height(80.dp),
+            .fillMaxWidth()
+            .requiredHeight(80.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
+       Icons.Outlined
         Text(
             modifier = Modifier
                 .weight(1f)
