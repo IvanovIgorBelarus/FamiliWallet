@@ -1,34 +1,38 @@
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.familiwallet.components.*
-import com.example.familiwallet.core.common.CategoryType
+import com.example.familiwallet.components.ActionButton
+import com.example.familiwallet.components.BottomBar
+import com.example.familiwallet.components.CategoryList
+import com.example.familiwallet.components.FloatingActionState
+import com.example.familiwallet.components.TimeRangePicker
+import com.example.familiwallet.components.TransactionsList
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.features.main.MainScreenViewState
 import com.example.familiwallet.features.main.MainViewModel
-import com.example.familiwallet.features.main.data.Transaction
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
     navigation: NavHostController = rememberNavController()
 ) {
-
     val uiState by viewModel.getUiState()
 
     var floatingActionState by remember {
@@ -40,12 +44,14 @@ fun MainScreen(
             val viewState = (uiState as UiState.Success<MainScreenViewState>).data
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
+                bottomBar = { BottomBar(navigation = navigation) },
                 floatingActionButton = {
                     ActionButton(
                         floatingActionState,
                         navigation
                     ) { floatingActionState = it }
                 },
+                isFloatingActionButtonDocked = true,
                 floatingActionButtonPosition = FabPosition.Center
             ) {
                 LazyColumn {
