@@ -86,13 +86,37 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     SPEAKER(R.drawable.ic_speaker, IconActionType.HOME),
     STORE_MALL_DIRECTORY(R.drawable.ic_store_mall_directory, IconActionType.HOME),
     WEEKEND(R.drawable.ic_weekend, IconActionType.HOME),
+
+    BARBELL(R.drawable.ic_barbell, IconActionType.OTHER),
+    BEAUTY_SALON(R.drawable.ic_beauty_salon, IconActionType.OTHER),
+    BRAIN(R.drawable.ic_brain, IconActionType.OTHER),
+    CARD_GIFT_CARD(R.drawable.ic_card_giftcard, IconActionType.OTHER),
+    CHARITY(R.drawable.ic_charity, IconActionType.OTHER),
+    ENTERTAINMENT(R.drawable.ic_entertainment, IconActionType.OTHER),
+    FILM(R.drawable.ic_film, IconActionType.OTHER),
+    FILTER_VINTAGE(R.drawable.ic_filter_vintage, IconActionType.OTHER),
+    FRAME49(R.drawable.ic_frame_49, IconActionType.OTHER),
+    FRAME50(R.drawable.ic_frame_50, IconActionType.OTHER),
+    FRAME51(R.drawable.ic_frame_51, IconActionType.OTHER),
+    GAMES(R.drawable.ic_games, IconActionType.OTHER),
+    LOCAL_FLORIST(R.drawable.ic_local_florist, IconActionType.OTHER),
+    MEDICINE(R.drawable.ic_medicine, IconActionType.OTHER),
+    MOTOR_SPORTS(R.drawable.ic_motorsports, IconActionType.OTHER),
+    MUSIC_NOTES(R.drawable.ic_musicnotes, IconActionType.OTHER),
+    SETTINGS_INPUT_S_VIDEO(R.drawable.ic_settings_input_svideo, IconActionType.OTHER),
+    SPA(R.drawable.ic_spa, IconActionType.OTHER),
+    SPORT_AMERICAN_FOOTBALL(R.drawable.ic_sport_american_football, IconActionType.OTHER),
+    SPORT_FOOTBALL(R.drawable.ic_sport_football, IconActionType.OTHER),
+    T_SHIRT(R.drawable.ic_t_shirt, IconActionType.OTHER),
+    TROPHY(R.drawable.ic_trophy, IconActionType.OTHER),
 }
 
 enum class IconActionType {
     HOBBY,
     ANIMALS,
     FOOD,
-    HOME
+    HOME,
+    OTHER,
 }
 
 @Preview(showBackground = true)
