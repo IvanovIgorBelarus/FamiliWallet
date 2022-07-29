@@ -125,6 +125,35 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     SUPERVISOR_ACCOUNT(R.drawable.ic_supervisor_account, IconActionType.PEOPLE),
     TRANSFER_WITHIN_A_STATION(R.drawable.ic_transfer_within_a_station, IconActionType.PEOPLE),
     WC(R.drawable.ic_wc, IconActionType.PEOPLE),
+
+    AIRPLANE_MODE_ACTIVE(R.drawable.ic_airplanemode_active, IconActionType.TRANSPORT),
+    AIRPORT_SHUTTLE(R.drawable.ic_airport_shuttle, IconActionType.TRANSPORT),
+    CLARITY_AIRPLANE_SOLID(R.drawable.ic_clarity_airplane_solid, IconActionType.TRANSPORT),
+    DIRECTIONS_BOAT(R.drawable.ic_directions_boat, IconActionType.TRANSPORT),
+    DIRECTIONS_BUS(R.drawable.ic_directions_bus, IconActionType.TRANSPORT),
+    DIRECTIONS_CAR(R.drawable.ic_directions_car, IconActionType.TRANSPORT),
+    DIRECTIONS_RAILWAY(R.drawable.ic_directions_railway, IconActionType.TRANSPORT),
+    DIRECTIONS_SUBWAY(R.drawable.ic_directions_subway, IconActionType.TRANSPORT),
+    DRIVE_ETA(R.drawable.ic_drive_eta, IconActionType.TRANSPORT),
+    EV_STATION(R.drawable.ic_ev_station, IconActionType.TRANSPORT),
+    FLIGHT_LAND(R.drawable.ic_flight_land, IconActionType.TRANSPORT),
+    FLIGHT_TAKE_OFF(R.drawable.ic_flight_takeoff, IconActionType.TRANSPORT),
+    FLY(R.drawable.ic_fly, IconActionType.TRANSPORT),
+    GAS_PUMP(R.drawable.ic_gaspump, IconActionType.TRANSPORT),
+    LOCAL_GAS_STATION(R.drawable.ic_local_gas_station, IconActionType.TRANSPORT),
+    LOCAL_SHIPPING(R.drawable.ic_local_shipping, IconActionType.TRANSPORT),
+    LOCAL_TAXI(R.drawable.ic_local_taxi, IconActionType.TRANSPORT),
+    MOTORCYCLE(R.drawable.ic_motorcycle, IconActionType.TRANSPORT),
+    SUBWAY(R.drawable.ic_subway, IconActionType.TRANSPORT),
+    TRAIN(R.drawable.ic_train, IconActionType.TRANSPORT),
+    TRAM(R.drawable.ic_tram, IconActionType.TRANSPORT),
+    UNKNOWN(R.drawable.ic_baseline_insert_photo, IconActionType.UNKNOWN);
+
+    companion object {
+        fun getImageRes(name: String): AppIcons {
+            return AppIcons.values().firstOrNull { it.name == name } ?: UNKNOWN
+        }
+    }
 }
 
 enum class IconActionType {
@@ -133,7 +162,9 @@ enum class IconActionType {
     FOOD,
     HOME,
     OTHER,
-    PEOPLE
+    PEOPLE,
+    TRANSPORT,
+    UNKNOWN;
 }
 
 @Preview(showBackground = true)
