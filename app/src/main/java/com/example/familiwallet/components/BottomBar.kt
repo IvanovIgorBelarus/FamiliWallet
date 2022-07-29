@@ -14,14 +14,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.familiwallet.navigation.Screen
+import com.example.familiwallet.ui.theme.bottomBarBackgroundColor
+import com.example.familiwallet.ui.theme.bottomBarContentColor
+import com.example.familiwallet.ui.theme.bottomBarSelectedContentColor
+import com.example.familiwallet.ui.theme.bottomBarUnselectedContentColor
 import com.example.familiwallet.ui.theme.expensesBackgroundColor
 import com.example.familiwallet.ui.theme.expensesColor
-import com.example.familiwallet.ui.theme.incomesBackgroundColor
 
 @Composable
 fun BottomBar(
@@ -33,7 +37,7 @@ fun BottomBar(
             .height(65.dp)
             .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp)),
         cutoutShape = CircleShape,
-        backgroundColor = incomesBackgroundColor,
+        backgroundColor = bottomBarBackgroundColor,
         contentColor = Color.White,
         elevation = 0.dp
     ) {
@@ -51,17 +55,17 @@ fun BottomNav(
     BottomNavigation(
         modifier = modifier
             .height(100.dp),
-        backgroundColor = incomesBackgroundColor,
-        contentColor = expensesBackgroundColor,
+        backgroundColor = bottomBarBackgroundColor,
+        contentColor = bottomBarContentColor,
         elevation = 0.dp
     ) {
         BottomNavigationItem(
             selected = currentRoute?.hierarchy?.any { it.route == Screen.StartScreen.route } == true,
-            selectedContentColor = expensesColor,
-            unselectedContentColor = expensesBackgroundColor,
+            selectedContentColor = bottomBarSelectedContentColor,
+            unselectedContentColor = bottomBarUnselectedContentColor,
             icon = {
                 Icon(
-                    imageVector = Screen.MainScreen.icon,
+                    painter = painterResource(id = Screen.StartScreen.icon),
                     contentDescription = "",
                     modifier = modifier.size(36.dp)
                 )
@@ -69,46 +73,46 @@ fun BottomNav(
             onClick = { navigation.navigate(Screen.StartScreen.route) }
         )
         BottomNavigationItem(
-            selected = currentRoute?.hierarchy?.any { it.route == Screen.StatisticsScreen.route } == true,
-            selectedContentColor = expensesColor,
-            unselectedContentColor = expensesBackgroundColor,
+            selected = currentRoute?.hierarchy?.any { it.route == Screen.CategoryScreen.route } == true,
+            selectedContentColor = bottomBarSelectedContentColor,
+            unselectedContentColor = bottomBarUnselectedContentColor,
             icon = {
                 Icon(
-                    imageVector = Screen.StatisticsScreen.icon,
+                    painter = painterResource(id = Screen.CategoryScreen.icon),
                     contentDescription = "",
                     modifier = modifier
                         .size(36.dp)
                 )
             },
-            onClick = { navigation.navigate(Screen.StatisticsScreen.route) }
+            onClick = { navigation.navigate(Screen.CategoryScreen.route) }
         )
         Spacer(modifier = Modifier.size(100.dp))
         BottomNavigationItem(
-            selected = currentRoute?.hierarchy?.any { it.route == Screen.NewIncomeScreen.route } == true,
-            selectedContentColor = expensesColor,
-            unselectedContentColor = expensesBackgroundColor,
+            selected = currentRoute?.hierarchy?.any { it.route == Screen.HistoryScreen.route } == true,
+            selectedContentColor = bottomBarSelectedContentColor,
+            unselectedContentColor = bottomBarUnselectedContentColor,
             icon = {
                 Icon(
-                    imageVector = Screen.NewIncomeScreen.icon,
+                    painter = painterResource(id = Screen.HistoryScreen.icon),
                     contentDescription = "",
                     modifier = modifier
                         .size(36.dp)
                 )
             },
-            onClick = { navigation.navigate(Screen.NewIncomeScreen.route) }
+            onClick = { navigation.navigate(Screen.HistoryScreen.route) }
         )
         BottomNavigationItem(
-            selected = currentRoute?.hierarchy?.any { it.route == Screen.NewExpanseScreen.route } == true,
-            selectedContentColor = expensesColor,
-            unselectedContentColor = expensesBackgroundColor,
+            selected = currentRoute?.hierarchy?.any { it.route == Screen.SettingsScreen.route } == true,
+            selectedContentColor = bottomBarSelectedContentColor,
+            unselectedContentColor = bottomBarUnselectedContentColor,
             icon = {
                 Icon(
-                    imageVector = Screen.NewExpanseScreen.icon,
+                    painter = painterResource(id = Screen.SettingsScreen.icon),
                     contentDescription = "",
                     modifier = modifier.size(36.dp)
                 )
             },
-            onClick = { navigation.navigate(Screen.NewExpanseScreen.route) }
+            onClick = { navigation.navigate(Screen.SettingsScreen.route) }
         )
     }
 }

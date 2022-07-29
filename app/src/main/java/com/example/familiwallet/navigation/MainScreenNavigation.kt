@@ -11,8 +11,8 @@ import com.example.familiwallet.features.start_screen.StartScreen
 fun MainScreenNavigation(navigation: NavHostController){
     NavHost(navController = navigation, startDestination = Screen.StartScreen.route) {
         composable(route = Screen.StartScreen.route) {StartScreen(navigation = navigation)}
-        composable(route = Screen.NewIncomeScreen.route) { NewTransactionScreen(navigation = navigation,text = "Вносим доход") }
-        composable(route = Screen.NewExpanseScreen.route) { NewTransactionScreen(navigation = navigation,text = "Вносим расход") }
-        composable(route = Screen.StatisticsScreen.route) { NewTransactionScreen(navigation = navigation,text = "Статистика") }
+        composable(route = Screen.CategoryScreen.route) { NewTransactionScreen(navigation = navigation,text = "Категории") }
+        composable(route = Screen.HistoryScreen.route) { NewTransactionScreen(navigation = navigation,text = "История") }
+        composable(route = Screen.SettingsScreen.route) { NewTransactionScreen(navigation = navigation,text = "Настройки") }
     }
 }

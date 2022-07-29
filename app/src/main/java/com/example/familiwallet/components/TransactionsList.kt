@@ -52,6 +52,7 @@ fun TransactionRow(
                 color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
+            .padding(0.dp,4.dp)
             .fillMaxWidth()
             .requiredHeight(80.dp),
         horizontalArrangement = Arrangement.Start,
@@ -61,7 +62,11 @@ fun TransactionRow(
         val iconRes = AppIcons.getImageRes(itemCategory?.icon)
 
         Spacer(modifier = Modifier.size(16.dp))
-        Icon(painter = painterResource(id = iconRes.imageRes), contentDescription = "")
+        Icon(
+            painter = painterResource(id = iconRes.imageRes),
+            contentDescription = "",
+            modifier = Modifier.size(36.dp)
+        )
         Spacer(modifier = Modifier.size(16.dp))
         Text(
             text = transaction.category.toString(),

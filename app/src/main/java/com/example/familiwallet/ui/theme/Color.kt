@@ -11,6 +11,11 @@ val mainColor = Color(0xFF2934D0)
 val backgroundColor = Color(0xFFF9FBFC)
 val textColor = Color(0xFF2A3650)
 
+val bottomBarBackgroundColor = Color(0xFFF4F6F8)
+val bottomBarContentColor = Color(0xFF3456FF)
+val bottomBarSelectedContentColor = bottomBarContentColor
+val bottomBarUnselectedContentColor = Color(0xFFC1C8D2)
+
 val incomesColor = Color(0xFF0EA395)
 val incomesBackgroundColor = Color(0xFFADE0DC)
 
