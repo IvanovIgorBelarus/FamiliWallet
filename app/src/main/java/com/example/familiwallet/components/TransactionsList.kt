@@ -1,28 +1,34 @@
 package com.example.familiwallet.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.familiwallet.R
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.ui.theme.expensesBackgroundColor
-import com.example.familiwallet.ui.theme.expensesColor
-import com.example.familiwallet.ui.theme.incomesBackgroundColor
-import com.example.familiwallet.ui.theme.incomesColor
+import com.example.familiwallet.core.utils.AppIcons
+import com.example.familiwallet.ui.theme.backgroundColor
+import com.example.familiwallet.ui.theme.textColor
 
 @Composable
 fun TransactionsList(
@@ -30,46 +36,48 @@ fun TransactionsList(
 ) {
     LazyColumn() {
         items(transactionList) { item ->
-            TransactionRow(transaction = item)
+            TransactionRow(transaction = item, emptyList())
         }
     }
 }
 
 @Composable
 fun TransactionRow(
-    transaction: UIModel.TransactionModel
+    transaction: UIModel.TransactionModel,
+    categoriesList: List<UIModel.CategoryModel>
 ) {
     Row(
         modifier = Modifier
-            .padding(4.dp)
             .background(
-                color = if (transaction.type == INCOMES) incomesBackgroundColor else expensesBackgroundColor,
-                shape = RoundedCornerShape(16.dp)
+                color = backgroundColor,
+                shape = RoundedCornerShape(8.dp)
             )
             .fillMaxWidth()
             .requiredHeight(80.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-       Icons.Outlined
+        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category }
+        val iconRes = AppIcons.getImageRes(itemCategory?.icon)
+
+        Spacer(modifier = Modifier.size(16.dp))
+        Icon(painter = painterResource(id = iconRes.imageRes), contentDescription = "")
+        Spacer(modifier = Modifier.size(16.dp))
         Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(10.dp),
+            text = transaction.category.toString(),
+            color = textColor,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
             text = transaction.value.toString(),
-            color = if (transaction.type == INCOMES) incomesColor else expensesColor,
+            color = textColor,
             fontSize = 16.sp,
+            fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center
         )
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(10.dp),
-            text = transaction.category.orEmpty(),
-            color = if (transaction.type == INCOMES) incomesColor else expensesColor,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
+        Spacer(modifier = Modifier.size(16.dp))
     }
 }
 
@@ -85,7 +93,7 @@ private fun TransactionsListPreview() {
 }
 
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun TransactionRowPreview() {
     TransactionRow(
@@ -93,6 +101,7 @@ private fun TransactionRowPreview() {
             type = INCOMES,
             category = "Получка",
             value = 12.5
-        )
+        ),
+        emptyList()
     )
 }

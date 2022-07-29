@@ -150,8 +150,8 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     UNKNOWN(R.drawable.ic_baseline_insert_photo, IconActionType.UNKNOWN);
 
     companion object {
-        fun getImageRes(name: String): AppIcons {
-            return AppIcons.values().firstOrNull { it.name == name } ?: UNKNOWN
+        fun getImageRes(name: String?): AppIcons {
+            return values().firstOrNull { it.name == name } ?: UNKNOWN
         }
     }
 }

@@ -38,7 +38,10 @@ fun StartScreen(
                         )
                     }
                     items(viewState.transactionsList) { item ->
-                        TransactionRow(transaction = item)
+                        TransactionRow(
+                            transaction = item,
+                            categoriesList = viewState.categoriesList
+                        )
                     }
                 }
             }

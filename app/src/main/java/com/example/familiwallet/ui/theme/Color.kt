@@ -8,6 +8,8 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 val mainColor = Color(0xFF2934D0)
+val backgroundColor = Color(0xFFF9FBFC)
+val textColor = Color(0xFF2A3650)
 
 val incomesColor = Color(0xFF0EA395)
 val incomesBackgroundColor = Color(0xFFADE0DC)

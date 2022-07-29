@@ -43,12 +43,10 @@ class StartViewModel @Inject constructor(
 
             try {
                 val categoryListResponse = startScreenInfoUseCase.getCategoriesList()
-                var incomesList = listOf<UIModel.CategoryModel>()
-                var expensesList = listOf<UIModel.CategoryModel>()
+                var categoriesList = listOf<UIModel.CategoryModel>()
                 when (categoryListResponse) {
                     is DataResponse.Success -> {
-                        incomesList = categoryListResponse.data.filter { it.type == INCOMES }
-                        expensesList = categoryListResponse.data.filter { it.type == EXPENSES }
+                        categoriesList = categoryListResponse.data
                     }
                     is DataResponse.Error -> {
 
@@ -69,8 +67,7 @@ class StartViewModel @Inject constructor(
 
                 uiState.value = UiState.Success(
                     StartScreenViewState(
-                        incomesList = incomesList,
-                        expensesList = expensesList,
+                        categoriesList = categoriesList,
                         transactionsList = transactionsList
                     )
                 )
