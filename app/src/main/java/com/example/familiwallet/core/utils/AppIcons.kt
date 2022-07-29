@@ -109,6 +109,22 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     SPORT_FOOTBALL(R.drawable.ic_sport_football, IconActionType.OTHER),
     T_SHIRT(R.drawable.ic_t_shirt, IconActionType.OTHER),
     TROPHY(R.drawable.ic_trophy, IconActionType.OTHER),
+
+    BOY(R.drawable.ic_boy, IconActionType.PEOPLE),
+    CHILD_CARE(R.drawable.ic_child_care, IconActionType.PEOPLE),
+    CHILD_FRIENDLY(R.drawable.ic_child_friendly, IconActionType.PEOPLE),
+    DIRECTIONS_BIKE(R.drawable.ic_directions_bike, IconActionType.PEOPLE),
+    DIRECTIONS_RUN(R.drawable.ic_directions_run, IconActionType.PEOPLE),
+    GIRL(R.drawable.ic_girl, IconActionType.PEOPLE),
+    PERM_IDENTITY(R.drawable.ic_perm_identity, IconActionType.PEOPLE),
+    PERSON_ADD(R.drawable.ic_person_add, IconActionType.PEOPLE),
+    POOL(R.drawable.ic_pool, IconActionType.PEOPLE),
+    PREGNANT_WOMAN(R.drawable.ic_pregnant_woman, IconActionType.PEOPLE),
+    ROWING(R.drawable.ic_rowing, IconActionType.PEOPLE),
+    SELLING_THINGS(R.drawable.ic_selling_things, IconActionType.PEOPLE),
+    SUPERVISOR_ACCOUNT(R.drawable.ic_supervisor_account, IconActionType.PEOPLE),
+    TRANSFER_WITHIN_A_STATION(R.drawable.ic_transfer_within_a_station, IconActionType.PEOPLE),
+    WC(R.drawable.ic_wc, IconActionType.PEOPLE),
 }
 
 enum class IconActionType {
@@ -117,6 +133,7 @@ enum class IconActionType {
     FOOD,
     HOME,
     OTHER,
+    PEOPLE
 }
 
 @Preview(showBackground = true)
