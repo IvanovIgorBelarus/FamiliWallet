@@ -1,5 +1,6 @@
 package com.example.familiwallet.core.repository
 
+import android.util.Log
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.repository.domain.CacheRepository
@@ -54,9 +55,11 @@ class DataInteractor @Inject constructor(
 
     private fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {
+            Log.i("MYNAME","request")
             cache.put(request)
             cache.get()
         } else {
+            Log.i("MYNAME","Cash")
             cache.get()
         }
     }
