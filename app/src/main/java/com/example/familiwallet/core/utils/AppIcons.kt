@@ -30,11 +30,25 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     PAW(R.drawable.ic_paw, IconActionType.ANIMALS),
     PETS(R.drawable.ic_pets, IconActionType.ANIMALS),
 
+    ALCOHOL(R.drawable.ic_alcohol, IconActionType.FOOD),
+    CONTENT_CUT(R.drawable.ic_content_cut, IconActionType.FOOD),
+    FASTFOOD(R.drawable.ic_fastfood, IconActionType.FOOD),
+    FRAME52(R.drawable.ic_frame_52, IconActionType.FOOD),
+    FRAME53(R.drawable.ic_frame_53, IconActionType.FOOD),
+    LOCAL_BAR(R.drawable.ic_local_bar, IconActionType.FOOD),
+    LOCAL_CAFE(R.drawable.ic_local_cafe, IconActionType.FOOD),
+    LOCAL_DINING(R.drawable.ic_local_dining, IconActionType.FOOD),
+    LOCAL_DRINK(R.drawable.ic_local_drink, IconActionType.FOOD),
+    LOCAL_PIZZA(R.drawable.ic_local_pizza, IconActionType.FOOD),
+    POPCORN(R.drawable.ic_popcorn, IconActionType.FOOD),
+    RESTAURANT(R.drawable.ic_restaurant, IconActionType.FOOD),
+    WINE(R.drawable.ic_wine, IconActionType.FOOD),
 }
 
 enum class IconActionType {
     HOBBY,
-    ANIMALS
+    ANIMALS,
+    FOOD
 }
 
 @Preview(showBackground = true)
