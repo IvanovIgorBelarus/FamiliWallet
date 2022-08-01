@@ -28,6 +28,7 @@ import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.AppIcons
 import com.example.familiwallet.ui.theme.backgroundColor
+import com.example.familiwallet.ui.theme.mainColor
 import com.example.familiwallet.ui.theme.textColor
 
 @Composable
@@ -48,6 +49,7 @@ fun TransactionRow(
 ) {
     Row(
         modifier = Modifier
+            .padding(8.dp,2.dp,8.dp,2.dp)
             .background(
                 color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)

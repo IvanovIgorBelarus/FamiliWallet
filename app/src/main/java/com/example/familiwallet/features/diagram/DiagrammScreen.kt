@@ -1,5 +1,6 @@
 package com.example.familiwallet.features.diagram
 
+import android.content.res.Resources
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -11,29 +12,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.alpha
 import androidx.core.graphics.blue
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.features.diagram.data.CategorySumItem
 import com.example.familiwallet.features.diagram.data.DrawItem
 import com.example.familiwallet.features.diagram.data.OverviewItem
-import com.example.familiwallet.ui.theme.diagramColor0
-import com.example.familiwallet.ui.theme.diagramColor1
-import com.example.familiwallet.ui.theme.diagramColor2
-import com.example.familiwallet.ui.theme.diagramColor3
-import com.example.familiwallet.ui.theme.diagramColor4
-import com.example.familiwallet.ui.theme.diagramColor5
-import com.example.familiwallet.ui.theme.diagramColor6
 import com.example.familiwallet.ui.theme.textUnderLineColor
 import kotlin.math.cos
 import kotlin.math.floor
@@ -46,42 +44,20 @@ fun DiagramScreen(
     expansesList: List<UIModel.TransactionModel>,
     categoriesList: List<UIModel.CategoryModel>
 ) {
+    val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
+    val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
     Box(contentAlignment = Alignment.Center, modifier = modifier.padding(50.dp)) {
-        DrawDiagram(expansesList = DiagramMapper.mapDiagramItems(expansesList, categoriesList))
-        Text(text = "150 BYN", fontSize = 35.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+        DrawDiagram(expansesList = sumList, summary = summary)
+        Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
     }
 }
 
 @Composable
-private fun DrawDiagram(expansesList: List<CategorySumItem>) {
+private fun DrawDiagram(expansesList: List<CategorySumItem>, summary: Double) {
+
     //for diagram get only 7 values!!!
-    val values = expansesList.sortedByDescending { it.sum }.subList(0, 6)
-
-
-    var summary = 0.0 //sum of all categories on diagram
-    var startAngle = -90f
-    var position = 0
-
-    values.forEach { summary += it.sum }
-
-    val items = mutableListOf<DrawItem>()//diagram arc items
-
-    values.forEach { value ->
-        val onePart = 360f / summary.toFloat()
-        val sweepAngle = value.sum.toFloat() * onePart
-        items.add(
-            DrawItem(
-                startAngle = startAngle,
-                sweepAngle = sweepAngle,
-                value = value.sum,
-                color = colorList[position]
-            )
-        )
-        startAngle += sweepAngle
-        position++
-    }
     DrawArc(
-        drawItems = items,
+        drawItems = DiagramMapper.mapDrawItems(expansesList, summary),
         sum = summary
     )
 }
@@ -92,6 +68,7 @@ private fun DrawArc(
     drawItems: List<DrawItem>,
     sum: Double
 ) {
+    val resources = LocalContext.current.resources
     val offsetOverviewList = mutableListOf<OverviewItem>()
     Canvas(modifier = modifier) {
         //calculate center of diagram circle
@@ -110,7 +87,7 @@ private fun DrawArc(
                 useCenter = false,
                 topLeft = Offset(x = centerX, y = centerY),
                 size = Size(drawItem.radius * 2, drawItem.radius * 2),
-                style = Stroke(50f)
+                style = Stroke(75f)
             )
             //draw margin arcs
             drawArc(
@@ -120,7 +97,7 @@ private fun DrawArc(
                 useCenter = false,
                 topLeft = Offset(x = centerX, y = centerY),
                 size = Size(drawItem.radius * 2, drawItem.radius * 2),
-                style = Stroke(100f)
+                style = Stroke(75f)
             )
 
             //calculate Offset
@@ -135,12 +112,13 @@ private fun DrawArc(
             val endLineX = x + sign(cos(rad)) * 150
             val endLineOffset = Offset(x = endLineX, y = y)
 
-            val drawItemValue = floor(drawItem.value/sum*10000)/100
+            val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             offsetOverviewList.add(
                 OverviewItem(
                     text = "$drawItemValue %",
                     offset = endLineOffset,
-                    drawItem.color
+                    color = drawItem.color,
+                    icon = drawItem.icon
                 )
             )
 
@@ -158,11 +136,12 @@ private fun DrawArc(
                 end = endLineOffset
             )
         }
-        drawOverviews(offsetOverviewList, this)
+        drawOverviews(resources, offsetOverviewList, this)
     }
 }
 
 private fun drawOverviews(
+    resources: Resources,
     list: List<OverviewItem>,
     scope: DrawScope
 ) {
@@ -179,6 +158,10 @@ private fun drawOverviews(
             color = colorX
         }
 
+        val imgPaint = androidx.compose.ui.graphics.Paint().apply {
+            colorFilter = ColorFilter.tint(overview.color)
+        }
+        val drawable = resources.getDrawable(overview.icon).toBitmap(72, 72)
         scope.drawIntoCanvas {
             it.nativeCanvas.drawText(
                 overview.text,
@@ -186,17 +169,13 @@ private fun drawOverviews(
                 overview.offset.y - 5f,
                 paint
             )
+            it.drawImage(
+                drawable.asImageBitmap(),
+                overview.offset,
+                imgPaint
+            )
         }
     }
 }
 
-private val colorList = listOf(
-    diagramColor0,
-    diagramColor1,
-    diagramColor2,
-    diagramColor3,
-    diagramColor4,
-    diagramColor5,
-    diagramColor6
-)
 

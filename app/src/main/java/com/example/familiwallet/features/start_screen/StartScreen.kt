@@ -35,7 +35,7 @@ fun StartScreen(
                 LazyColumn() {
                     item {
                         DiagramScreen(
-                            modifier = modifier.fillMaxWidth().requiredHeight(300.dp),
+                            modifier = modifier.fillMaxWidth().requiredHeight(400.dp),
                             expansesList = viewState.transactionsList.filter { it.type == EXPENSES },
                             categoriesList = viewState.categoriesList
                         )
