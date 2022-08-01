@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.familiwallet.ui.theme.bottomBarContentColor
 import com.example.familiwallet.ui.theme.mainColor
 
 @Composable
@@ -25,7 +26,7 @@ fun ActionButton(
         },
         modifier = modifier
             .size(60.dp),
-        backgroundColor = mainColor
+        backgroundColor = bottomBarContentColor
     ) {
         Icon(
             Icons.Rounded.Add,

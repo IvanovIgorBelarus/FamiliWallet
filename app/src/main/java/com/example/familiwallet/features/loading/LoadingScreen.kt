@@ -7,12 +7,13 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.familiwallet.ui.theme.bottomBarContentColor
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxSize()) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(color = bottomBarContentColor)
         }
     }
 }

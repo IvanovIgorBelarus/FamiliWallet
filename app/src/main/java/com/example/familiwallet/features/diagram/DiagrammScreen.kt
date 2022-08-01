@@ -36,6 +36,7 @@ import com.example.familiwallet.ui.theme.diagramColor5
 import com.example.familiwallet.ui.theme.diagramColor6
 import com.example.familiwallet.ui.theme.textUnderLineColor
 import kotlin.math.cos
+import kotlin.math.floor
 import kotlin.math.sign
 import kotlin.math.sin
 
@@ -80,14 +81,16 @@ private fun DrawDiagram(expansesList: List<CategorySumItem>) {
         position++
     }
     DrawArc(
-        drawItems = items
+        drawItems = items,
+        sum = summary
     )
 }
 
 @Composable
 private fun DrawArc(
     modifier: Modifier = Modifier,
-    drawItems: List<DrawItem>
+    drawItems: List<DrawItem>,
+    sum: Double
 ) {
     val offsetOverviewList = mutableListOf<OverviewItem>()
     Canvas(modifier = modifier) {
@@ -132,9 +135,10 @@ private fun DrawArc(
             val endLineX = x + sign(cos(rad)) * 150
             val endLineOffset = Offset(x = endLineX, y = y)
 
+            val drawItemValue = floor(drawItem.value/sum*10000)/100
             offsetOverviewList.add(
                 OverviewItem(
-                    text = drawItem.value.toString(),
+                    text = "$drawItemValue %",
                     offset = endLineOffset,
                     drawItem.color
                 )
