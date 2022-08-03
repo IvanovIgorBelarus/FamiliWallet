@@ -13,11 +13,9 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = mainColor,
+    primary = bottomBarContentColor,
     primaryVariant = Purple700,
     secondary = Teal200,
-    onSurface = mainColor
-
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,
