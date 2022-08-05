@@ -1,15 +1,12 @@
 package com.example.familiwallet.features.newcategory
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.familiwallet.components.ActionButton
-import com.example.familiwallet.components.BottomBar
 
 @Composable
 fun NewTransactionScreen(
