@@ -9,7 +9,9 @@ import com.example.familiwallet.core.repository.domain.PartnerCache
 import com.example.familiwallet.core.repository.domain.SmsCache
 import com.example.familiwallet.core.repository.domain.TransactionsCache
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class DataInteractor @Inject constructor(
     private val firebaseRepository: FirebaseRepositoryImpl
 ) : DataRepository {
