@@ -18,7 +18,7 @@ abstract class AppModule {
     ): DataRepository
 
     @Binds
-    abstract fun provideMainScreenInfoUseCase(
+    abstract fun provideStartScreenInfoUseCase(
         mainScreenInfoUseCaseImpl: StartScreenInfoUseCaseImpl
     ): StartScreenInfoUseCase
 }

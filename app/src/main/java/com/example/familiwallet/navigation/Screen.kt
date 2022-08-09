@@ -10,8 +10,9 @@ sealed class Screen(val route: String, var title: String? = null, var icon: Int,
     object CategoryScreen : Screen("category", "Категории", R.drawable.ic_category_screen,2)
     object HistoryScreen : Screen("history", "История", R.drawable.ic_history_screen,3)
     object SettingsScreen : Screen("settings", "Настройки", R.drawable.ic_settings_screen,4)
-    object SplashScreen : Screen("splash", null, AppIcons.LOCAL_GROCERY_STORE.imageRes)
-    object AuthScreen : Screen("auth", null, AppIcons.PERSON_ADD.imageRes)
+    object SplashScreen : Screen("splash", null, AppIcons.UNKNOWN.imageRes)
+    object EnterScreen : Screen("enter", null, AppIcons.UNKNOWN.imageRes)
+    object AuthScreen : Screen("auth", null, AppIcons.UNKNOWN.imageRes)
 
     companion object{
         fun getScreen(route: String?): Screen = Screen::class.sealedSubclasses.firstOrNull { it.objectInstance?.route == route }?.objectInstance?:LoadingScreen

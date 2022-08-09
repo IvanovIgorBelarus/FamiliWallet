@@ -6,7 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.familiwallet.features.AuthScreen.AuthScreen
+import com.example.familiwallet.features.authScreen.AuthScreen
+import com.example.familiwallet.features.enterscreen.EnterScreen
 import com.example.familiwallet.features.splashscreen.SplashScreen
 
 
@@ -20,6 +21,7 @@ fun AppNavigation() {
         startDestination = Screen.SplashScreen.route,
     ) {
         composable(route = Screen.SplashScreen.route) { SplashScreen(navigation = navController) }
+        composable(route = Screen.EnterScreen.route) { EnterScreen(navigation = navController) }
         composable(route = Screen.AuthScreen.route) { AuthScreen(navigation = navController) }
         composable(route = Screen.MainScreen.route) { MainScreen() }
     }

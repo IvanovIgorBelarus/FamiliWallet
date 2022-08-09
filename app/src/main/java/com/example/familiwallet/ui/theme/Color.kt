@@ -10,6 +10,13 @@ val Teal200 = Color(0xFF03DAC5)
 val mainColor = Color(0xFF2934D0)
 val backgroundColor = Color(0xFFF9FBFC)
 val textColor = Color(0xFF2A3650)
+val buttonColor = Color(0xFF517EFF)
+val enterTextColor = Color(0xFF2A3650)
+
+//gradient for enter button
+val gradColor1 = Color(0xFF394A6F)
+val gradColor2 = Color(0xFF3D4F77)
+val gradColor3 = Color(0xFF293650)
 
 //for bottom bar
 val bottomBarBackgroundColor = Color(0xFFF4F6F8)

@@ -104,19 +104,22 @@ private fun DrawArc(
             angle += drawItem.sweepAngle
             val rad = ((angle - drawItem.sweepAngle / 2) * 2 * Math.PI / 360).toFloat()
 
-            // coordinates of circle center
-            val x = radius * cos(rad) + size.width / 2
+            // coordinates of start line
+            val x = (radius+100) * cos(rad) + size.width / 2
             val y = radius * sin(rad) + size.height / 2
+            val iconOffset = Offset(x,y)
 
             // coordinates for drawing lines
-            val endLineX = x + sign(cos(rad)) * 150
-            val endLineOffset = Offset(x = endLineX, y = y)
+            val endLineX = (radius +75)* cos(rad) + size.width / 2
+            val endLineY = (radius +75) * sin(rad) + size.height / 2
+            val textOffset = Offset(endLineX,endLineY)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             offsetOverviewList.add(
                 OverviewItem(
                     text = "$drawItemValue %",
-                    offset = endLineOffset,
+                    textOffset = textOffset,
+                    iconOffset = iconOffset,
                     color = drawItem.color,
                     icon = drawItem.icon
                 )
@@ -129,12 +132,12 @@ private fun DrawArc(
 //                center = Offset(x = x, y = y)
 //            )
 
-            drawLine(
-                color = textUnderLineColor,
-                strokeWidth = 2f,
-                start = Offset(x = x, y = y),
-                end = endLineOffset
-            )
+//            drawLine(
+//                color = textUnderLineColor,
+//                strokeWidth = 2f,
+//                start = Offset(x = x, y = y),
+//                end = endLineOffset
+//            )
         }
         drawOverviews(resources, offsetOverviewList, this)
     }
@@ -165,15 +168,15 @@ private fun drawOverviews(
         scope.drawIntoCanvas {
             it.nativeCanvas.drawText(
                 overview.text,
-                overview.offset.x,
-                overview.offset.y - 5f,
+                overview.textOffset.x,
+                overview.textOffset.y,
                 paint
             )
-            it.drawImage(
-                drawable.asImageBitmap(),
-                overview.offset,
-                imgPaint
-            )
+//            it.drawImage(
+//                drawable.asImageBitmap(),
+//                overview.iconOffset,
+//                imgPaint
+//            )
         }
     }
 }

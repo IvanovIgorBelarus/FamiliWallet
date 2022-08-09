@@ -1,4 +1,4 @@
-package com.example.familiwallet.features.AuthScreen
+package com.example.familiwallet.features.authScreen
 
 import android.app.Activity
 import android.util.Log

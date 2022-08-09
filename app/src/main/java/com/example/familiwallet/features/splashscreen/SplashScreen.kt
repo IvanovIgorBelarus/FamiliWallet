@@ -47,7 +47,7 @@ fun SplashScreen(
                 animationSpec = tween(durationMillis),
                 finishedListener = {
                     navigation.popBackStack()
-                    navigation.navigate(Screen.AuthScreen.route)
+                    navigation.navigate(Screen.EnterScreen.route)
                 }
             )
             Image(

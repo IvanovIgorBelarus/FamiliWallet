@@ -8,5 +8,5 @@ object UserUtils {
     fun getUsersUid(): String? = user?.uid
     fun getUserName(): String? = user?.displayName
     fun getUserPhoto(): Uri? = user?.photoUrl
-    fun getUserCreateDate(): Long? = user?.metadata!!.creationTimestamp
+    fun getUserCreateDate(): Long = user?.metadata!!.creationTimestamp
 }

@@ -5,7 +5,8 @@ import androidx.compose.ui.graphics.Color
 
 class OverviewItem(
     val text: String,
-    val offset: Offset,
+    val textOffset: Offset,
+    val iconOffset: Offset,
     val color: Color,
     val icon: Int
 )
