@@ -2,7 +2,6 @@ package com.example.familiwallet.features.enterscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -80,7 +79,7 @@ fun EnterScreen(
                         end.linkTo(parent.end, margin = 16.dp)
                         width = Dimension.fillToConstraints
                     }
-                    .height(60.dp)
+                    .height(64.dp)
                     .background(
                         brush = Brush.horizontalGradient(
                             listOf(
@@ -94,6 +93,7 @@ fun EnterScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Spacer(modifier = Modifier.size(16.dp))
                     Text(
                         text = "Вход",
                         fontSize = 22.sp,
@@ -101,9 +101,12 @@ fun EnterScreen(
                         fontWeight = FontWeight.W500
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    Box(modifier = Modifier
-                        .background(color = Color.White, CircleShape)
-                        .size(48.dp)){}
+                    Box(
+                        modifier = Modifier
+                            .background(color = Color.White, CircleShape)
+                            .size(42.dp)
+                    ) {}
+                    Spacer(modifier = Modifier.size(16.dp))
                 }
             }
         }
