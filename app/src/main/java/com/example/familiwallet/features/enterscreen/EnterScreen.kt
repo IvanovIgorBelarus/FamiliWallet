@@ -2,6 +2,8 @@ package com.example.familiwallet.features.enterscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -29,6 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.example.familiwallet.R
+import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.example.familiwallet.ui.theme.enterTextColor
 import com.example.familiwallet.ui.theme.gradColor1
@@ -73,6 +79,12 @@ fun EnterScreen(
             )
             Box(
                 modifier = Modifier
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = true, color = backgroundColor),
+                    ) {
+                        navigation?.navigate(Screen.AuthScreen.route)
+                    }
                     .constrainAs(button) {
                         bottom.linkTo(parent.bottom, margin = 60.dp)
                         start.linkTo(parent.start, margin = 16.dp)
@@ -104,8 +116,11 @@ fun EnterScreen(
                     Box(
                         modifier = Modifier
                             .background(color = Color.White, CircleShape)
-                            .size(42.dp)
-                    ) {}
+                            .size(42.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.ic_baseline_arrow_forward_24), contentDescription = null, tint = gradColor3)
+                    }
                     Spacer(modifier = Modifier.size(16.dp))
                 }
             }
