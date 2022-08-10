@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,8 @@ import com.example.familiwallet.ui.theme.gradColor3
 
 @Composable
 fun EnterButton(modifier: Modifier = Modifier) {
+    val resources = LocalContext.current.resources
+
     Box(
         modifier = modifier
             .height(64.dp)
@@ -45,7 +48,7 @@ fun EnterButton(modifier: Modifier = Modifier) {
         ) {
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                text = "Вход",
+                text = resources.getString(R.string.enter),
                 fontSize = 22.sp,
                 color = Color.White,
                 fontWeight = FontWeight.W500

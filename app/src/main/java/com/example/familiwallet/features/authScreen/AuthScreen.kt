@@ -31,6 +31,8 @@ fun AuthScreen(
     navigation: NavHostController? = null,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
+    val resources = LocalContext.current.resources
+
     Scaffold(
         backgroundColor = backgroundColor
     ) {
@@ -42,7 +44,7 @@ fun AuthScreen(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
-                text = "Вход"
+                text = resources.getString(R.string.enter)
             )
         }
 

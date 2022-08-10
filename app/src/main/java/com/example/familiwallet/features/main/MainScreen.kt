@@ -27,12 +27,6 @@ fun MainScreen(
         MainScreenNavigation(navigation = navController)
     }
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun MainScreenPreview() {
-//    MainScreen()
-//}
 
 
 

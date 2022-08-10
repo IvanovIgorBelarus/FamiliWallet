@@ -12,6 +12,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,8 @@ fun EnterScreen(
         modifier = modifier.fillMaxSize(),
         backgroundColor = backgroundColor
     ) {
+        val resources = LocalContext.current.resources
+
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
             val (topHeader, image, text, button) = createRefs()
 
@@ -46,7 +49,7 @@ fun EnterScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-                text = "Money"
+                text = resources.getString(R.string.money)
             )
             Image(
                 modifier = modifier
@@ -60,7 +63,7 @@ fun EnterScreen(
                 contentDescription = null
             )
             Text(
-                text = "Добро пожаловать в приложение Money",
+                text = resources.getString(R.string.greetings),
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
