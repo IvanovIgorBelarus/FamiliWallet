@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +33,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.example.familiwallet.R
+import com.example.familiwallet.components.TopScreenBlueHeader
 import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
@@ -41,8 +41,6 @@ import com.example.familiwallet.ui.theme.enterTextColor
 import com.example.familiwallet.ui.theme.gradColor1
 import com.example.familiwallet.ui.theme.gradColor2
 import com.example.familiwallet.ui.theme.gradColor3
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @Composable
 fun EnterScreen(
@@ -54,18 +52,25 @@ fun EnterScreen(
         backgroundColor = backgroundColor
     ) {
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
-            val (image, text, button) = createRefs()
+            val (topHeader, image, text, button) = createRefs()
 
+            TopScreenBlueHeader(
+                Modifier.constrainAs(topHeader) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+                text = "Money"
+            )
             Image(
                 modifier = modifier
-                    .fillMaxWidth()
                     .constrainAs(image) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
+                        top.linkTo(parent.top, margin = 130.dp)
+                        start.linkTo(parent.start, margin = 36.dp)
+                        end.linkTo(parent.end, margin = 36.dp)
+                        width = Dimension.fillToConstraints
                     },
-                painter = painterResource(id = R.drawable.ic_enter_screen),
-                contentScale = ContentScale.Crop,
+                painter = painterResource(id = R.drawable.ic_cards),
                 contentDescription = null
             )
             Text(
