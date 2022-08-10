@@ -34,12 +34,15 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.example.familiwallet.R
+import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.example.familiwallet.ui.theme.enterTextColor
 import com.example.familiwallet.ui.theme.gradColor1
 import com.example.familiwallet.ui.theme.gradColor2
 import com.example.familiwallet.ui.theme.gradColor3
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun EnterScreen(
@@ -83,7 +86,11 @@ fun EnterScreen(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(bounded = true, color = backgroundColor),
                     ) {
-                        navigation?.navigate(Screen.AuthScreen.route)
+                        if (UserUtils.isUserSignIn()) {
+                            navigation?.navigate(Screen.MainScreen.route)
+                        } else {
+                            navigation?.navigate(Screen.AuthScreen.route)
+                        }
                     }
                     .constrainAs(button) {
                         bottom.linkTo(parent.bottom, margin = 60.dp)

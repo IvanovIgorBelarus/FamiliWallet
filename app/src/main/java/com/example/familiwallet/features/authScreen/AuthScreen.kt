@@ -15,8 +15,10 @@ import com.example.familiwallet.R
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -35,35 +37,61 @@ fun AuthScreen(
             .requestEmail()
             .build()
         val googleSignInClient = GoogleSignIn.getClient(LocalContext.current, gso)
-        val auth = Firebase.auth
 
-        val startForResult = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data = result.data
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                try {
-                    val account = task.getResult(ApiException::class.java)!!
-                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                    auth.signInWithCredential(credential)
-                        .addOnCompleteListener { authResult ->
-                            if (authResult.isSuccessful) {
-                                authViewModel.addUserInCloud {
-                                    navigation.navigate(Screen.MainScreen.route)
-                                }
-                            } else {
-                                Log.w("ERROR", "signInWithCredential:failure", authResult.exception)
-                            }
-                        }
-                } catch (e: ApiException) {
-                    Log.w("ERROR", "Google signin failed", e)
-
-                }
+        loginWithGoogleAccount(googleSignInClient = googleSignInClient) {
+            authViewModel.addUserInCloud {
+                navigation.navigate(Screen.MainScreen.route)
             }
-        }
-
-        SideEffect {
-            startForResult.launch(googleSignInClient.signInIntent)
         }
     }
 }
+
+@Composable
+private fun loginWithGoogleAccount(
+    googleSignInClient: GoogleSignInClient,
+    onSuccess: () -> Unit
+) {
+    val startForResult = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                Firebase.auth.signInWithCredential(credential)
+                    .addOnCompleteListener { authResult ->
+                        if (authResult.isSuccessful) {
+                            onSuccess.invoke()
+                        } else {
+                            Log.w("ERROR", "signInWithCredential:failure", authResult.exception)
+                        }
+                    }
+            } catch (e: ApiException) {
+                Log.w("ERROR", "Google signin failed", e)
+
+            }
+        }
+    }
+    SideEffect {
+        startForResult.launch(googleSignInClient.signInIntent)
+    }
+}
+
+@Composable
+private fun loginWithEmailAndPassword(
+    email:String,
+    password: String,
+    onSuccess: () -> Unit
+){
+    Firebase.auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener(LocalContext.current as Activity) { task ->
+            if (task.isSuccessful) {
+                onSuccess.invoke()
+            } else {
+                Log.w(TAG, "signInWithEmailAndPassword: failure", task.exception)
+            }
+        }
+}
+
+private const val TAG = "ERROR"
 
