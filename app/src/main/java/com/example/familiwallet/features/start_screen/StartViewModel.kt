@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.common.TimeRangeType
+import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
@@ -57,7 +58,7 @@ class StartViewModel @Inject constructor(
                 var transactionsList = listOf<UIModel.TransactionModel>()
                 when (transactionsListResponse) {
                     is DataResponse.Success -> {
-                        transactionsList = transactionsListResponse.data
+                        transactionsList = transactionsListResponse.data.currentDateFilter().sortedByDescending { it.date }
                     }
                     is DataResponse.Error -> {
 
