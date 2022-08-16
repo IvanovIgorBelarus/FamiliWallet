@@ -3,4 +3,9 @@
     <string name="money">Money</string>
     <string name="greetings">"Добро пожаловать в приложение Money"</string>
     <string name="enter">Вход</string>
+    <string name="google">Вход через google</string>
+    <string name="facebook">Вход через facebook</string>
+    <string name="facebook_app_id">2807449099399834</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">970e7c537ca448991d93337d37192adb</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.example.familiwallet.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +12,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,16 +26,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familiwallet.R
+import com.example.familiwallet.core.utils.UserUtils
+import com.example.familiwallet.navigation.Screen
+import com.example.familiwallet.ui.theme.backgroundColor
 import com.example.familiwallet.ui.theme.gradColor1
 import com.example.familiwallet.ui.theme.gradColor2
 import com.example.familiwallet.ui.theme.gradColor3
 
 @Composable
-fun EnterButton(modifier: Modifier = Modifier) {
+fun EnterButton(
+    modifier: Modifier = Modifier,
+    text:Int = R.string.enter,
+    onClick: ()->Unit = {}
+) {
     val resources = LocalContext.current.resources
 
     Box(
         modifier = modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = true, color = backgroundColor),
+            ) {
+                onClick.invoke()
+            }
             .height(64.dp)
             .background(
                 brush = Brush.horizontalGradient(
@@ -48,7 +65,7 @@ fun EnterButton(modifier: Modifier = Modifier) {
         ) {
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                text = resources.getString(R.string.enter),
+                text = resources.getString(text),
                 fontSize = 22.sp,
                 color = Color.White,
                 fontWeight = FontWeight.W500

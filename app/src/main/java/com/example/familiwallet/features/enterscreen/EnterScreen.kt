@@ -1,16 +1,12 @@
 package com.example.familiwallet.features.enterscreen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -75,22 +71,19 @@ fun EnterScreen(
                 fontWeight = FontWeight.W500
             )
             EnterButton(Modifier
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = true, color = backgroundColor),
-                ) {
-                    if (UserUtils.isUserSignIn()) {
-                        navigation?.navigate(Screen.MainScreen.route)
-                    } else {
-                        navigation?.navigate(Screen.AuthScreen.route)
-                    }
-                }
                 .constrainAs(button) {
                     bottom.linkTo(parent.bottom, margin = 60.dp)
                     start.linkTo(parent.start, margin = 16.dp)
                     end.linkTo(parent.end, margin = 16.dp)
                     width = Dimension.fillToConstraints
-                })
+                }) {
+                val nextDestination = if (UserUtils.isUserSignIn()) {
+                    Screen.MainScreen.route
+                } else {
+                    Screen.AuthScreen.route
+                }
+                navigation?.navigate(nextDestination)
+            }
         }
     }
 }

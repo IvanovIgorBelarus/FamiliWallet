@@ -46,7 +46,7 @@ fun DiagramScreen(
 ) {
     val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
     val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
-    Box(contentAlignment = Alignment.Center, modifier = modifier.padding(50.dp)) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
         DrawDiagram(expansesList = sumList, summary = summary)
         Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
     }
@@ -106,12 +106,12 @@ private fun DrawArc(
 
             // coordinates of start line
             val x = (radius+100) * cos(rad) + size.width / 2
-            val y = radius * sin(rad) + size.height / 2
+            val y = (radius+100) * sin(rad) + size.height / 2
             val iconOffset = Offset(x,y)
 
             // coordinates for drawing lines
             val endLineX = (radius +75)* cos(rad) + size.width / 2
-            val endLineY = (radius +75) * sin(rad) + size.height / 2
+            val endLineY = (radius +100) * sin(rad) + size.height / 2
             val textOffset = Offset(endLineX,endLineY)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
@@ -172,11 +172,11 @@ private fun drawOverviews(
                 overview.textOffset.y,
                 paint
             )
-//            it.drawImage(
-//                drawable.asImageBitmap(),
-//                overview.iconOffset,
-//                imgPaint
-//            )
+            it.drawImage(
+                drawable.asImageBitmap(),
+                overview.iconOffset,
+                imgPaint
+            )
         }
     }
 }
