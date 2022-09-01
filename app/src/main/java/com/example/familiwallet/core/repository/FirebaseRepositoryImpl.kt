@@ -16,10 +16,8 @@ import com.example.familiwallet.core.common.USERS
 import com.example.familiwallet.core.common.VALUE
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
+import com.example.familiwallet.core.utils.UserUtils
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -96,41 +94,18 @@ class FirebaseRepositoryImpl @Inject constructor() {
 
 
     suspend fun getPartner(): DataResponse<UIModel.AccountModel> = suspendCoroutine { continuation ->
-        db.collection(USERS).get()
-            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPartner(response))) }
-            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
-    }
-
-    suspend fun getTransactionsList(partner: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = withContext(Dispatchers.IO) {
-        if (partner is DataResponse.Success) {
-            val account = partner.data
-            val list = mutableListOf<UIModel.TransactionModel>()
-
-            val getUserList = async { getPersonTransactionList(account.uid.orEmpty()) }
-            val getPartnerList = async { getPersonTransactionList(account.partnerUid.orEmpty()) }
-
-            val userList = getUserList.await()
-            val partnerList = getPartnerList.await()
-
-            if (userList is DataResponse.Success) {
-                list.addAll(userList.data)
-            }
-            if (partnerList is DataResponse.Success) {
-                list.addAll(partnerList.data)
-            }
-
-            val result = if (list.isEmpty()) {
-                DataResponse.Error(Throwable("Не удалось обновить данные"))
-            } else {
-                DataResponse.Success(list)
-            }
-            result
+        if (!UserUtils.getUsersUid().isNullOrEmpty()) {
+            db.collection(USERS)
+                .whereEqualTo("uid", UserUtils.getUsersUid())
+                .get()
+                .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPartner(response))) }
+                .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
         } else {
-            DataResponse.Error(Throwable("Ошибка получения данных аккаунта"))
+            continuation.resume(DataResponse.Error(Throwable("Нет данных о партнёре")))
         }
     }
 
-    private suspend fun getPersonTransactionList(uid: String): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
+    suspend fun getPersonTransactionList(uid: String): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
         if (uid.isNotEmpty()) {
             db.collection(TRANSACTIONS)
                 .whereEqualTo("uid", uid)
@@ -140,36 +115,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
     }
 
-    suspend fun getCategoriesList(partner: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.CategoryModel>> = withContext(Dispatchers.IO) {
-        if (partner is DataResponse.Success) {
-            val account = partner.data
-            val list = mutableListOf<UIModel.CategoryModel>()
 
-            val getUserList = async { getPersonCategoriesList(account.uid.orEmpty()) }
-            val getPartnerList = async { getPersonCategoriesList(account.partnerUid.orEmpty()) }
-
-            val userList = getUserList.await()
-            val partnerList = getPartnerList.await()
-
-            if (userList is DataResponse.Success) {
-                list.addAll(userList.data)
-            }
-            if (partnerList is DataResponse.Success) {
-                list.addAll(partnerList.data)
-            }
-
-            val result = if (list.isEmpty()) {
-                DataResponse.Error(Throwable("Не удалось обновить данные"))
-            } else {
-                DataResponse.Success(list)
-            }
-            result
-        } else {
-            DataResponse.Error(Throwable("Ошибка получения данных аккаунта"))
-        }
-    }
-
-    private suspend fun getPersonCategoriesList(uid: String): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
+    suspend fun getPersonCategoriesList(uid: String): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
         if (uid.isNotEmpty()) {
             db.collection(CATEGORIES)
                 .whereEqualTo("uid", uid)
@@ -180,7 +127,6 @@ class FirebaseRepositoryImpl @Inject constructor() {
             continuation.resume(DataResponse.Error(Throwable("Нет данных")))
         }
     }
-
 
     suspend fun deleteItem(item: Any?): DataResponse<Unit> = suspendCoroutine { continuation ->
         val category = when (item) {
@@ -237,6 +183,6 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
         db.collection(collectionPath).document(itemId).update(data)
             .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
-            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(Throwable("не удалось обновить запись"))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 }

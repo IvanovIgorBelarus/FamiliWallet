@@ -1,24 +1,27 @@
 package com.example.familiwallet.features.start_screen
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.familiwallet.core.common.EXPENSES
-import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.core.utils.UserUtils
+import com.example.familiwallet.features.main.domain.usecase.PartnerUseCase
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val startScreenInfoUseCase: StartScreenInfoUseCase
+    private val startScreenInfoUseCase: StartScreenInfoUseCase,
+    private val partnerUseCase: PartnerUseCase
 ) : ViewModel() {
 
     private val uiRangeState = mutableStateOf<UiState<TimeRangeType>>(UiState.Success(TimeRangeType.WEEK))
@@ -41,40 +44,64 @@ class StartViewModel @Inject constructor(
     private fun getMainScreenInfo(timeRangeType: TimeRangeType) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
-
             try {
-                val categoryListResponse = startScreenInfoUseCase.getCategoriesList()
-                var categoriesList = listOf<UIModel.CategoryModel>()
-                when (categoryListResponse) {
-                    is DataResponse.Success -> {
-                        categoriesList = categoryListResponse.data
-                    }
-                    is DataResponse.Error -> {
+                val categoriesList = mutableListOf<UIModel.CategoryModel>()
+                val transactionsList = mutableListOf<UIModel.TransactionModel>()
+                val userData = getPersonData(UserUtils.getUsersUid().orEmpty())
+                categoriesList.addAll(userData.first)
+                transactionsList.addAll(userData.second)
 
-                    }
+                val partner = partnerUseCase.getPartner(true)
+                if (partner is DataResponse.Success) {
+                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty())
+                    categoriesList.addAll(partnerData.first)
+                    transactionsList.addAll(partnerData.second)
                 }
-
-                val transactionsListResponse = startScreenInfoUseCase.getTransactionsList()
-                var transactionsList = listOf<UIModel.TransactionModel>()
-                when (transactionsListResponse) {
-                    is DataResponse.Success -> {
-                        transactionsList = transactionsListResponse.data.currentDateFilter().sortedByDescending { it.date }
-                    }
-                    is DataResponse.Error -> {
-
-                    }
-                    else->{}
-                }
-
                 uiState.value = UiState.Success(
                     StartScreenViewState(
                         categoriesList = categoriesList,
-                        transactionsList = transactionsList
+                        transactionsList = transactionsList.sortedByDescending { it.date }
                     )
                 )
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
             }
         }
+    }
+
+    private suspend fun getPersonData(uid: String): Pair<List<UIModel.CategoryModel>, List<UIModel.TransactionModel>> {
+        val job = viewModelScope.async {
+            try {
+                val categoryListResponse = startScreenInfoUseCase.getCategoriesList(uid)
+                val categoriesList = mutableListOf<UIModel.CategoryModel>()
+                when (categoryListResponse) {
+                    is DataResponse.Success -> {
+                        categoriesList.addAll(categoryListResponse.data)
+                    }
+                    is DataResponse.Error -> {
+                        uiState.value = UiState.Error(categoryListResponse.exception)
+                        Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
+                    }
+                }
+
+                val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(uid)
+                val transactionsList = mutableListOf<UIModel.TransactionModel>()
+                when (transactionsListResponse) {
+                    is DataResponse.Success -> {
+                        transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
+                    }
+                    is DataResponse.Error -> {
+                        uiState.value = UiState.Error(transactionsListResponse.exception)
+                        Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
+                    }
+                    else -> {}
+                }
+                return@async Pair(categoriesList, transactionsList)
+            } catch (e: Exception) {
+                uiState.value = UiState.Error(e)
+                return@async Pair(emptyList<UIModel.CategoryModel>(), emptyList<UIModel.TransactionModel>())
+            }
+        }
+        return job.await()
     }
 }

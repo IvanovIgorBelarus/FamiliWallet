@@ -16,6 +16,7 @@ import com.example.familiwallet.components.TransactionRow
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.diagram.DiagramScreen
+import com.example.familiwallet.features.dialog.ShowDialog
 import com.example.familiwallet.features.loading.LoadingScreen
 
 @Composable
@@ -51,7 +52,10 @@ fun StartScreen(
                 }
             }
         }
-        is UiState.Error -> {}
+        is UiState.Error -> {
+            val errorText = (uiState as UiState.Error).exception.message
+            ShowDialog(text = errorText)
+        }
         is UiState.Loading -> {
             LoadingScreen()
         }

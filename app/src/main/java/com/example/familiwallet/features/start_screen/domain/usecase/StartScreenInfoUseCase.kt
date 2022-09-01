@@ -5,7 +5,7 @@ import com.example.familiwallet.core.data.UIModel
 
 interface StartScreenInfoUseCase {
 
-    suspend fun getCategoriesList(): DataResponse<List<UIModel.CategoryModel>>
+    suspend fun getCategoriesList(uid: String): DataResponse<List<UIModel.CategoryModel>>
 
-    suspend fun getTransactionsList(): DataResponse<List<UIModel.TransactionModel>>?
+    suspend fun getTransactionsList(uid: String): DataResponse<List<UIModel.TransactionModel>>?
 }

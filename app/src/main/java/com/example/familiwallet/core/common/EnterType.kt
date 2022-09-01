@@ -4,5 +4,6 @@ enum class EnterType {
     GOOGLE,
     FACEBOOK,
     EMAIL,
+    LOADING,
     UNKNOWN;
 }

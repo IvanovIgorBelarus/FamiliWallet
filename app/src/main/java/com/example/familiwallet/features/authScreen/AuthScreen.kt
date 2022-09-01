@@ -6,15 +6,20 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,7 @@ import com.example.familiwallet.R
 import com.example.familiwallet.components.EnterButton
 import com.example.familiwallet.components.TopScreenBlueHeader
 import com.example.familiwallet.core.common.EnterType
+import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.facebook.CallbackManager
@@ -45,58 +51,17 @@ fun AuthScreen(
     navigation: NavHostController? = null,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    val resources = LocalContext.current.resources
-
     Scaffold(
         backgroundColor = backgroundColor
     ) {
-        var onGoogleClick by remember { mutableStateOf(EnterType.UNKNOWN) }
-
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (topHeader, googleButton, facebookButton) = createRefs()
-
-            TopScreenBlueHeader(
-                Modifier.constrainAs(topHeader) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-                text = resources.getString(R.string.enter)
-            )
-
-            EnterButton(
-                text = R.string.google,
-                modifier = Modifier
-                    .constrainAs(googleButton) {
-                        top.linkTo(topHeader.bottom, margin = 48.dp)
-                        start.linkTo(parent.start, margin = 16.dp)
-                        end.linkTo(parent.end, margin = 16.dp)
-                        width = Dimension.fillToConstraints
-                    }) {
-                onGoogleClick = EnterType.GOOGLE
-            }
-
-            EnterButton(
-                text = R.string.facebook,
-                modifier = Modifier
-                    .constrainAs(facebookButton) {
-                        top.linkTo(googleButton.bottom, margin = 24.dp)
-                        start.linkTo(parent.start, margin = 16.dp)
-                        end.linkTo(parent.end, margin = 16.dp)
-                        width = Dimension.fillToConstraints
-                    }) {
-                onGoogleClick = EnterType.FACEBOOK
-            }
-        }
-
+        val onGoogleClick = remember { mutableStateOf(EnterType.UNKNOWN) }
+        val isLoading = remember { mutableStateOf(false) }
 
         //for google button
-        when (onGoogleClick) {
+        when (onGoogleClick.value) {
             EnterType.GOOGLE ->
                 loginWithGoogleAccount {
-                    authViewModel.addUserInCloud {
-                        navigation?.navigate(Screen.MainScreen.route)
-                    }
+                    navigation?.navigate(Screen.MainScreen.route)
                 }
             EnterType.EMAIL ->
                 loginWithEmailAndPassword(email = "", password = "") {
@@ -107,6 +72,14 @@ fun AuthScreen(
             }
             else -> {}
         }
+        Crossfade(targetState = isLoading.value, animationSpec = tween(durationMillis = 0, delayMillis = 0)) {
+            if (it){
+                LoadingScreen()
+            }else{
+                AuthScreenContent(onGoogleClick = onGoogleClick, isLoading = isLoading)
+            }
+        }
+
     }
 }
 
@@ -114,6 +87,52 @@ fun AuthScreen(
 @Composable
 private fun AuthScreenPreview() {
     AuthScreen()
+}
+
+@Composable
+private fun AuthScreenContent(
+    onGoogleClick: MutableState<EnterType>,
+    isLoading: MutableState<Boolean>
+){
+    val resources = LocalContext.current.resources
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val (topHeader, googleButton, facebookButton) = createRefs()
+
+        TopScreenBlueHeader(
+            Modifier.constrainAs(topHeader) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            },
+            text = resources.getString(R.string.enter)
+        )
+
+        EnterButton(
+            text = R.string.google,
+            modifier = Modifier
+                .constrainAs(googleButton) {
+                    top.linkTo(topHeader.bottom, margin = 48.dp)
+                    start.linkTo(parent.start, margin = 16.dp)
+                    end.linkTo(parent.end, margin = 16.dp)
+                    width = Dimension.fillToConstraints
+                }) {
+            onGoogleClick.value = EnterType.GOOGLE
+            isLoading.value = true
+        }
+
+        EnterButton(
+            text = R.string.facebook,
+            modifier = Modifier
+                .constrainAs(facebookButton) {
+                    top.linkTo(googleButton.bottom, margin = 24.dp)
+                    start.linkTo(parent.start, margin = 16.dp)
+                    end.linkTo(parent.end, margin = 16.dp)
+                    width = Dimension.fillToConstraints
+                }) {
+            onGoogleClick.value = EnterType.FACEBOOK
+            isLoading.value = true
+        }
+    }
 }
 
 @Composable

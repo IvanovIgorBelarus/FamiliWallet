@@ -38,12 +38,12 @@ class DataInteractor @Inject constructor(
         return get(PartnerCache, firebaseRepository.getPartner(), forceLoad)
     }
 
-    override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
-        return get(TransactionsCache, firebaseRepository.getTransactionsList(getPartner()), forceLoad)
+    override suspend fun getTransactionsList(uid: String,forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
+        return get(TransactionsCache, firebaseRepository.getPersonTransactionList(uid), forceLoad)
     }
 
-    override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? {
-        return get(CategoriesCache, firebaseRepository.getCategoriesList(getPartner()), forceLoad)
+    override suspend fun getCategoriesList(uid: String, forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? {
+        return get(CategoriesCache, firebaseRepository.getPersonCategoriesList(uid), forceLoad)
     }
 
     override suspend fun deleteItem(item: Any?) {
@@ -69,9 +69,9 @@ class DataInteractor @Inject constructor(
 
     suspend fun update(item: Any?) {
         when (item) {
-            is UIModel.CategoryModel -> getCategoriesList(forceLoad = true)
+//            is UIModel.CategoryModel -> getCategoriesList(forceLoad = true)
             is UIModel.AccountModel -> getPartner(forceLoad = true)
-            is UIModel.TransactionModel -> getTransactionsList(forceLoad = true)
+//            is UIModel.TransactionModel -> getTransactionsList(forceLoad = true)
             is UIModel.SmsModel -> getSmsList(forceLoad = true)
         }
 //        EventBus.getDefault().post(UpdateWrapper())
