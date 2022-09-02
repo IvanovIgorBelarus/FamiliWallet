@@ -7,19 +7,15 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +27,7 @@ import com.example.familiwallet.R
 import com.example.familiwallet.components.EnterButton
 import com.example.familiwallet.components.TopScreenBlueHeader
 import com.example.familiwallet.core.common.EnterType
+import com.example.familiwallet.features.dialog.ShowDialog
 import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.backgroundColor
@@ -56,26 +53,30 @@ fun AuthScreen(
     ) {
         val onGoogleClick = remember { mutableStateOf(EnterType.UNKNOWN) }
         val isLoading = remember { mutableStateOf(false) }
+        val errorMessage = remember { mutableStateOf("") }
 
+        if (errorMessage.value.isNotEmpty()) {
+            ShowDialog(text = errorMessage.value)
+        }
         //for google button
         when (onGoogleClick.value) {
             EnterType.GOOGLE ->
-                loginWithGoogleAccount {
+                loginWithGoogleAccount(errorMessage) {
                     navigation?.navigate(Screen.MainScreen.route)
                 }
             EnterType.EMAIL ->
-                loginWithEmailAndPassword(email = "", password = "") {
+                loginWithEmailAndPassword(email = "", password = "", errorMessage = errorMessage) {
                     navigation?.navigate(Screen.MainScreen.route)
                 }
-            EnterType.FACEBOOK -> loginWithFacebook {
+            EnterType.FACEBOOK -> loginWithFacebook(errorMessage) {
                 navigation?.navigate(Screen.MainScreen.route)
             }
             else -> {}
         }
         Crossfade(targetState = isLoading.value, animationSpec = tween(durationMillis = 0, delayMillis = 0)) {
-            if (it){
+            if (it) {
                 LoadingScreen()
-            }else{
+            } else {
                 AuthScreenContent(onGoogleClick = onGoogleClick, isLoading = isLoading)
             }
         }
@@ -93,7 +94,7 @@ private fun AuthScreenPreview() {
 private fun AuthScreenContent(
     onGoogleClick: MutableState<EnterType>,
     isLoading: MutableState<Boolean>
-){
+) {
     val resources = LocalContext.current.resources
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (topHeader, googleButton, facebookButton) = createRefs()
@@ -137,6 +138,7 @@ private fun AuthScreenContent(
 
 @Composable
 private fun loginWithGoogleAccount(
+    errorMessage: MutableState<String>,
     onSuccess: () -> Unit
 ) {
     val resources = LocalContext.current.resources
@@ -158,12 +160,13 @@ private fun loginWithGoogleAccount(
                         if (authResult.isSuccessful) {
                             onSuccess.invoke()
                         } else {
+                            errorMessage.value = authResult.exception?.message.orEmpty()
                             Log.w("ERROR", "signInWithCredential:failure", authResult.exception)
                         }
                     }
             } catch (e: ApiException) {
+                errorMessage.value = e.message.orEmpty()
                 Log.w("ERROR", "Google signin failed", e)
-
             }
         }
     }
@@ -176,6 +179,7 @@ private fun loginWithGoogleAccount(
 private fun loginWithEmailAndPassword(
     email: String,
     password: String,
+    errorMessage: MutableState<String>,
     onSuccess: () -> Unit
 ) {
     Firebase.auth.signInWithEmailAndPassword(email, password)
@@ -189,7 +193,10 @@ private fun loginWithEmailAndPassword(
 }
 
 @Composable
-private fun loginWithFacebook(onSuccess: () -> Unit) {
+private fun loginWithFacebook(
+    errorMessage: MutableState<String>,
+    onSuccess: () -> Unit
+) {
     val callbackManager = CallbackManager.Factory.create()
     val loginManager = LoginManager.getInstance()
 
@@ -203,6 +210,7 @@ private fun loginWithFacebook(onSuccess: () -> Unit) {
             }
 
             override fun onError(error: FacebookException) {
+                errorMessage.value = error.message.orEmpty()
                 Log.w(TAG, "loginWithFacebook: failure", error)
             }
 

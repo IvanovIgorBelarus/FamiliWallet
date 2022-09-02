@@ -7,13 +7,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.TransactionRow
 import com.example.familiwallet.core.common.EXPENSES
+import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.diagram.DiagramScreen
 import com.example.familiwallet.features.dialog.ShowDialog
@@ -25,15 +30,17 @@ fun StartScreen(
     navigation: NavHostController,
     startViewModel: StartViewModel = hiltViewModel()
 ) {
+    var forceLoad by remember { mutableStateOf(true) }
     val uiState by startViewModel.getUiState()
 
     when (uiState) {
         is UiState.Success -> {
+            forceLoad = false
             val viewState = (uiState as UiState.Success<StartScreenViewState>).data
             Scaffold(
                 modifier = Modifier.fillMaxSize()
             ) {
-                LazyColumn() {
+                LazyColumn {
                     item {
                         DiagramScreen(
                             modifier = modifier
@@ -59,5 +66,8 @@ fun StartScreen(
         is UiState.Loading -> {
             LoadingScreen()
         }
+    }
+    LaunchedEffect(Unit) {
+        startViewModel.getMainScreenInfo(TimeRangeType.MONTH, forceLoad)
     }
 }

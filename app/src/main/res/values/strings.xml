@@ -9,4 +9,5 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">970e7c537ca448991d93337d37192adb</string>
     <string name="dialog_error_title">Произошла ошибка</string>
+    <string name="google_auth_error">Произошла ошибка входа через google. Попробуйте позже</string>
 </resources>

@@ -19,7 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.familiwallet.navigation.Screen
@@ -52,7 +53,7 @@ fun BottomNav(
     navigation: NavHostController
 ) {
     val navBackStackEntry by navigation.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination
+    val currentRoute = navBackStackEntry?.destination?.route
 
     BottomNavigation(
         modifier = modifier
@@ -61,70 +62,46 @@ fun BottomNav(
         contentColor = bottomBarContentColor,
         elevation = 0.dp
     ) {
-        BottomNavigationItem(
-            selected = isSelectedItem(currentRoute, Screen.StartScreen.route),
-            selectedContentColor = bottomBarSelectedContentColor,
-            unselectedContentColor = bottomBarUnselectedContentColor,
-            icon = {
-                Icon(
-                    painter = painterResource(id = Screen.StartScreen.icon),
-                    contentDescription = "",
-                    modifier = modifier.size(36.dp)
-                )
-            },
-            onClick = { if (!isSelectedItem(currentRoute, Screen.StartScreen.route)) navigation.navigate(Screen.StartScreen.route) },
-            label = { setLabel(title = Screen.StartScreen.title, isSelected = isSelectedItem(currentRoute, Screen.StartScreen.route)) }
-        )
-        BottomNavigationItem(
-            selected = isSelectedItem(currentRoute, Screen.CategoryScreen.route),
-            selectedContentColor = bottomBarSelectedContentColor,
-            unselectedContentColor = bottomBarUnselectedContentColor,
-            icon = {
-                Icon(
-                    painter = painterResource(id = Screen.CategoryScreen.icon),
-                    contentDescription = "",
-                    modifier = modifier
-                        .size(36.dp)
-                )
-            },
-            onClick = { if (!isSelectedItem(currentRoute, Screen.CategoryScreen.route)) navigation.navigate(Screen.CategoryScreen.route) },
-            label = { setLabel(title = Screen.CategoryScreen.title, isSelected = isSelectedItem(currentRoute, Screen.CategoryScreen.route)) }
-        )
-        Spacer(modifier = Modifier.size(60.dp))
-        BottomNavigationItem(
-            selected = isSelectedItem(currentRoute, Screen.HistoryScreen.route),
-            selectedContentColor = bottomBarSelectedContentColor,
-            unselectedContentColor = bottomBarUnselectedContentColor,
-            icon = {
-                Icon(
-                    painter = painterResource(id = Screen.HistoryScreen.icon),
-                    contentDescription = "",
-                    modifier = modifier
-                        .size(36.dp)
-                )
-            },
-            onClick = { if (!isSelectedItem(currentRoute, Screen.HistoryScreen.route)) navigation.navigate(Screen.HistoryScreen.route) },
-            label = { setLabel(title = Screen.HistoryScreen.title, isSelected = isSelectedItem(currentRoute, Screen.HistoryScreen.route)) }
-        )
-        BottomNavigationItem(
-            selected = isSelectedItem(currentRoute, Screen.SettingsScreen.route),
-            selectedContentColor = bottomBarSelectedContentColor,
-            unselectedContentColor = bottomBarUnselectedContentColor,
-            icon = {
-                Icon(
-                    painter = painterResource(id = Screen.SettingsScreen.icon),
-                    contentDescription = "",
-                    modifier = modifier.size(36.dp)
-                )
-            },
-            onClick = { if (!isSelectedItem(currentRoute, Screen.SettingsScreen.route)) navigation.navigate(Screen.SettingsScreen.route) },
-            label = { setLabel(title = Screen.SettingsScreen.title, isSelected = isSelectedItem(currentRoute, Screen.SettingsScreen.route)) }
-        )
+        listOfNavItems.forEach { screen ->
+            BottomNavigationItem(
+                selected = currentRoute == screen.route,
+                selectedContentColor = bottomBarSelectedContentColor,
+                unselectedContentColor = bottomBarUnselectedContentColor,
+                icon = {
+                    Icon(
+                        painter = painterResource(id = screen.icon),
+                        contentDescription = "",
+                        modifier = modifier.size(36.dp)
+                    )
+                },
+                onClick = { onNavItemClick(navigation, screen.route, currentRoute) },
+                label = { setLabel(title = screen.title, isSelected = currentRoute == screen.route) }
+            )
+            if (screen is Screen.CategoryScreen) {
+                Spacer(modifier = Modifier.size(60.dp))
+            }
+        }
     }
 }
 
-private fun isSelectedItem(currentRoute: NavDestination?, targetRoute: String): Boolean {
-    return currentRoute?.hierarchy?.any { it.route == targetRoute } == true
+private fun onNavItemClick(
+    navigation: NavHostController,
+    route: String,
+    currentRoute: String?
+) {
+    if (route != currentRoute) {
+        navigation.navigate(route) {
+            launchSingleTop = true
+            restoreState = true
+            popUpTo(findStartDestination(navigation.graph).id) {
+                saveState = true
+            }
+        }
+    }
+}
+
+private tailrec fun findStartDestination(graph: NavDestination): NavDestination {
+    return if (graph is NavGraph) findStartDestination(graph.findStartDestination()) else graph
 }
 
 @Composable
@@ -132,4 +109,11 @@ private fun setLabel(title: String?, isSelected: Boolean) {
     val textColor = if (isSelected) bottomBarSelectedContentColor else bottomBarUnselectedContentColor
     Text(text = title.orEmpty(), color = textColor, fontSize = 10.sp)
 }
+
+private val listOfNavItems = listOf(
+    Screen.StartScreen,
+    Screen.CategoryScreen,
+    Screen.HistoryScreen,
+    Screen.SettingsScreen
+)
 

@@ -27,10 +27,6 @@ class StartViewModel @Inject constructor(
     private val uiRangeState = mutableStateOf<UiState<TimeRangeType>>(UiState.Success(TimeRangeType.WEEK))
     private val uiState = mutableStateOf<UiState<StartScreenViewState>>(UiState.Loading)
 
-    init {
-        getMainScreenInfo(TimeRangeType.MONTH)
-    }
-
     fun getUiState(): State<UiState<StartScreenViewState>> = uiState
 
     fun getUiRangeState(): State<UiState<TimeRangeType>> = uiRangeState
@@ -41,19 +37,19 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    private fun getMainScreenInfo(timeRangeType: TimeRangeType) {
+    fun getMainScreenInfo(timeRangeType: TimeRangeType, forceLoad: Boolean = false) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             try {
                 val categoriesList = mutableListOf<UIModel.CategoryModel>()
                 val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                val userData = getPersonData(UserUtils.getUsersUid().orEmpty())
+                val userData = getPersonData(UserUtils.getUsersUid().orEmpty(), forceLoad)
                 categoriesList.addAll(userData.first)
                 transactionsList.addAll(userData.second)
 
-                val partner = partnerUseCase.getPartner(true)
+                val partner = partnerUseCase.getPartner(forceLoad)
                 if (partner is DataResponse.Success) {
-                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty())
+                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty(), forceLoad)
                     categoriesList.addAll(partnerData.first)
                     transactionsList.addAll(partnerData.second)
                 }
@@ -69,39 +65,37 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPersonData(uid: String): Pair<List<UIModel.CategoryModel>, List<UIModel.TransactionModel>> {
-        val job = viewModelScope.async {
-            try {
-                val categoryListResponse = startScreenInfoUseCase.getCategoriesList(uid)
-                val categoriesList = mutableListOf<UIModel.CategoryModel>()
-                when (categoryListResponse) {
-                    is DataResponse.Success -> {
-                        categoriesList.addAll(categoryListResponse.data)
-                    }
-                    is DataResponse.Error -> {
-                        uiState.value = UiState.Error(categoryListResponse.exception)
-                        Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
-                    }
+    private suspend fun getPersonData(uid: String, forceLoad: Boolean) = viewModelScope.async {
+        try {
+            val categoryListResponse = startScreenInfoUseCase.getCategoriesList(uid, forceLoad)
+            val categoriesList = mutableListOf<UIModel.CategoryModel>()
+            when (categoryListResponse) {
+                is DataResponse.Success -> {
+                    categoriesList.addAll(categoryListResponse.data)
                 }
-
-                val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(uid)
-                val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                when (transactionsListResponse) {
-                    is DataResponse.Success -> {
-                        transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
-                    }
-                    is DataResponse.Error -> {
-                        uiState.value = UiState.Error(transactionsListResponse.exception)
-                        Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
-                    }
-                    else -> {}
+                is DataResponse.Error -> {
+                    uiState.value = UiState.Error(categoryListResponse.exception)
+                    Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
                 }
-                return@async Pair(categoriesList, transactionsList)
-            } catch (e: Exception) {
-                uiState.value = UiState.Error(e)
-                return@async Pair(emptyList<UIModel.CategoryModel>(), emptyList<UIModel.TransactionModel>())
             }
+
+            val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(uid, forceLoad)
+            val transactionsList = mutableListOf<UIModel.TransactionModel>()
+            when (transactionsListResponse) {
+                is DataResponse.Success -> {
+                    transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
+                }
+                is DataResponse.Error -> {
+                    uiState.value = UiState.Error(transactionsListResponse.exception)
+                    Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
+                }
+                else -> {}
+            }
+            return@async Pair(categoriesList, transactionsList)
+        } catch (e: Exception) {
+            uiState.value = UiState.Error(e)
+            return@async Pair(emptyList<UIModel.CategoryModel>(), emptyList<UIModel.TransactionModel>())
         }
-        return job.await()
-    }
+    }.await()
+
 }
