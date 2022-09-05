@@ -5,17 +5,18 @@ import com.example.familiwallet.core.data.UIModel
 
 object TransactionsCache: CacheRepository<DataResponse<List<UIModel.TransactionModel>>> {
 
-    private var transactionsList: DataResponse<List<UIModel.TransactionModel>>? = null
+    private val transactionsList = mutableSetOf<UIModel.TransactionModel>()
 
-    override fun put(cache: DataResponse<List<UIModel.TransactionModel>>) {
-       transactionsList = cache
+    override suspend fun put(cache: DataResponse<List<UIModel.TransactionModel>>) {
+        val list = (cache as DataResponse.Success).data
+       transactionsList.addAll(list)
     }
 
-    override fun get(): DataResponse<List<UIModel.TransactionModel>>? = transactionsList
+    override suspend fun get(): DataResponse<List<UIModel.TransactionModel>> = DataResponse.Success(transactionsList.toList())
 
-    override fun clear() {
-        transactionsList = null
+    override suspend fun clear() {
+        transactionsList.clear()
     }
 
-    override fun isEmpty(): Boolean = transactionsList == null
+    override suspend fun isEmpty(): Boolean = transactionsList.isEmpty()
 }

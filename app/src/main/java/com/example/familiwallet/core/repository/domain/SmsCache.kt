@@ -7,15 +7,15 @@ object SmsCache : CacheRepository<DataResponse<List<UIModel.SmsModel>>> {
 
     private var smsList: DataResponse<List<UIModel.SmsModel>>? = null
 
-    override fun put(cache: DataResponse<List<UIModel.SmsModel>>) {
+    override suspend fun put(cache: DataResponse<List<UIModel.SmsModel>>) {
             smsList = cache
     }
 
-    override fun get(): DataResponse<List<UIModel.SmsModel>>? = smsList
+    override suspend fun get(): DataResponse<List<UIModel.SmsModel>>? = smsList
 
-    override fun clear() {
+    override suspend fun clear() {
         smsList = null
     }
 
-    override fun isEmpty(): Boolean = smsList == null
+    override suspend fun isEmpty(): Boolean = smsList == null
 }

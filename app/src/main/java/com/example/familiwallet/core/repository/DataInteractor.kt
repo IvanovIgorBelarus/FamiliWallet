@@ -38,8 +38,8 @@ class DataInteractor @Inject constructor(
         return get(PartnerCache, firebaseRepository.getPartner(), forceLoad)
     }
 
-    override suspend fun getTransactionsList(uid: String,forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
-        return get(TransactionsCache, firebaseRepository.getPersonTransactionList(uid), forceLoad)
+    override suspend fun getTransactionsList(uid: String, forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
+        return get(TransactionsCache, firebaseRepository.getPersonTransactionList(getPartner()), forceLoad)
     }
 
     override suspend fun getCategoriesList(uid: String, forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? {
@@ -55,13 +55,16 @@ class DataInteractor @Inject constructor(
         update(item)
     }
 
-    private fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
+    private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {
-            Log.i("MYNAME","request")
-            cache.put(request)
-            cache.get()
+            Log.i("MYNAME", "request")
+            if (request is DataResponse.Success<*>) {
+                cache.clear()
+                cache.put(request)
+            }
+            request
         } else {
-            Log.i("MYNAME","Cash")
+            Log.i("MYNAME", "Cash")
             cache.get()
         }
     }

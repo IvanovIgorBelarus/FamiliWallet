@@ -47,12 +47,12 @@ class StartViewModel @Inject constructor(
                 categoriesList.addAll(userData.first)
                 transactionsList.addAll(userData.second)
 
-                val partner = partnerUseCase.getPartner(forceLoad)
-                if (partner is DataResponse.Success) {
-                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty(), forceLoad)
-                    categoriesList.addAll(partnerData.first)
-                    transactionsList.addAll(partnerData.second)
-                }
+//                val partner = partnerUseCase.getPartner(forceLoad)
+//                if (partner is DataResponse.Success) {
+//                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty(), forceLoad)
+//                    categoriesList.addAll(partnerData.first)
+//                    transactionsList.addAll(partnerData.second)
+//                }
                 uiState.value = UiState.Success(
                     StartScreenViewState(
                         categoriesList = categoriesList,

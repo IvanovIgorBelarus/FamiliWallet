@@ -17,7 +17,9 @@ import com.example.familiwallet.core.common.VALUE
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
+import com.example.familiwallet.core.utils.toStartOfDay
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -105,10 +107,13 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
     }
 
-    suspend fun getPersonTransactionList(uid: String): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
-        if (uid.isNotEmpty()) {
+    suspend fun getPersonTransactionList(uid: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
+        if(uid is DataResponse.Success) {
+            val account = uid.data
+            val firstDay = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -6) }.time.toStartOfDay.time
             db.collection(TRANSACTIONS)
-                .whereEqualTo("uid", uid)
+                .whereEqualTo("uid", account.uid)
+                .whereGreaterThanOrEqualTo("date",firstDay)
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
