@@ -10,8 +10,8 @@ interface DataRepository {
     suspend fun addNewCategory(categoryItem: UIModel.CategoryModel)
     suspend fun getSmsList(forceLoad: Boolean = false): DataResponse<List<UIModel.SmsModel>>?
     suspend fun getPartner(forceLoad: Boolean = false): DataResponse<UIModel.AccountModel>?
-    suspend fun getTransactionsList(uid: String, forceLoad: Boolean = false): DataResponse<List<UIModel.TransactionModel>>?
-    suspend fun getCategoriesList(uid: String, forceLoad: Boolean = false): DataResponse<List<UIModel.CategoryModel>>?
+    suspend fun getTransactionsList(forceLoad: Boolean = false): DataResponse<List<UIModel.TransactionModel>>?
+    suspend fun getCategoriesList(forceLoad: Boolean = false): DataResponse<List<UIModel.CategoryModel>>?
     suspend fun deleteItem(item: Any?)
     suspend fun upDateItem(item: Any?)
 }

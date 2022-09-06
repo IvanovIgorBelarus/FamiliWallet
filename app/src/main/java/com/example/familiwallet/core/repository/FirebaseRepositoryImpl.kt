@@ -98,7 +98,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
     suspend fun getPartner(): DataResponse<UIModel.AccountModel> = suspendCoroutine { continuation ->
         if (!UserUtils.getUsersUid().isNullOrEmpty()) {
             db.collection(USERS)
-                .whereEqualTo("uid", UserUtils.getUsersUid())
+                .whereEqualTo(UID, UserUtils.getUsersUid())
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPartner(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
@@ -107,24 +107,27 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
     }
 
-    suspend fun getPersonTransactionList(uid: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
-        if(uid is DataResponse.Success) {
-            val account = uid.data
+    suspend fun getPersonTransactionList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
+        if(partnerRequest is DataResponse.Success) {
+            val account = partnerRequest.data
             val firstDay = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -6) }.time.toStartOfDay.time
             db.collection(TRANSACTIONS)
-                .whereEqualTo("uid", account.uid)
-                .whereGreaterThanOrEqualTo("date",firstDay)
+                .whereIn(UID, listOf(account.uid, account.partnerUid))
+                .whereGreaterThanOrEqualTo(DATE, firstDay)
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+        } else {
+            continuation.resume(DataResponse.Error(Throwable("Нет данных")))
         }
     }
 
 
-    suspend fun getPersonCategoriesList(uid: String): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
-        if (uid.isNotEmpty()) {
+    suspend fun getPersonCategoriesList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
+        if (partnerRequest is DataResponse.Success) {
+            val account = partnerRequest.data
             db.collection(CATEGORIES)
-                .whereEqualTo("uid", uid)
+                .whereIn(UID, listOf(account.uid, account.partnerUid))
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }

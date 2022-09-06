@@ -43,16 +43,10 @@ class StartViewModel @Inject constructor(
             try {
                 val categoriesList = mutableListOf<UIModel.CategoryModel>()
                 val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                val userData = getPersonData(UserUtils.getUsersUid().orEmpty(), forceLoad)
+                val userData = getPersonData(forceLoad)
                 categoriesList.addAll(userData.first)
                 transactionsList.addAll(userData.second)
 
-//                val partner = partnerUseCase.getPartner(forceLoad)
-//                if (partner is DataResponse.Success) {
-//                    val partnerData = getPersonData(partner.data.partnerUid.orEmpty(), forceLoad)
-//                    categoriesList.addAll(partnerData.first)
-//                    transactionsList.addAll(partnerData.second)
-//                }
                 uiState.value = UiState.Success(
                     StartScreenViewState(
                         categoriesList = categoriesList,
@@ -65,9 +59,9 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPersonData(uid: String, forceLoad: Boolean) = viewModelScope.async {
+    private suspend fun getPersonData(forceLoad: Boolean) = viewModelScope.async {
         try {
-            val categoryListResponse = startScreenInfoUseCase.getCategoriesList(uid, forceLoad)
+            val categoryListResponse = startScreenInfoUseCase.getCategoriesList(forceLoad)
             val categoriesList = mutableListOf<UIModel.CategoryModel>()
             when (categoryListResponse) {
                 is DataResponse.Success -> {
@@ -79,7 +73,7 @@ class StartViewModel @Inject constructor(
                 }
             }
 
-            val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(uid, forceLoad)
+            val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(forceLoad)
             val transactionsList = mutableListOf<UIModel.TransactionModel>()
             when (transactionsListResponse) {
                 is DataResponse.Success -> {

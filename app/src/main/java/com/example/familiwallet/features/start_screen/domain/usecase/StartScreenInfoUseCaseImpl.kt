@@ -8,8 +8,8 @@ import javax.inject.Inject
 class StartScreenInfoUseCaseImpl @Inject constructor(
     private val repo: DataRepository
 ) : StartScreenInfoUseCase {
-    override suspend fun getCategoriesList(uid: String, forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>> {
-        return when (val response = repo.getCategoriesList(uid, forceLoad)) {
+    override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>> {
+        return when (val response = repo.getCategoriesList(forceLoad)) {
             is DataResponse.Success -> DataResponse.Success(
                 response.data
             )
@@ -18,6 +18,6 @@ class StartScreenInfoUseCaseImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTransactionsList(uid: String, forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? =
-        repo.getTransactionsList(uid, forceLoad)
+    override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? =
+        repo.getTransactionsList(forceLoad)
 }
