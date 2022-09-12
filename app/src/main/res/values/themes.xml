@@ -2,7 +2,8 @@
 <resources>
 
     <style name="Theme.FamiliWallet" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/bottomBarContentColor</item>
+        <item name="android:statusBarColor">@color/bottomBarBackgroundColor</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:actionBarItemBackground">@color/bottomBarContentColor</item>
     </style>
 </resources>

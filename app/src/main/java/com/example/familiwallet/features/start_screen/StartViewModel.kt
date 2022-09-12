@@ -10,7 +10,6 @@ import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
-import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.features.main.domain.usecase.PartnerUseCase
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val startScreenInfoUseCase: StartScreenInfoUseCase,
-    private val partnerUseCase: PartnerUseCase
+    private val startScreenInfoUseCase: StartScreenInfoUseCase
 ) : ViewModel() {
 
     private val uiRangeState = mutableStateOf<UiState<TimeRangeType>>(UiState.Success(TimeRangeType.WEEK))
@@ -43,16 +41,21 @@ class StartViewModel @Inject constructor(
             try {
                 val categoriesList = mutableListOf<UIModel.CategoryModel>()
                 val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                val userData = getPersonData(forceLoad)
-                categoriesList.addAll(userData.first)
-                transactionsList.addAll(userData.second)
-
-                uiState.value = UiState.Success(
-                    StartScreenViewState(
-                        categoriesList = categoriesList,
-                        transactionsList = transactionsList.sortedByDescending { it.date }
-                    )
-                )
+                when (val userData = getPersonData(forceLoad)) {
+                    is DataResponse.Success -> {
+                        categoriesList.addAll(userData.data.first)
+                        transactionsList.addAll(userData.data.second)
+                        uiState.value = UiState.Success(
+                            StartScreenViewState(
+                                categoriesList = categoriesList,
+                                transactionsList = transactionsList.sortedByDescending { it.date }
+                            )
+                        )
+                    }
+                    is DataResponse.Error -> {
+                        uiState.value = UiState.Error(userData.exception)
+                    }
+                }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
             }
@@ -68,8 +71,8 @@ class StartViewModel @Inject constructor(
                     categoriesList.addAll(categoryListResponse.data)
                 }
                 is DataResponse.Error -> {
-                    uiState.value = UiState.Error(categoryListResponse.exception)
                     Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
+                    return@async DataResponse.Error(categoryListResponse.exception)
                 }
             }
 
@@ -80,15 +83,14 @@ class StartViewModel @Inject constructor(
                     transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
                 }
                 is DataResponse.Error -> {
-                    uiState.value = UiState.Error(transactionsListResponse.exception)
                     Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
+                    return@async DataResponse.Error(transactionsListResponse.exception)
                 }
                 else -> {}
             }
-            return@async Pair(categoriesList, transactionsList)
+            return@async DataResponse.Success(Pair(categoriesList, transactionsList))
         } catch (e: Exception) {
-            uiState.value = UiState.Error(e)
-            return@async Pair(emptyList<UIModel.CategoryModel>(), emptyList<UIModel.TransactionModel>())
+            return@async DataResponse.Error(e)
         }
     }.await()
 

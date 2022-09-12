@@ -118,7 +118,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
         } else {
-            continuation.resume(DataResponse.Error(Throwable("Нет данных")))
+            continuation.resume(DataResponse.Error(Throwable("Нет данных о транзакциях")))
         }
     }
 
@@ -132,7 +132,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
         } else {
-            continuation.resume(DataResponse.Error(Throwable("Нет данных")))
+            continuation.resume(DataResponse.Error(Throwable("Нет данных по категориям")))
         }
     }
 

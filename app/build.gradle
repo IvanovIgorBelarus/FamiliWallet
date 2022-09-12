@@ -96,11 +96,14 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
 
-// When using Kotlin.
+    // When using Kotlin.
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.0"
-//Login with Facebook
+    //Login with Facebook
     implementation 'com.facebook.android:facebook-login:latest.release'
+
+    //Load image
+    implementation "io.coil-kt:coil-compose:1.4.0"
 
     //systemUiController
 //    implementation "com.google.accompanist:accompanist-systemuicontroller:0.15.0"

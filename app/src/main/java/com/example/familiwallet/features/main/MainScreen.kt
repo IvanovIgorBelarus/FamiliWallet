@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.ActionButton
 import com.example.familiwallet.components.BottomBar
+import com.example.familiwallet.components.TopBar
 import com.example.familiwallet.navigation.MainScreenNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -17,6 +18,7 @@ fun MainScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = { TopBar(navigation = navController)},
         bottomBar = { BottomBar(navigation = navController) },
         floatingActionButton = {
             ActionButton(navigation = navController)

@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +20,6 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.alpha
 import androidx.core.graphics.blue
@@ -32,10 +30,8 @@ import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.features.diagram.data.CategorySumItem
 import com.example.familiwallet.features.diagram.data.DrawItem
 import com.example.familiwallet.features.diagram.data.OverviewItem
-import com.example.familiwallet.ui.theme.textUnderLineColor
 import kotlin.math.cos
 import kotlin.math.floor
-import kotlin.math.sign
 import kotlin.math.sin
 
 @Composable
@@ -44,11 +40,17 @@ fun DiagramScreen(
     expansesList: List<UIModel.TransactionModel>,
     categoriesList: List<UIModel.CategoryModel>
 ) {
-    val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
-    val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
-    Box(contentAlignment = Alignment.Center, modifier = modifier) {
-        DrawDiagram(expansesList = sumList, summary = summary)
-        Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+    if (expansesList.isNotEmpty() && categoriesList.isNotEmpty()) {
+        val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
+        val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
+        Box(contentAlignment = Alignment.Center, modifier = modifier) {
+            DrawDiagram(expansesList = sumList, summary = summary)
+            Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+        }
+    } else {
+        Box(contentAlignment = Alignment.Center, modifier = modifier) {
+            Text(text = "у вас нет данных", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+        }
     }
 }
 
@@ -105,14 +107,14 @@ private fun DrawArc(
             val rad = ((angle - drawItem.sweepAngle / 2) * 2 * Math.PI / 360).toFloat()
 
             // coordinates of start line
-            val x = (radius+100) * cos(rad) + size.width / 2
-            val y = (radius+100) * sin(rad) + size.height / 2
-            val iconOffset = Offset(x,y)
+            val x = (radius + 100) * cos(rad) + size.width / 2
+            val y = (radius + 100) * sin(rad) + size.height / 2
+            val iconOffset = Offset(x, y)
 
             // coordinates for drawing lines
-            val endLineX = (radius +75)* cos(rad) + size.width / 2
-            val endLineY = (radius +100) * sin(rad) + size.height / 2
-            val textOffset = Offset(endLineX,endLineY)
+            val endLineX = (radius + 75) * cos(rad) + size.width / 2
+            val endLineY = (radius + 100) * sin(rad) + size.height / 2
+            val textOffset = Offset(endLineX, endLineY)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             offsetOverviewList.add(

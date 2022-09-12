@@ -3,6 +3,7 @@ package com.example.familiwallet.features.start_screen
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
@@ -38,7 +39,7 @@ fun StartScreen(
             forceLoad = false
             val viewState = (uiState as UiState.Success<StartScreenViewState>).data
             Scaffold(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().padding(0.dp,0.dp,0.dp,65.dp)
             ) {
                 LazyColumn {
                     item {
