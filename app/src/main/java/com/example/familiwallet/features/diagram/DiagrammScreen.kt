@@ -44,7 +44,7 @@ fun DiagramScreen(
         val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
         val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
-            DrawDiagram(expansesList = sumList, summary = summary)
+            DrawDiagram(modifier, expansesList = sumList, summary = summary)
             Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
         }
     } else {
@@ -55,10 +55,15 @@ fun DiagramScreen(
 }
 
 @Composable
-private fun DrawDiagram(expansesList: List<CategorySumItem>, summary: Double) {
+private fun DrawDiagram(
+    modifier: Modifier = Modifier,
+    expansesList: List<CategorySumItem>,
+    summary: Double
+) {
 
     //for diagram get only 7 values!!!
     DrawArc(
+        modifier = modifier,
         drawItems = DiagramMapper.mapDrawItems(expansesList, summary),
         sum = summary
     )

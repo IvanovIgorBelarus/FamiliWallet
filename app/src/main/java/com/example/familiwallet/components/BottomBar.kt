@@ -100,7 +100,7 @@ private fun onNavItemClick(
     }
 }
 
-private tailrec fun findStartDestination(graph: NavDestination): NavDestination {
+tailrec fun findStartDestination(graph: NavDestination): NavDestination {
     return if (graph is NavGraph) findStartDestination(graph.findStartDestination()) else graph
 }
 

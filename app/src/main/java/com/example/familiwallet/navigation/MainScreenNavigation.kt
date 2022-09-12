@@ -8,6 +8,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.example.familiwallet.features.newcategory.NewTransactionScreen
 import com.example.familiwallet.features.start_screen.StartScreen
+import com.example.familiwallet.features.transacrionscreen.TransactionScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -23,6 +24,7 @@ fun MainScreenNavigation(navigation: NavHostController) {
         composable(route = Screen.CategoryScreen.route) { NewTransactionScreen(navigation = navigation, text = "Категории") }
         composable(route = Screen.HistoryScreen.route) { NewTransactionScreen(navigation = navigation, text = "История") }
         composable(route = Screen.SettingsScreen.route) { NewTransactionScreen(navigation = navigation, text = "Настройки") }
+        composable(route = Screen.TransactionScreen.route) { TransactionScreen(navigation = navigation) }
     }
 }
 

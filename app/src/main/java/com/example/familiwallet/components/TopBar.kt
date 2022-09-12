@@ -1,7 +1,7 @@
 package com.example.familiwallet.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.familiwallet.R
 import com.example.familiwallet.core.utils.UserUtils
@@ -38,7 +40,8 @@ fun TopBar(
 ) {
     val navBackStackEntry by navigation.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val titleText = Screen.getScreen(currentRoute).title
+    val titleText = Screen.getScreen(currentRoute).title.orEmpty()
+    val showSettings = Screen.getScreen(currentRoute).route != Screen.TransactionScreen.route
     val painter = rememberImagePainter(data = UserUtils.getUserPhoto())
     TopAppBar(
         modifier = modifier
@@ -47,34 +50,76 @@ fun TopBar(
         contentColor = Color.White,
         elevation = 0.dp
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.size(24.dp))
-            Image(
-                painter = painter,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(text = titleText.orEmpty(), color = textColor, fontSize = 20.sp)
-            Spacer(
-                modifier = Modifier
-                    .size(24.dp)
-                    .weight(1f)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_settings_screen),
-                contentDescription = "",
-                modifier = modifier.size(24.dp),
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.size(12.dp))
+        if (showSettings) {
+            MainTopBar(painter = painter, titleText = titleText)
+        } else {
+            TransactionTopBar(titleText = titleText, navigation = navigation)
         }
+    }
+}
+
+@Composable
+private fun MainTopBar(
+    painter: ImagePainter,
+    titleText: String
+) {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.size(24.dp))
+        Image(
+            painter = painter,
+            contentDescription = "",
+            modifier = Modifier
+                .size(36.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = titleText,
+            color = textColor,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_settings_screen),
+            contentDescription = "",
+            modifier = Modifier.size(24.dp),
+            tint = Color.Black
+        )
+        Spacer(modifier = Modifier.size(12.dp))
+    }
+}
+
+@Composable
+private fun TransactionTopBar(
+    titleText: String,
+    navigation: NavHostController
+) {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = titleText,
+            color = textColor,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_cross),
+            contentDescription = "",
+            modifier = Modifier.size(24.dp)
+                .clickable { navigation.popBackStack() },
+            tint = Color.Black
+        )
+        Spacer(modifier = Modifier.size(12.dp))
     }
 }

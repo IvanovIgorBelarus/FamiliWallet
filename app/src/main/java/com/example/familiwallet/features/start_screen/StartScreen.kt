@@ -1,11 +1,13 @@
 package com.example.familiwallet.features.start_screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +26,7 @@ import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.diagram.DiagramScreen
 import com.example.familiwallet.features.dialog.ShowDialog
 import com.example.familiwallet.features.loading.LoadingScreen
+import com.example.familiwallet.ui.theme.backgroundColor
 
 @Composable
 fun StartScreen(
@@ -39,14 +42,18 @@ fun StartScreen(
             forceLoad = false
             val viewState = (uiState as UiState.Success<StartScreenViewState>).data
             Scaffold(
-                modifier = Modifier.fillMaxSize().padding(0.dp,0.dp,0.dp,65.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 0.dp, 0.dp, 65.dp)
             ) {
                 LazyColumn {
                     item {
                         DiagramScreen(
                             modifier = modifier
+                                .padding(8.dp, 2.dp, 8.dp, 2.dp)
                                 .fillMaxWidth()
-                                .defaultMinSize(minHeight = 500.dp),
+                                .defaultMinSize(minHeight = 500.dp)
+                                .background(backgroundColor, RoundedCornerShape(0.dp,0.dp,8.dp,8.dp)),
                             expansesList = viewState.transactionsList.filter { it.type == EXPENSES },
                             categoriesList = viewState.categoriesList
                         )
