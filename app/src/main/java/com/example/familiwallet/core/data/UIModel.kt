@@ -12,7 +12,8 @@ sealed class UIModel{
         var uid: String? = null,
         var category: String? = null,
         var type: String? = null,
-        var icon: String? = null
+        var icon: String? = null,
+        var color: String? = null
     ):BaseModel(id)
 
     data class StatisticModel(

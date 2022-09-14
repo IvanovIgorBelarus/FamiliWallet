@@ -1,29 +1,30 @@
 package com.example.familiwallet.features.transacrionscreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.familiwallet.components.CategoryList
+import com.example.familiwallet.components.CategoryTabs
+import com.example.familiwallet.core.data.UIModel
+import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.features.dialog.ShowDialog
+import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.features.transacrionscreen.data.TransactionTabItem
 import com.example.familiwallet.ui.theme.backgroundColor
-import com.example.familiwallet.ui.theme.buttonColor
-import com.example.familiwallet.ui.theme.textColor
 
 @Composable
 fun TransactionScreen(
@@ -31,46 +32,39 @@ fun TransactionScreen(
     navigation: NavHostController,
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
+    val uiState by transactionViewModel.getUiState()
     val currentState = remember { mutableStateOf(0) }
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Tabs(currentState = currentState)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(12.dp)
+                .background(backgroundColor)
+        ) {
+            CategoryTabs(tabList = tabList, currentState = currentState)
+            Spacer(modifier = Modifier.size(24.dp))
+            when (uiState) {
+                is UiState.Success -> {
+                    CategoryList(list = (uiState as UiState.Success<List<UIModel.CategoryModel>>).data)
+                }
+                is UiState.Error -> {
+                    val errorText = (uiState as UiState.Error).exception.message
+                    ShowDialog(text = errorText)
+                }
+                is UiState.Loading -> {
+                    LoadingScreen()
+                }
+            }
         }
+    }
+    LaunchedEffect(Unit){
+        transactionViewModel.getCategories()
     }
 }
 
-@Composable
-private fun Tabs(currentState: MutableState<Int>) {
-        TabRow(
-            selectedTabIndex = currentState.value,
-            backgroundColor = backgroundColor,
-            indicator = { tabPositions ->
-
-            }
-        ) {
-            tabList.forEachIndexed { index, transactionTabItem ->
-                Tab(
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .background(
-                            if (currentState.value == index) buttonColor else backgroundColor,
-                            RoundedCornerShape(20.dp)
-                        ),
-                    selected = currentState.value == index,
-                    onClick = { currentState.value = index },
-                    text = { Text(text = transactionTabItem.title, color = if (currentState.value == index) backgroundColor else textColor) }
-                )
-            }
-        }
-}
-
-@Composable
-@Preview(showBackground = true)
-private fun TabsPreview() {
-    Tabs(currentState = mutableStateOf(0))
-}
 
 private val tabList = listOf(
     TransactionTabItem.Income,
