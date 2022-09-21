@@ -48,9 +48,7 @@ fun AuthScreen(
     navigation: NavHostController? = null,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    Scaffold(
-        backgroundColor = backgroundColor
-    ) {
+    Scaffold {
         val onGoogleClick = remember { mutableStateOf(EnterType.UNKNOWN) }
         val isLoading = remember { mutableStateOf(false) }
         val errorMessage = remember { mutableStateOf("") }

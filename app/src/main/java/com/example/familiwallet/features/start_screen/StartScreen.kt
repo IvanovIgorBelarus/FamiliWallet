@@ -2,7 +2,6 @@ package com.example.familiwallet.features.start_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,18 +41,16 @@ fun StartScreen(
             forceLoad = false
             val viewState = (uiState as UiState.Success<StartScreenViewState>).data
             Scaffold(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(0.dp, 0.dp, 0.dp, 65.dp)
+                modifier = modifier
             ) {
                 LazyColumn {
                     item {
                         DiagramScreen(
-                            modifier = modifier
+                            modifier = Modifier
                                 .padding(8.dp, 2.dp, 8.dp, 2.dp)
                                 .fillMaxWidth()
                                 .defaultMinSize(minHeight = 500.dp)
-                                .background(backgroundColor, RoundedCornerShape(0.dp,0.dp,8.dp,8.dp)),
+                                .background(backgroundColor, RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp)),
                             expansesList = viewState.transactionsList.filter { it.type == EXPENSES },
                             categoriesList = viewState.categoriesList
                         )

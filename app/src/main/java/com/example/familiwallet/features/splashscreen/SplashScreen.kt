@@ -37,8 +37,7 @@ fun SplashScreen(
 //        }
         Box(
             modifier = modifier
-                .fillMaxSize()
-                .background(backgroundColor),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             var targetAnimSize by remember { mutableStateOf(startAnimSize) }

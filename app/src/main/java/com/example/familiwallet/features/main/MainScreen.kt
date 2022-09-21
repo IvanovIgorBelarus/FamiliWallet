@@ -1,9 +1,11 @@
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.ActionButton
 import com.example.familiwallet.components.BottomBar
@@ -18,7 +20,7 @@ fun MainScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(navigation = navController)},
+        topBar = { TopBar(navigation = navController) },
         bottomBar = { BottomBar(navigation = navController) },
         floatingActionButton = {
             ActionButton(navigation = navController)
@@ -26,7 +28,10 @@ fun MainScreen(
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center
     ) {
-        MainScreenNavigation(navigation = navController)
+        MainScreenNavigation(navigation = navController,
+            Modifier
+                .fillMaxSize()
+                .padding(0.dp, 0.dp, 0.dp, 65.dp))
     }
 }
 

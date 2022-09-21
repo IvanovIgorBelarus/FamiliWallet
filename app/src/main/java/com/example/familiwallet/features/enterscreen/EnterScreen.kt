@@ -31,8 +31,7 @@ fun EnterScreen(
     navigation: NavHostController? = null
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
-        backgroundColor = backgroundColor
+        modifier = modifier.fillMaxSize()
     ) {
         val resources = LocalContext.current.resources
 

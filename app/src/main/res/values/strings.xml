@@ -10,4 +10,7 @@
     <string name="facebook_client_token">970e7c537ca448991d93337d37192adb</string>
     <string name="dialog_error_title">Произошла ошибка</string>
     <string name="google_auth_error">Произошла ошибка входа через google. Попробуйте позже</string>
+    <string name="last">Последние</string>
+    <string name="card">Карта</string>
+    <string name="cash">Наличные</string>
 </resources>
