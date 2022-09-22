@@ -20,7 +20,6 @@ class TransactionViewModel @Inject constructor(
     private val transactionUseCase: TransactionUseCase
 ) : ViewModel() {
     private val uiState = mutableStateOf<UiState<List<UIModel.CategoryModel>>>(UiState.Loading)
-    private val transactionState = mutableStateOf<UiState<Unit>>(UiState.Success(Unit))
 
     fun getCategories(onSuccess: (List<UIModel.CategoryModel>) -> Unit) {
         viewModelScope.launch {
