@@ -6,6 +6,8 @@ import com.example.familiwallet.features.main.domain.usecase.PartnerUseCase
 import com.example.familiwallet.features.main.domain.usecase.PartnerUseCaseImpl
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCaseImpl
+import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCase
+import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +30,9 @@ abstract class AppModule {
     abstract fun providePartnerUseCase(
         partnerUseCaseImpl: PartnerUseCaseImpl
     ): PartnerUseCase
+
+    @Binds
+    abstract fun provideTransactionUseCase(
+        transactionUseCase: TransactionUseCaseImpl
+    ): TransactionUseCase
 }

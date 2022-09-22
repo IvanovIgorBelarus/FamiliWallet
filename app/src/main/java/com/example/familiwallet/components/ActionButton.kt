@@ -13,28 +13,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.bottomBarContentColor
 
 @Composable
 fun ActionButton(
     modifier: Modifier = Modifier,
-    navigation: NavHostController
+    navigation: NavHostController,
+    onClick: () -> Unit
 ) {
-    val navBackStackEntry by navigation.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     FloatingActionButton(
         onClick = {
-            if (Screen.TransactionScreen.route != currentRoute) {
-                navigation.navigate(Screen.TransactionScreen.route) {
-                    launchSingleTop = true
-                    restoreState = true
-                    popUpTo(findStartDestination(navigation.graph).id) {
-                        saveState = true
-                    }
-                }
-            }
+            onClick.invoke()
         },
         modifier = modifier
             .size(60.dp),
@@ -47,10 +36,4 @@ fun ActionButton(
             modifier = modifier.size(36.dp)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ActionButtonPreview() {
-//    ActionButton()
 }

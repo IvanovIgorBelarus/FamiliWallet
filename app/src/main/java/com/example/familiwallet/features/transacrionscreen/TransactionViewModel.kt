@@ -9,25 +9,29 @@ import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
+import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
-    private val startScreenInfoUseCase: StartScreenInfoUseCase
+    private val startScreenInfoUseCase: StartScreenInfoUseCase,
+    private val transactionUseCase: TransactionUseCase
 ) : ViewModel() {
     private val uiState = mutableStateOf<UiState<List<UIModel.CategoryModel>>>(UiState.Loading)
+    private val transactionState = mutableStateOf<UiState<Unit>>(UiState.Success(Unit))
 
     fun getUiState(): State<UiState<List<UIModel.CategoryModel>>> = uiState
+    fun getTransactionState(): State<UiState<Unit>> = transactionState
 
-    fun getCategories() {
+    fun getCategories(onSuccess: (List<UIModel.CategoryModel>) -> Unit) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             try {
                 when (val categoryListResponse = startScreenInfoUseCase.getCategoriesList()) {
                     is DataResponse.Success -> {
-                        uiState.value = UiState.Success(categoryListResponse.data)
+                        onSuccess.invoke(categoryListResponse.data)
                     }
                     is DataResponse.Error -> {
                         Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
@@ -36,6 +40,20 @@ class TransactionViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
+            }
+        }
+    }
+
+    fun addTransaction(transactionModel: UIModel.TransactionModel) {
+        viewModelScope.launch {
+            transactionState.value = UiState.Loading
+            try {
+                when (val response = transactionUseCase.doTransaction(transactionModel)) {
+                    is DataResponse.Success -> transactionState.value = UiState.Success(Unit)
+                    is DataResponse.Error -> transactionState.value = UiState.Error(response.exception)
+                }
+            } catch (e: Exception) {
+                transactionState.value = UiState.Error(e)
             }
         }
     }

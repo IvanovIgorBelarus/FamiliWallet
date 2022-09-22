@@ -42,7 +42,8 @@ import com.example.familiwallet.ui.theme.textColor
 fun CategoryList(
     list: List<UIModel.CategoryModel>,
     currentState: MutableState<CategoryType>,
-    selectedCategory: MutableState<String>
+    selectedCategory: MutableState<String>,
+    showError: MutableState<Boolean>
 ) {
     Text(
         text = "Последние",
@@ -54,7 +55,7 @@ fun CategoryList(
     LazyRow(Modifier.padding(vertical = 4.dp)) {
         items(list) { item ->
             if (item.type == currentState.value.type)
-            CategoryRow(category = item, selectedCategory)
+                CategoryRow(category = item, selectedCategory, showError)
         }
     }
 }
@@ -62,7 +63,8 @@ fun CategoryList(
 @Composable
 private fun CategoryRow(
     category: UIModel.CategoryModel,
-    selectedCategory: MutableState<String>
+    selectedCategory: MutableState<String>,
+    showError: MutableState<Boolean>
 ) {
     val iconColor = if (category.color.isNullOrEmpty()) mainColor else Color(category.color!!.toLong())
     val backgroundColor = if (selectedCategory.value == category.category) bottomBarUnselectedContentColor else backgroundColor
@@ -71,7 +73,10 @@ private fun CategoryRow(
             .padding(2.dp)
             .width(62.dp)
             .height(80.dp)
-            .clickable { selectedCategory.value = category.category.orEmpty() }
+            .clickable {
+                selectedCategory.value = category.category.orEmpty()
+                showError.value = false
+            }
             .background(backgroundColor, RoundedCornerShape(4.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -114,8 +119,9 @@ private fun CategoryListPreview() {
                 icon = "BUG_REPORT"
             )
         ),
-        mutableStateOf(CategoryType.INCOME),
-        mutableStateOf("")
+        mutableStateOf(CategoryType.EXPENSE),
+        mutableStateOf(""),
+        mutableStateOf(false)
     )
 }
 
@@ -128,6 +134,7 @@ private fun CategoryRowPreview() {
             type = EXPENSES,
             icon = "BEACH_ACCESS"
         ),
-        mutableStateOf("")
+        mutableStateOf(""),
+        mutableStateOf(false)
     )
 }
