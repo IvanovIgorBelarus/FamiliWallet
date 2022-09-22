@@ -1,6 +1,5 @@
 package com.example.familiwallet.features.diagram
 
-import com.example.familiwallet.R
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.AppIcons
 import com.example.familiwallet.features.diagram.data.CategorySumItem

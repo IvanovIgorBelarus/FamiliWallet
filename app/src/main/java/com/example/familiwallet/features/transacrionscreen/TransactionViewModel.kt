@@ -35,7 +35,7 @@ class TransactionViewModel @Inject constructor(
                     }
                     is DataResponse.Error -> {
                         Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
-                        DataResponse.Error(categoryListResponse.exception)
+                        uiState.value = UiState.Error(categoryListResponse.exception)
                     }
                 }
             } catch (e: Exception) {
@@ -44,16 +44,16 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    fun addTransaction(transactionModel: UIModel.TransactionModel) {
+    fun addTransaction(transactionModel: UIModel.TransactionModel, onSuccess: () -> Unit) {
         viewModelScope.launch {
             transactionState.value = UiState.Loading
             try {
                 when (val response = transactionUseCase.doTransaction(transactionModel)) {
-                    is DataResponse.Success -> transactionState.value = UiState.Success(Unit)
-                    is DataResponse.Error -> transactionState.value = UiState.Error(response.exception)
+                    is DataResponse.Success -> onSuccess.invoke()
+                    is DataResponse.Error ->  uiState.value = UiState.Error(response.exception)
                 }
             } catch (e: Exception) {
-                transactionState.value = UiState.Error(e)
+                uiState.value = UiState.Error(e)
             }
         }
     }

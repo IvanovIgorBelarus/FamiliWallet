@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,9 +14,6 @@ import com.example.familiwallet.components.ActionButton
 import com.example.familiwallet.components.BottomBar
 import com.example.familiwallet.components.TopBar
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.ui.UiState
-import com.example.familiwallet.features.dialog.ShowDialog
-import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.features.transacrionscreen.TransactionDialog
 import com.example.familiwallet.features.transacrionscreen.TransactionViewModel
 import com.example.familiwallet.navigation.MainScreenNavigation
@@ -30,10 +25,9 @@ fun MainScreen(
     navController: NavHostController = rememberAnimatedNavController(),
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
-    var forceLoad = remember { mutableStateOf(true) }
+    val forceLoad = remember { mutableStateOf(true) }
     val showDialog = remember { mutableStateOf(false) }
     val transactionData = remember { mutableStateOf(emptyList<UIModel.CategoryModel>()) }
-    val transactionState by transactionViewModel.getTransactionState()
 
     if (showDialog.value) {
         TransactionDialog(
@@ -42,7 +36,10 @@ fun MainScreen(
             },
             onButtonClick = { model ->
                 showDialog.value = false
-                transactionViewModel.addTransaction(model)
+                transactionViewModel.addTransaction(
+                    model,
+                    onSuccess = { forceLoad.value = true }
+                )
             }
         )
     }
@@ -61,25 +58,13 @@ fun MainScreen(
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center
     ) {
-        when (transactionState) {
-            is UiState.Success<Unit> -> {
-                forceLoad.value = true
-                MainScreenNavigation(
-                    forceLoad = forceLoad,
-                    navigation = navController,
-                    Modifier
-                        .fillMaxSize()
-                        .padding(0.dp, 0.dp, 0.dp, 65.dp)
-                )
-            }
-            is UiState.Error -> {
-                val errorText = (transactionState as UiState.Error).exception.message
-                ShowDialog(text = errorText)
-            }
-            is UiState.Loading -> {
-                LoadingScreen()
-            }
-        }
+        MainScreenNavigation(
+            forceLoad = forceLoad,
+            navigation = navController,
+            Modifier
+                .fillMaxSize()
+                .padding(0.dp, 0.dp, 0.dp, 65.dp)
+        )
     }
 }
 
