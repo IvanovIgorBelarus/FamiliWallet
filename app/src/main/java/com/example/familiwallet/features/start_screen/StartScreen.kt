@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.TransactionRow
 import com.example.familiwallet.core.common.EXPENSES
+import com.example.familiwallet.core.common.ShowScreen
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.diagram.DiagramScreen
@@ -32,11 +33,12 @@ fun StartScreen(
     forceLoad: MutableState<Boolean>,
     startViewModel: StartViewModel = hiltViewModel()
 ) {
-    val uiState by startViewModel.getUiState()
 
-    when (uiState) {
-        is UiState.Success -> {
-            val viewState = (uiState as UiState.Success<StartScreenViewState>).data
+    ShowScreen(
+        viewModel = startViewModel,
+        forceLoad = forceLoad,
+        onSuccess = {
+            val viewState = it as StartScreenViewState
             Scaffold(
                 modifier = modifier
             ) {
@@ -61,18 +63,5 @@ fun StartScreen(
                 }
             }
         }
-        is UiState.Error -> {
-            val errorText = (uiState as UiState.Error).exception.message
-            ShowDialog(text = errorText)
-        }
-        is UiState.Loading -> {
-            LoadingScreen()
-        }
-    }
-    if (forceLoad.value) {
-        LaunchedEffect(Unit) {
-            startViewModel.getMainScreenInfo(TimeRangeType.MONTH, forceLoad.value)
-            forceLoad.value = false
-        }
-    }
+    )
 }

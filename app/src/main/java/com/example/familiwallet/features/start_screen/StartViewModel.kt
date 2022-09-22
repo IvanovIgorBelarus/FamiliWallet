@@ -1,10 +1,12 @@
 package com.example.familiwallet.features.start_screen
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.familiwallet.core.common.BaseViewModel
 import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
@@ -20,22 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class StartViewModel @Inject constructor(
     private val startScreenInfoUseCase: StartScreenInfoUseCase
-) : ViewModel() {
+) : BaseViewModel<StartScreenViewState>() {
 
-    private val uiRangeState = mutableStateOf<UiState<TimeRangeType>>(UiState.Success(TimeRangeType.WEEK))
-    private val uiState = mutableStateOf<UiState<StartScreenViewState>>(UiState.Loading)
-
-    fun getUiState(): State<UiState<StartScreenViewState>> = uiState
-
-    fun getUiRangeState(): State<UiState<TimeRangeType>> = uiRangeState
-
-    fun setUiRangeState(timeRangeType: TimeRangeType) {
-        viewModelScope.launch {
-            uiRangeState.value = UiState.Success(timeRangeType)
-        }
-    }
-
-    fun getMainScreenInfo(timeRangeType: TimeRangeType, forceLoad: Boolean = false) {
+    override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             try {
