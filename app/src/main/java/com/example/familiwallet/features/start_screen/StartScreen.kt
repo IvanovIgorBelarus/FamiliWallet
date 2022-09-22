@@ -10,10 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,14 +29,13 @@ import com.example.familiwallet.ui.theme.backgroundColor
 fun StartScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
+    forceLoad: MutableState<Boolean>,
     startViewModel: StartViewModel = hiltViewModel()
 ) {
-    var forceLoad by remember { mutableStateOf(true) }
     val uiState by startViewModel.getUiState()
 
     when (uiState) {
         is UiState.Success -> {
-            forceLoad = false
             val viewState = (uiState as UiState.Success<StartScreenViewState>).data
             Scaffold(
                 modifier = modifier
@@ -72,7 +69,10 @@ fun StartScreen(
             LoadingScreen()
         }
     }
-    LaunchedEffect(Unit) {
-        startViewModel.getMainScreenInfo(TimeRangeType.MONTH, forceLoad)
+    if (forceLoad.value) {
+        LaunchedEffect(Unit) {
+            startViewModel.getMainScreenInfo(TimeRangeType.MONTH, forceLoad.value)
+            forceLoad.value = false
+        }
     }
 }

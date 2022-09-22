@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +30,7 @@ fun MainScreen(
     navController: NavHostController = rememberAnimatedNavController(),
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
+    var forceLoad = remember { mutableStateOf(true) }
     val showDialog = remember { mutableStateOf(false) }
     val transactionData = remember { mutableStateOf(emptyList<UIModel.CategoryModel>()) }
     val transactionState by transactionViewModel.getTransactionState()
@@ -61,7 +63,9 @@ fun MainScreen(
     ) {
         when (transactionState) {
             is UiState.Success<Unit> -> {
+                forceLoad.value = true
                 MainScreenNavigation(
+                    forceLoad = forceLoad,
                     navigation = navController,
                     Modifier
                         .fillMaxSize()
