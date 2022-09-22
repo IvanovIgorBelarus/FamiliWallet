@@ -22,12 +22,8 @@ class TransactionViewModel @Inject constructor(
     private val uiState = mutableStateOf<UiState<List<UIModel.CategoryModel>>>(UiState.Loading)
     private val transactionState = mutableStateOf<UiState<Unit>>(UiState.Success(Unit))
 
-    fun getUiState(): State<UiState<List<UIModel.CategoryModel>>> = uiState
-    fun getTransactionState(): State<UiState<Unit>> = transactionState
-
     fun getCategories(onSuccess: (List<UIModel.CategoryModel>) -> Unit) {
         viewModelScope.launch {
-            uiState.value = UiState.Loading
             try {
                 when (val categoryListResponse = startScreenInfoUseCase.getCategoriesList()) {
                     is DataResponse.Success -> {
@@ -46,7 +42,7 @@ class TransactionViewModel @Inject constructor(
 
     fun addTransaction(transactionModel: UIModel.TransactionModel, onSuccess: () -> Unit) {
         viewModelScope.launch {
-            transactionState.value = UiState.Loading
+            uiState.value = UiState.Loading
             try {
                 when (val response = transactionUseCase.doTransaction(transactionModel)) {
                     is DataResponse.Success -> onSuccess.invoke()
