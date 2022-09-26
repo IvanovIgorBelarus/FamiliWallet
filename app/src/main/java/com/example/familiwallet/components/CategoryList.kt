@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,52 +34,80 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.EXPENSES
+import com.example.familiwallet.core.data.AppIcons
+import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.utils.AppIcons
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.example.familiwallet.ui.theme.bottomBarUnselectedContentColor
 import com.example.familiwallet.ui.theme.mainColor
 import com.example.familiwallet.ui.theme.textColor
 
 @Composable
-fun CategoryList(
+fun CategoryRowList(
     list: List<UIModel.CategoryModel>,
     currentState: MutableState<CategoryType>,
     selectedCategory: MutableState<String>,
     showError: MutableState<Boolean>
 ) {
+    val itemList = list.filter { it.type == currentState.value.type }
+
     Text(
         text = "Последние",
-        color = textColor,
+        color = mainColor,
         textAlign = TextAlign.Start,
         fontSize = 14.sp,
         modifier = Modifier.fillMaxWidth()
     )
     LazyRow(Modifier.padding(vertical = 4.dp)) {
-        items(list) { item ->
-            if (item.type == currentState.value.type)
-                CategoryRow(category = item, selectedCategory, showError)
+        items(itemList) { item ->
+            CategoryRow(
+                category = item,
+                selectedCategory = selectedCategory
+            ) {
+                selectedCategory.value = item.category.orEmpty()
+                showError.value = false
+            }
         }
     }
 }
 
 @Composable
-private fun CategoryRow(
+fun CategoryGridList(
+    list: List<UIModel.CategoryModel>,
+    currentState: MutableState<CategoryType>,
+    onItemClick: (UIModel.CategoryModel) -> Unit
+) {
+    val itemList = mutableListOf(
+        UIModel.CategoryModel(
+            icon = AppIcons.PLUS.name,
+            color = CategoryColor.COLOR12.name
+        )
+    )
+    val items = list.filter { it.type == currentState.value.type }
+    itemList.addAll(items)
+    LazyVerticalGrid(columns = GridCells.Adaptive(80.dp)) {
+        items(itemList) { item ->
+            CategoryRow(category = item, mutableStateOf("")) {
+                onItemClick.invoke(item)
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryRow(
     category: UIModel.CategoryModel,
     selectedCategory: MutableState<String>,
-    showError: MutableState<Boolean>
+    onItemClick: () -> Unit = {}
 ) {
-    val iconColor = if (category.color.isNullOrEmpty()) mainColor else Color(category.color!!.toLong())
+    val iconColor = CategoryColor.getColor(category.color.orEmpty()).color
     val backgroundColor = if (selectedCategory.value == category.category) bottomBarUnselectedContentColor else backgroundColor
     Column(
         modifier = Modifier
             .padding(2.dp)
             .width(62.dp)
             .height(80.dp)
-            .clickable {
-                selectedCategory.value = category.category.orEmpty()
-                showError.value = false
-            }
+            .clickable { onItemClick.invoke() }
             .background(backgroundColor, RoundedCornerShape(4.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -103,10 +134,29 @@ private fun CategoryRow(
     }
 }
 
+@Composable
+fun CategoryRowWithoutText(
+    color: MutableState<Color>,
+) {
+    Box(
+        modifier = Modifier
+            .border(BorderStroke(8.dp, color.value), CircleShape)
+            .size(108.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = AppIcons.getImageRes("").imageRes),
+            contentDescription = "",
+            tint = color.value,
+            modifier = Modifier.size(48.dp)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CategoryListPreview() {
-    CategoryList(
+    CategoryRowList(
         listOf(
             UIModel.CategoryModel(
                 category = "Топливо",
@@ -135,6 +185,6 @@ private fun CategoryRowPreview() {
             icon = "BEACH_ACCESS"
         ),
         mutableStateOf(""),
-        mutableStateOf(false)
+        {}
     )
 }

@@ -1,4 +1,4 @@
-package com.example.familiwallet.core.utils
+package com.example.familiwallet.core.data
 
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -147,6 +147,8 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     SUBWAY(R.drawable.ic_subway, IconActionType.TRANSPORT),
     TRAIN(R.drawable.ic_train, IconActionType.TRANSPORT),
     TRAM(R.drawable.ic_tram, IconActionType.TRANSPORT),
+
+    PLUS(R.drawable.ic_add_category, IconActionType.UNKNOWN),
     UNKNOWN(R.drawable.ic_baseline_insert_photo, IconActionType.UNKNOWN);
 
     companion object {
@@ -156,15 +158,15 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     }
 }
 
-enum class IconActionType {
-    HOBBY,
-    ANIMALS,
-    FOOD,
-    HOME,
-    OTHER,
-    PEOPLE,
-    TRANSPORT,
-    UNKNOWN;
+enum class IconActionType(val titleRes: Int) {
+    HOBBY(R.string.hobby),
+    ANIMALS(R.string.pets),
+    FOOD(R.string.food),
+    HOME(R.string.home),
+    OTHER(R.string.other),
+    PEOPLE(R.string.people),
+    TRANSPORT(R.string.transport),
+    UNKNOWN(-1);
 }
 
 @Preview(showBackground = true)

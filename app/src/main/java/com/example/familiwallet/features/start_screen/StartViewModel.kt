@@ -1,18 +1,13 @@
 package com.example.familiwallet.features.start_screen
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.familiwallet.core.common.BaseViewModel
-import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
-import com.example.familiwallet.features.main.domain.usecase.PartnerUseCase
+import com.example.familiwallet.features.start_screen.data.StartScreenViewState
 import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async

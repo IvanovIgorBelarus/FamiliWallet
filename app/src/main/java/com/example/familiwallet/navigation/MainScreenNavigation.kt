@@ -8,7 +8,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.example.familiwallet.features.newcategory.NewTransactionScreen
+import com.example.familiwallet.features.category.CategoryScreen
+import com.example.familiwallet.features.newcategory.NewCategoryScreen
 import com.example.familiwallet.features.start_screen.StartScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -26,9 +27,10 @@ fun MainScreenNavigation(
         enterTransition = { slideIntoContainer(getSlideDirection(initialState, targetState), animationSpec = tween(500)) }
     ) {
         composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.CategoryScreen.route) { NewTransactionScreen(navigation = navigation, text = "Категории") }
-        composable(route = Screen.HistoryScreen.route) { NewTransactionScreen(navigation = navigation, text = "История") }
-        composable(route = Screen.SettingsScreen.route) { NewTransactionScreen(navigation = navigation, text = "Настройки") }
+        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
+        composable(route = Screen.HistoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
+        composable(route = Screen.SettingsScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
+        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
     }
 }
 

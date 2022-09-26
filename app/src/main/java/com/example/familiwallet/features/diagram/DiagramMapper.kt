@@ -1,7 +1,7 @@
 package com.example.familiwallet.features.diagram
 
+import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.utils.AppIcons
 import com.example.familiwallet.features.diagram.data.CategorySumItem
 import com.example.familiwallet.features.diagram.data.DrawItem
 import com.example.familiwallet.ui.theme.diagramColor0
@@ -18,7 +18,7 @@ object DiagramMapper {
         categoriesList: List<UIModel.CategoryModel>
     ): List<CategorySumItem> {
         val sumList = mutableListOf<CategorySumItem>()
-        categoriesList.forEach { categoryItem -> sumList.add(CategorySumItem(category = categoryItem.category, icon =  AppIcons.getImageRes(categoryItem.icon).imageRes)) }
+        categoriesList.forEach { categoryItem -> sumList.add(CategorySumItem(category = categoryItem.category, icon = AppIcons.getImageRes(categoryItem.icon).imageRes)) }
         expansesList.forEach { transaction ->
             sumList.forEach { categorySum ->
                 if (transaction.category == categorySum.category) {
@@ -27,9 +27,9 @@ object DiagramMapper {
             }
         }
         var resultList = sumList.sortedByDescending { it.sum }.subList(0, 6)
-        val overList = sumList.sortedByDescending { it.sum }.subList(7, sumList.size-1)
+        val overList = sumList.sortedByDescending { it.sum }.subList(7, sumList.size - 1)
         val lastItem = CategorySumItem(category = "other", icon = AppIcons.UNKNOWN.imageRes).apply {
-            overList.forEach { item->sum+= item.sum}
+            overList.forEach { item -> sum += item.sum }
         }
         resultList = resultList.plus(lastItem)
         return resultList
@@ -41,7 +41,7 @@ object DiagramMapper {
         return result
     }
 
-    fun mapDrawItems(expansesList: List<CategorySumItem>, summary: Double): List<DrawItem>{
+    fun mapDrawItems(expansesList: List<CategorySumItem>, summary: Double): List<DrawItem> {
         val items = mutableListOf<DrawItem>()
         var startAngle = -90f
         var position = 0

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.familiwallet.R
 import com.example.familiwallet.components.AmountTextField
-import com.example.familiwallet.components.CategoryList
+import com.example.familiwallet.components.CategoryRowList
 import com.example.familiwallet.components.CategoryTabs
 import com.example.familiwallet.components.TransactionButton
 import com.example.familiwallet.core.common.CashType
@@ -57,7 +57,7 @@ fun TransactionDialog(
             CategoryTabs(tabList = tabList, currentState = currentState)
             Spacer(modifier = Modifier.size(24.dp))
 
-            CategoryList(
+            CategoryRowList(
                 list = data,
                 currentState,
                 selectedCategory,

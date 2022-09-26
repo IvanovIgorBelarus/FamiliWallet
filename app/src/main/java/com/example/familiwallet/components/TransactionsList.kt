@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
+import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.UIModel
-import com.example.familiwallet.core.utils.AppIcons
 import com.example.familiwallet.core.utils.toStringFormat
 import com.example.familiwallet.ui.theme.backgroundColor
 import com.example.familiwallet.ui.theme.textColor

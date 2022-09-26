@@ -23,6 +23,7 @@ import com.example.familiwallet.components.TransactionRow
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.ShowScreen
 import com.example.familiwallet.features.diagram.DiagramScreen
+import com.example.familiwallet.features.start_screen.data.StartScreenViewState
 import com.example.familiwallet.ui.theme.backgroundColor
 
 @Composable
@@ -64,30 +65,6 @@ fun StartScreen(
         forceLoad = forceLoad,
         onSuccess = {
             viewState = it as StartScreenViewState
-//            Scaffold(
-//                modifier = modifier,
-//                backgroundColor = Color.White
-//            ) {
-//                LazyColumn {
-//                    item {
-//                        DiagramScreen(
-//                            modifier = Modifier
-//                                .padding(8.dp, 0.dp, 8.dp, 2.dp)
-//                                .fillMaxWidth()
-//                                .defaultMinSize(minHeight = 400.dp)
-//                                .background(backgroundColor, RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp)),
-//                            expansesList = viewState.transactionsList.filter { it.type == EXPENSES },
-//                            categoriesList = viewState.categoriesList
-//                        )
-//                    }
-//                    items(viewState.transactionsList) { item ->
-//                        TransactionRow(
-//                            transaction = item,
-//                            categoriesList = viewState.categoriesList
-//                        )
-//                    }
-//                }
-//            }
         }
     )
 }

@@ -1,7 +1,7 @@
 package com.example.familiwallet.navigation
 
 import com.example.familiwallet.R
-import com.example.familiwallet.core.utils.AppIcons
+import com.example.familiwallet.core.data.AppIcons
 
 sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null) {
     object MainScreen : Screen("main", "главная", AppIcons.FRAME45.imageRes)
@@ -14,6 +14,7 @@ sealed class Screen(val route: String, var title: String? = null, var icon: Int,
     object EnterScreen : Screen("enter", null, AppIcons.UNKNOWN.imageRes)
     object AuthScreen : Screen("auth", null, AppIcons.UNKNOWN.imageRes)
     object TransactionScreen : Screen("transaction", "Ввести операцию", AppIcons.UNKNOWN.imageRes)
+    object NewCategoryScreen : Screen("new category", "Новая категория", AppIcons.UNKNOWN.imageRes)
 
     companion object {
         fun getScreen(route: String?): Screen = Screen::class.sealedSubclasses.firstOrNull { it.objectInstance?.route == route }?.objectInstance ?: LoadingScreen

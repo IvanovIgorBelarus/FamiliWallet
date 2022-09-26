@@ -15,4 +15,15 @@
     <string name="cash">Наличные</string>
     <string name="confirm">Внести</string>
     <string name="error_transaction_message">Некорректно заданы параметры</string>
+
+    <string name="hobby">Хобби</string>
+    <string name="pets">Питомцы</string>
+    <string name="food">Еда</string>
+    <string name="other">Прочее</string>
+    <string name="home">дом</string>
+    <string name="people">Люди</string>
+    <string name="transport">Транспорт</string>
+
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
 </resources>
