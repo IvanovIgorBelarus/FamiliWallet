@@ -39,12 +39,12 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    fun addTransaction(transactionModel: UIModel.TransactionModel, onSuccess: () -> Unit) {
+    fun addTransaction(transactionModel: UIModel.TransactionModel) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             try {
                 when (val response = transactionUseCase.doTransaction(transactionModel)) {
-                    is DataResponse.Success -> onSuccess.invoke()
+                    is DataResponse.Success -> {}
                     is DataResponse.Error ->  uiState.value = UiState.Error(response.exception)
                 }
             } catch (e: Exception) {

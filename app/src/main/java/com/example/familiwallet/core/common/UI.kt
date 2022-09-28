@@ -29,11 +29,10 @@ fun ShowScreen(
         is UiState.Loading -> LoadingScreen()
     }
 
-
+    if (forceLoad.value) {
         LaunchedEffect(Unit) {
             viewModel.getData(forceLoad.value)
-            if (forceLoad.value) {
-            forceLoad.value = false}
+            forceLoad.value = false
         }
-
+    }
 }

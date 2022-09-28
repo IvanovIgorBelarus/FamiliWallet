@@ -35,11 +35,9 @@ fun MainScreen(
                 showDialog.value = false
             },
             onButtonClick = { model ->
+                transactionViewModel.addTransaction(model)
+                forceLoad.value = true
                 showDialog.value = false
-                transactionViewModel.addTransaction(
-                    model,
-                    onSuccess = { forceLoad.value = true }
-                )
             }
         )
     }
