@@ -44,13 +44,7 @@ fun CategoryScreen(
 
             CategoryGridList(list = viewState.categoriesList, currentState = currentState) {
                 NewCategoryModel.setNewCategoryModel(it)
-                navigation.navigate(Screen.NewCategoryScreen.route) {
-                    launchSingleTop = true
-                    restoreState = true
-                    popUpTo(findStartDestination(navigation.graph).id) {
-                        saveState = true
-                    }
-                }
+                navigation.navigate(Screen.NewCategoryScreen.route)
             }
         }
     }

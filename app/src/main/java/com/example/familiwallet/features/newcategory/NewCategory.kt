@@ -34,6 +34,7 @@ import com.example.familiwallet.components.CategoryIconGrid
 import com.example.familiwallet.components.CategoryRowWithoutText
 import com.example.familiwallet.components.TransactionButton
 import com.example.familiwallet.core.common.ShowScreen
+import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.features.newcategory.data.NewCategoryViewState
@@ -47,7 +48,7 @@ fun NewCategoryScreen(
 ) {
     var viewState by remember { mutableStateOf(NewCategoryViewState(UIModel.CategoryModel())) }
     val categoryColor = remember { mutableStateOf(CategoryColor.getColor(viewState.category.color.orEmpty()).color) }
-
+    val icon = remember { mutableStateOf(AppIcons.UNKNOWN) }
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
         backgroundColor = Color.White
@@ -61,7 +62,7 @@ fun NewCategoryScreen(
                         .size(150.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CategoryRowWithoutText(categoryColor)
+                    CategoryRowWithoutText(categoryColor, icon)
                 }
                 Spacer(modifier = Modifier.size(24.dp))
             }
@@ -89,7 +90,7 @@ fun NewCategoryScreen(
                 LazyHorizontalGrid(
                     rows = GridCells.Fixed(2),
                     verticalArrangement = Arrangement.Center,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
                         .requiredHeight(96.dp)
@@ -110,10 +111,9 @@ fun NewCategoryScreen(
                 Spacer(modifier = Modifier.size(24.dp))
             }
 
-            newCategoryViewModel.getIcons().forEach { iconCategoryItem ->
+            newCategoryViewModel.getIcons().forEach { categoryItem ->
                 item {
-//                    CategoryIconGrid(item = iconCategoryItem)
-                    Spacer(modifier = Modifier.size(12.dp))
+                    CategoryIconGrid(item = categoryItem, icon)
                 }
             }
         }
@@ -121,7 +121,7 @@ fun NewCategoryScreen(
 
     ShowScreen(
         viewModel = newCategoryViewModel,
-        forceLoad = mutableStateOf(false),
+        forceLoad = mutableStateOf(true),
         onSuccess = { viewState = it as NewCategoryViewState }
     )
 }

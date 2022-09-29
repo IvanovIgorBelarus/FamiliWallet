@@ -17,7 +17,6 @@ class CategoryViewModel @Inject constructor(
 
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
-            uiState.value = UiState.Loading
             try {
                 when (val categoryListResponse = startScreenInfoUseCase.getCategoriesList(forceLoad)) {
                     is DataResponse.Success -> {

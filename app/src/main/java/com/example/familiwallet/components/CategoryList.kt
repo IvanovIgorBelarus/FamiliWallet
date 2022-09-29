@@ -137,6 +137,7 @@ fun CategoryRow(
 @Composable
 fun CategoryRowWithoutText(
     color: MutableState<Color>,
+    icon: MutableState<AppIcons>
 ) {
     Box(
         modifier = Modifier
@@ -145,7 +146,7 @@ fun CategoryRowWithoutText(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(id = AppIcons.getImageRes("").imageRes),
+            painter = painterResource(id = icon.value.imageRes),
             contentDescription = "",
             tint = color.value,
             modifier = Modifier.size(48.dp)

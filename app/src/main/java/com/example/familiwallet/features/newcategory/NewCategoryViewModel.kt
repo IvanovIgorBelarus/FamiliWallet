@@ -21,8 +21,10 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
     fun getIcons(): List<Pair<IconActionType, List<AppIcons>>> {
         val resultList = mutableListOf<Pair<IconActionType, List<AppIcons>>>()
         IconActionType.values().forEach { type ->
-            val typeList = AppIcons.values().filter { it.actionType == type }
-            resultList.add(Pair(type, typeList))
+            if (type != IconActionType.UNKNOWN) {
+                val typeList = AppIcons.values().filter { it.actionType == type }
+                resultList.add(Pair(type, typeList))
+            }
         }
         return resultList
     }

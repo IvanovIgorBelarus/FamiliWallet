@@ -21,6 +21,7 @@ fun ShowScreen(
     when (uiState) {
         is UiState.Success<*> -> {
             onSuccess.invoke((uiState as UiState.Success<*>).data)
+            forceLoad.value = false
         }
         is UiState.Error -> {
             val errorText = (uiState as UiState.Error).exception.message
@@ -29,10 +30,7 @@ fun ShowScreen(
         is UiState.Loading -> LoadingScreen()
     }
 
-    if (forceLoad.value) {
-        LaunchedEffect(Unit) {
-            viewModel.getData(forceLoad.value)
-            forceLoad.value = false
-        }
+    LaunchedEffect(Unit) {
+        viewModel.getData(forceLoad.value)
     }
 }
