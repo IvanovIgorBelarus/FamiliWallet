@@ -3,20 +3,28 @@ package com.example.familiwallet.navigation
 import com.example.familiwallet.R
 import com.example.familiwallet.core.data.AppIcons
 
-sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null) {
-    object MainScreen : Screen("main", "главная", AppIcons.FRAME45.imageRes)
-    object LoadingScreen : Screen("loading", "", AppIcons.FRAME45.imageRes)
-    object StartScreen : Screen("main1", "Главная", R.drawable.ic_start_screen, 1)
-    object CategoryScreen : Screen("category", "Категории", R.drawable.ic_category_screen, 2)
-    object HistoryScreen : Screen("history", "История", R.drawable.ic_history_screen, 3)
-    object SettingsScreen : Screen("settings", "Настройки", R.drawable.ic_settings_screen, 4)
-    object SplashScreen : Screen("splash", null, AppIcons.LOCAL_GROCERY_STORE.imageRes)
-    object EnterScreen : Screen("enter", null, AppIcons.UNKNOWN.imageRes)
-    object AuthScreen : Screen("auth", null, AppIcons.UNKNOWN.imageRes)
-    object TransactionScreen : Screen("transaction", "Ввести операцию", AppIcons.UNKNOWN.imageRes)
-    object NewCategoryScreen : Screen("new category", "Новая категория", AppIcons.UNKNOWN.imageRes)
+sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null, val stack: Stack) {
+    object MainScreen : Screen("main", "главная", AppIcons.FRAME45.imageRes, stack = Stack.UNKNOWN)
+    object LoadingScreen : Screen("loading", "", AppIcons.FRAME45.imageRes, stack = Stack.UNKNOWN)
+    object StartScreen : Screen("main1", "Главная", R.drawable.ic_start_screen, 1,Stack.START)
+    object CategoryScreen : Screen("category", "Категории", R.drawable.ic_category_screen, 2,Stack.CATEGORY)
+    object HistoryScreen : Screen("history", "История", R.drawable.ic_history_screen, 3,Stack.HISTORY)
+    object SettingsScreen : Screen("settings", "Настройки", R.drawable.ic_settings_screen, 4,Stack.SETTINGS)
+    object SplashScreen : Screen("splash", null, AppIcons.LOCAL_GROCERY_STORE.imageRes, stack = Stack.UNKNOWN)
+    object EnterScreen : Screen("enter", null, AppIcons.UNKNOWN.imageRes, stack = Stack.UNKNOWN)
+    object AuthScreen : Screen("auth", null, AppIcons.UNKNOWN.imageRes, stack = Stack.UNKNOWN)
+    object TransactionScreen : Screen("transaction", "Ввести операцию", AppIcons.UNKNOWN.imageRes, stack = Stack.UNKNOWN)
+    object NewCategoryScreen : Screen("new category", "Новая категория", AppIcons.UNKNOWN.imageRes, stack = Stack.CATEGORY)
 
     companion object {
         fun getScreen(route: String?): Screen = Screen::class.sealedSubclasses.firstOrNull { it.objectInstance?.route == route }?.objectInstance ?: LoadingScreen
     }
+}
+
+enum class Stack{
+    START,
+    CATEGORY,
+    HISTORY,
+    SETTINGS,
+    UNKNOWN
 }

@@ -64,7 +64,7 @@ fun BottomNav(
     ) {
         listOfNavItems.forEach { screen ->
             BottomNavigationItem(
-                selected = currentRoute == screen.route,
+                selected = Screen.getScreen(currentRoute).stack == screen.stack,
                 selectedContentColor = bottomBarSelectedContentColor,
                 unselectedContentColor = bottomBarUnselectedContentColor,
                 icon = {
@@ -75,7 +75,7 @@ fun BottomNav(
                     )
                 },
                 onClick = { onNavItemClick(navigation, screen.route, currentRoute) },
-                label = { setLabel(title = screen.title, isSelected = currentRoute == screen.route) }
+                label = { setLabel(title = screen.title, isSelected = Screen.getScreen(currentRoute).stack == screen.stack) }
             )
             if (screen is Screen.CategoryScreen) {
                 Spacer(modifier = Modifier.size(60.dp))
@@ -93,9 +93,7 @@ private fun onNavItemClick(
         navigation.navigate(route) {
             launchSingleTop = true
             restoreState = true
-            popUpTo(findStartDestination(navigation.graph).id) {
-                saveState = true
-            }
+            popUpTo(findStartDestination(navigation.graph).id)
         }
     }
 }
