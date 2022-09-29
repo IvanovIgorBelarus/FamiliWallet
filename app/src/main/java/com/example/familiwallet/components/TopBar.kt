@@ -1,7 +1,6 @@
 package com.example.familiwallet.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.familiwallet.R
+import com.example.familiwallet.core.common.rippleClickable
 import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.navigation.Screen
 import com.example.familiwallet.ui.theme.bottomBarBackgroundColor
@@ -116,8 +116,9 @@ private fun TransactionTopBar(
         Icon(
             painter = painterResource(id = R.drawable.ic_cross),
             contentDescription = "",
-            modifier = Modifier.size(24.dp)
-                .clickable { navigation.popBackStack() },
+            modifier = Modifier
+                .size(24.dp)
+                .rippleClickable { navigation.popBackStack() },
             tint = Color.Black
         )
         Spacer(modifier = Modifier.size(12.dp))

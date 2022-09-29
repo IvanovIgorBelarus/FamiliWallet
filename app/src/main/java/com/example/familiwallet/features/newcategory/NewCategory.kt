@@ -3,7 +3,6 @@ package com.example.familiwallet.features.newcategory
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -40,6 +39,8 @@ import com.example.familiwallet.components.CategoryIconGrid
 import com.example.familiwallet.components.CategoryRowWithoutText
 import com.example.familiwallet.components.TransactionButton
 import com.example.familiwallet.core.common.ShowScreen
+import com.example.familiwallet.core.common.noRippleClickable
+import com.example.familiwallet.core.common.rippleClickable
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
@@ -128,7 +129,7 @@ fun NewCategoryScreen(
                             .size(36.dp)
                             .background(item.color, CircleShape)
                             .aspectRatio(1f)
-                            .clickable {
+                            .rippleClickable {
                                 categoryColor.value = CategoryColor.getColor(item.name).color
                             })
                     }

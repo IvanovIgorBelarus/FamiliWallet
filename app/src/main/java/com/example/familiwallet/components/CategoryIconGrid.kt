@@ -1,7 +1,6 @@
 package com.example.familiwallet.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,11 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.familiwallet.core.common.noRippleClickable
+import com.example.familiwallet.core.common.rippleClickable
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.IconActionType
 import com.example.familiwallet.ui.theme.backgroundColor
@@ -88,7 +90,7 @@ private fun DrawIconsRow(
         ) {
             items.forEach { iconItem ->
                 val modifier = if (iconItem != AppIcons.UNKNOWN) {
-                    Modifier.clickable {
+                    Modifier.rippleClickable(color = Color.White) {
                         if (iconItem != AppIcons.UNKNOWN) {
                             icon.value = iconItem
                         }

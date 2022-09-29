@@ -3,7 +3,6 @@ package com.example.familiwallet.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.EXPENSES
+import com.example.familiwallet.core.common.noRippleClickable
+import com.example.familiwallet.core.common.rippleClickable
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
@@ -107,7 +108,7 @@ fun CategoryRow(
             .padding(2.dp)
             .width(62.dp)
             .height(80.dp)
-            .clickable { onItemClick.invoke() }
+            .rippleClickable(color = Color.White) { onItemClick.invoke() }
             .background(backgroundColor, RoundedCornerShape(4.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top

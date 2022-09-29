@@ -1,11 +1,19 @@
 package com.example.familiwallet.core.common
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import com.example.familiwallet.App.Companion.dateFilterType
 import com.example.familiwallet.App.Companion.endDate
 import com.example.familiwallet.App.Companion.startDate
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.toEndOfDay
 import com.example.familiwallet.core.utils.toStartOfDay
+import com.example.familiwallet.ui.theme.backgroundColor
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -42,7 +50,8 @@ fun List<UIModel.TransactionModel>.currentMonthFilter(): List<UIModel.Transactio
 }
 
 fun List<UIModel.TransactionModel>.currentRangeFilter(): List<UIModel.TransactionModel> {
-    return this.filter { it.date!! in startDate!!..endDate!! }}
+    return this.filter { it.date!! in startDate!!..endDate!! }
+}
 
 
 fun List<UIModel.TransactionModel>.currentDateFilter(): List<UIModel.TransactionModel> {
@@ -65,4 +74,22 @@ fun List<UIModel.TransactionModel>.userFilter(uid: String): List<UIModel.Transac
 fun List<UIModel.TransactionModel>.categoryFilter(category: String): List<UIModel.TransactionModel> = this.filter { it.category == category }.sortedByDescending { it.date }
 
 val Double.round: Double
-    get() = (this * 100).roundToInt().toDouble()/100
+    get() = (this * 100).roundToInt().toDouble() / 100
+
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() }
+    ) {
+        onClick()
+    }
+}
+
+inline fun Modifier.rippleClickable(color: Color = backgroundColor, crossinline onClick: () -> Unit): Modifier = composed {
+    clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(bounded = true, color = color)
+    ) {
+        onClick()
+    }
+}
