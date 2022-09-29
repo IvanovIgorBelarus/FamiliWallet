@@ -1,6 +1,8 @@
 package com.example.familiwallet.features.transacrionscreen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +36,7 @@ import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.features.transacrionscreen.data.TransactionTabItem
 import com.example.familiwallet.ui.theme.backgroundColor
+import com.example.familiwallet.ui.theme.buttonColor
 import java.util.*
 
 @Composable
@@ -79,7 +84,13 @@ fun TransactionDialog(
             }
             Spacer(modifier = Modifier.size(24.dp))
 
-            AmountTextField(amount = amount, showError)
+            AmountTextField(
+                stringValue = amount,
+                placeHolderText = resources.getString(R.string.amount),
+                modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
+                showError = showError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
             if (showError.value) {
                 Text(
                     text = resources.getString(R.string.error_transaction_message),
