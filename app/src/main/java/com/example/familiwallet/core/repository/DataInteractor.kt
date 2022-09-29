@@ -25,9 +25,9 @@ class DataInteractor @Inject constructor(
     override suspend fun doBakTransactions(transactionModel: UIModel.TransactionModel): DataResponse<Unit> =
         firebaseRepository.doBakTransactions(transactionModel)
 
-    override suspend fun addNewCategory(categoryItem: UIModel.CategoryModel) {
+    override suspend fun addNewCategory(categoryItem: UIModel.CategoryModel): DataResponse<Unit> =
         firebaseRepository.addNewCategory(categoryItem)
-    }
+
 
     override suspend fun getSmsList(forceLoad: Boolean): DataResponse<List<UIModel.SmsModel>>? {
         return get(SmsCache, firebaseRepository.getSmsList(), forceLoad)
@@ -50,10 +50,8 @@ class DataInteractor @Inject constructor(
         firebaseRepository.deleteItem(item)
     }
 
-    override suspend fun upDateItem(item: Any?) {
+    override suspend fun upDateItem(item: Any?): DataResponse<Unit> =
         firebaseRepository.upDateItem(item)
-        update(item)
-    }
 
     private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {

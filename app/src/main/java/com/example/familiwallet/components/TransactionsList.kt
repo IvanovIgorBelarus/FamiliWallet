@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.AppIcons
+import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.toStringFormat
 import com.example.familiwallet.ui.theme.backgroundColor
@@ -67,6 +68,7 @@ fun TransactionRow(
         Icon(
             painter = painterResource(id = iconRes.imageRes),
             contentDescription = "",
+            tint = CategoryColor.getColor(itemCategory?.color.orEmpty()).color,
             modifier = Modifier.size(36.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))

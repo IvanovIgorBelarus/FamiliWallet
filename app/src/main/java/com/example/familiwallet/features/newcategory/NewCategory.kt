@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +40,6 @@ import com.example.familiwallet.components.CategoryIconGrid
 import com.example.familiwallet.components.CategoryRowWithoutText
 import com.example.familiwallet.components.TransactionButton
 import com.example.familiwallet.core.common.ShowScreen
-import com.example.familiwallet.core.common.noRippleClickable
 import com.example.familiwallet.core.common.rippleClickable
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
@@ -54,14 +54,23 @@ fun NewCategoryScreen(
     navigation: NavHostController,
     newCategoryViewModel: NewCategoryViewModel = hiltViewModel()
 ) {
-    newCategoryViewModel.getData()
-
     val resources = LocalContext.current.resources
     var viewState by remember { mutableStateOf(NewCategoryViewState(UIModel.CategoryModel())) }
-    val categoryColor = remember { mutableStateOf(CategoryColor.getColor(viewState.category.color.orEmpty()).color) }
+    val categoryColor = remember { mutableStateOf(CategoryColor.UNKNOWN) }
     val icon = remember { mutableStateOf(AppIcons.UNKNOWN) }
     val categoryName = remember { mutableStateOf(viewState.category.category.orEmpty()) }
     val showError = remember { mutableStateOf(false) }
+
+    ShowScreen(
+        viewModel = newCategoryViewModel,
+        forceLoad = mutableStateOf(true),
+        onSuccess = {
+            viewState = it as NewCategoryViewState
+            categoryColor.value = CategoryColor.getColor(viewState.category.color.orEmpty())
+            icon.value = AppIcons.getImageRes(viewState.category.icon.orEmpty())
+            categoryName.value = viewState.category.category.orEmpty()
+        }
+    )
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
@@ -108,7 +117,13 @@ fun NewCategoryScreen(
                         text = R.string.done,
                         isSelected = mutableStateOf(true)
                     ) {
-                        //внести изменения в категорию
+                        newCategoryViewModel.sendCategoryRequest(
+                            category = categoryName.value,
+                            icon = icon.value,
+                            color = categoryColor.value
+                        ){
+                            navigation.popBackStack()
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.size(24.dp))
@@ -132,7 +147,7 @@ fun NewCategoryScreen(
                             .background(item.color, CircleShape)
                             .aspectRatio(1f)
                             .rippleClickable {
-                                categoryColor.value = CategoryColor.getColor(item.name).color
+                                categoryColor.value = CategoryColor.getColor(item.name)
                             })
                     }
                 }
@@ -147,9 +162,7 @@ fun NewCategoryScreen(
         }
     }
 
-    ShowScreen(
-        viewModel = newCategoryViewModel,
-        forceLoad = mutableStateOf(true),
-        onSuccess = { viewState = it as NewCategoryViewState }
-    )
+    LaunchedEffect(Unit) {
+        newCategoryViewModel.getData()
+    }
 }

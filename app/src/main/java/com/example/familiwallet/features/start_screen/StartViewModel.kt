@@ -59,6 +59,7 @@ class StartViewModel @Inject constructor(
                     Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
                     return@async DataResponse.Error(categoryListResponse.exception)
                 }
+                else -> {}
             }
 
             val transactionsListResponse = transactionUseCase.getTransactionsList(forceLoad)

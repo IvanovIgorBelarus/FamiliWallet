@@ -3,6 +3,7 @@ package com.example.familiwallet.core.repository
 import com.example.familiwallet.core.common.BANK_MINUS
 import com.example.familiwallet.core.common.CATEGORIES
 import com.example.familiwallet.core.common.CATEGORY
+import com.example.familiwallet.core.common.COLOR
 import com.example.familiwallet.core.common.CURRENCY
 import com.example.familiwallet.core.common.DATE
 import com.example.familiwallet.core.common.ICON
@@ -81,7 +82,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
                 UID to categoryItem.uid,
                 CATEGORY to categoryItem.category,
                 TRANSACTION_TYPE to categoryItem.type,
-                ICON to categoryItem.icon
+                ICON to categoryItem.icon,
+                COLOR to categoryItem.color
             )
         )
             .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
@@ -108,7 +110,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
     }
 
     suspend fun getPersonTransactionList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
-        if(partnerRequest is DataResponse.Success) {
+        if (partnerRequest is DataResponse.Success) {
             val account = partnerRequest.data
             val firstDay = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -6) }.time.toStartOfDay.time
             db.collection(TRANSACTIONS)
@@ -163,7 +165,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
                     UID to item.uid,
                     CATEGORY to item.category,
                     ICON to item.icon,
-                    TRANSACTION_TYPE to item.type
+                    TRANSACTION_TYPE to item.type,
+                    COLOR to item.color
                 )
             }
             is UIModel.AccountModel -> {

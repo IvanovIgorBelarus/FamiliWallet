@@ -31,6 +31,7 @@ class TransactionViewModel @Inject constructor(
                         Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
                         uiState.value = UiState.Error(categoryListResponse.exception)
                     }
+                    else -> {}
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)

@@ -18,7 +18,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.CategoryGridList
 import com.example.familiwallet.components.CategoryTabs
-import com.example.familiwallet.components.findStartDestination
 import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.ShowScreen
 import com.example.familiwallet.features.newcategory.data.NewCategoryModel
@@ -45,7 +44,11 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.size(24.dp))
 
             CategoryGridList(list = viewState.categoriesList, currentState = currentState) {
-                NewCategoryModel.setNewCategoryModel(it)
+                NewCategoryModel.setNewCategoryModel(
+                    model = it,
+                    isNewCategory = !viewState.categoriesList.contains(it),
+                    categoryType = currentState.value
+                )
                 navigation.navigate(Screen.NewCategoryScreen.route)
             }
         }

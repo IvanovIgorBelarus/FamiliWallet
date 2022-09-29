@@ -3,6 +3,7 @@ package com.example.familiwallet.core.repository
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import com.example.familiwallet.core.common.CATEGORY
+import com.example.familiwallet.core.common.COLOR
 import com.example.familiwallet.core.common.CURRENCY
 import com.example.familiwallet.core.common.DATE
 import com.example.familiwallet.core.common.ICON
@@ -11,6 +12,7 @@ import com.example.familiwallet.core.common.PARTNER_UID
 import com.example.familiwallet.core.common.TRANSACTION_TYPE
 import com.example.familiwallet.core.common.UID
 import com.example.familiwallet.core.common.VALUE
+import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
 import com.google.firebase.firestore.QuerySnapshot
@@ -78,7 +80,8 @@ object RepositoryMapper {
                     uid = doc.getString(UID),
                     category = doc.getString(CATEGORY),
                     type = doc.getString(TRANSACTION_TYPE),
-                    icon = doc.getString(ICON) ?: Icons.Default.List.name
+                    icon = doc.getString(ICON) ?: Icons.Default.List.name,
+                    color = doc.getString(COLOR)?: CategoryColor.UNKNOWN.name
                 )
             )
         }

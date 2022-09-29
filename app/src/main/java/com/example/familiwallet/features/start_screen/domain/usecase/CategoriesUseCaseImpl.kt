@@ -8,13 +8,12 @@ import javax.inject.Inject
 class CategoriesUseCaseImpl @Inject constructor(
     private val repo: DataRepository
 ) : CategoriesUseCase {
-    override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>> {
-        return when (val response = repo.getCategoriesList(forceLoad)) {
-            is DataResponse.Success -> DataResponse.Success(
-                response.data
-            )
-            is DataResponse.Error -> DataResponse.Error(response.exception)
-            else -> DataResponse.Error(Throwable("Нет данных"))
-        }
-    }
+    override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? =
+        repo.getCategoriesList(forceLoad)
+
+    override suspend fun updateCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
+        repo.upDateItem(category)
+
+    override suspend fun addNewCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
+        repo.addNewCategory(category)
 }

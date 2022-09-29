@@ -1,21 +1,29 @@
 package com.example.familiwallet.features.newcategory
 
+import androidx.lifecycle.viewModelScope
 import com.example.familiwallet.core.common.BaseViewModel
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
+import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.IconActionType
+import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
+import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.features.newcategory.data.NewCategoryModel
 import com.example.familiwallet.features.newcategory.data.NewCategoryViewState
+import com.example.familiwallet.features.start_screen.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryViewState>() {
+class NewCategoryViewModel @Inject constructor(
+    private val categoriesUseCase: CategoriesUseCase
+) : BaseViewModel<NewCategoryViewState>() {
 
     override fun getData(forceLoad: Boolean) {
         uiState.value = UiState.Success(NewCategoryViewState(NewCategoryModel.getCategoryModel()))
-        NewCategoryModel.clearModel()
     }
 
     fun getIcons(): List<Pair<IconActionType, List<AppIcons>>> {
@@ -28,6 +36,47 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
         }
         return resultList
     }
+
+    fun sendCategoryRequest(
+        category: String,
+        icon: AppIcons,
+        color: CategoryColor,
+        onSuccess: () -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val request = UIModel.CategoryModel(
+                uid = UserUtils.getUsersUid(),
+                category = category,
+                type = NewCategoryModel.getCategoryType().type,
+                icon = icon.name,
+                color = color.name
+            )
+            try {
+                val response = if (NewCategoryModel.isNewCategory()) {
+                    addNewCategory(request)
+                } else {
+                    updateCategory(request.apply { id = NewCategoryModel.getCategoryModel().itemId })
+                }
+
+                when (response) {
+                    is DataResponse.Success -> {
+                        onSuccess.invoke()
+                    }
+                    is DataResponse.Error -> {
+                        uiState.value = UiState.Error(response.exception)
+                    }
+                }
+            } catch (e: Exception) {
+                uiState.value = UiState.Error(e)
+            }
+        }
+    }
+
+    private suspend fun updateCategory(item: UIModel.CategoryModel) =
+        withContext(viewModelScope.coroutineContext) { categoriesUseCase.updateCategory(item) }
+
+    private suspend fun addNewCategory(item: UIModel.CategoryModel) =
+        withContext(viewModelScope.coroutineContext) { categoriesUseCase.addNewCategory(item) }
 
     fun getCategoriesColors() = listOf(
         CategoryColor.COLOR0,

@@ -24,6 +24,7 @@ const val CATEGORY = "category"
 const val VALUE = "value"
 const val UID = "uid"
 const val ICON = "icon"
+const val COLOR = "color"
 
 const val BYN = "BYN"
 const val USD = "USD"
