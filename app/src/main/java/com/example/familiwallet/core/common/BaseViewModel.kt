@@ -12,4 +12,12 @@ abstract class BaseViewModel<T> : ViewModel() {
     fun getUiState(): State<UiState<T>> = uiState
 
     abstract fun getData(forceLoad: Boolean = false)
+
+    var start: Boolean = false
+        set(value) {
+            if (field != value) {
+                field = value
+                getData(field)
+            }
+        }
 }

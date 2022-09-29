@@ -54,6 +54,8 @@ fun NewCategoryScreen(
     navigation: NavHostController,
     newCategoryViewModel: NewCategoryViewModel = hiltViewModel()
 ) {
+    newCategoryViewModel.getData()
+
     val resources = LocalContext.current.resources
     var viewState by remember { mutableStateOf(NewCategoryViewState(UIModel.CategoryModel())) }
     val categoryColor = remember { mutableStateOf(CategoryColor.getColor(viewState.category.color.orEmpty()).color) }

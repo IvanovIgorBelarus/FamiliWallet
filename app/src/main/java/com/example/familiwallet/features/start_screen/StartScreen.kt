@@ -34,7 +34,7 @@ fun StartScreen(
     startViewModel: StartViewModel = hiltViewModel()
 ) {
     var viewState by remember { mutableStateOf(StartScreenViewState(emptyList(), emptyList())) }
-
+    startViewModel.start = forceLoad.value
     Scaffold(
         modifier = modifier,
         backgroundColor = Color.White

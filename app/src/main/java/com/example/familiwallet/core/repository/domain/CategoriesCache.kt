@@ -1,5 +1,6 @@
 package com.example.familiwallet.core.repository.domain
 
+import android.util.Log
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 
@@ -12,7 +13,10 @@ object CategoriesCache : CacheRepository<DataResponse<List<UIModel.CategoryModel
         categoriesList.addAll(list)
     }
 
-    override suspend fun get(): DataResponse<List<UIModel.CategoryModel>> = DataResponse.Success(categoriesList.toList())
+    override suspend fun get(): DataResponse<List<UIModel.CategoryModel>> {
+        Log.d("MYNAME", "CategoriesCache")
+        return DataResponse.Success(categoriesList.toList())
+    }
 
     override suspend fun clear() {
         categoriesList.clear()

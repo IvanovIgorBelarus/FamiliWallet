@@ -1,7 +1,6 @@
 package com.example.familiwallet.core.common
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.example.familiwallet.core.ui.UiState
@@ -28,9 +27,5 @@ fun ShowScreen(
             ShowDialog(text = errorText)
         }
         is UiState.Loading -> LoadingScreen()
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.getData(forceLoad.value)
     }
 }

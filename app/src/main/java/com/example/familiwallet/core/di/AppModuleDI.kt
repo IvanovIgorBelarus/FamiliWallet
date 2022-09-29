@@ -4,8 +4,8 @@ import com.example.familiwallet.core.repository.DataInteractor
 import com.example.familiwallet.core.repository.DataRepository
 import com.example.familiwallet.features.main.domain.usecase.PartnerUseCase
 import com.example.familiwallet.features.main.domain.usecase.PartnerUseCaseImpl
-import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
-import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCaseImpl
+import com.example.familiwallet.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.familiwallet.features.start_screen.domain.usecase.CategoriesUseCaseImpl
 import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCase
 import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCaseImpl
 import dagger.Binds
@@ -23,8 +23,8 @@ abstract class AppModule {
 
     @Binds
     abstract fun provideStartScreenInfoUseCase(
-        mainScreenInfoUseCaseImpl: StartScreenInfoUseCaseImpl
-    ): StartScreenInfoUseCase
+        mainScreenInfoUseCaseImpl: CategoriesUseCaseImpl
+    ): CategoriesUseCase
 
     @Binds
     abstract fun providePartnerUseCase(

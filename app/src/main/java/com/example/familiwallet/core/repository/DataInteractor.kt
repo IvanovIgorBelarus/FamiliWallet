@@ -57,14 +57,14 @@ class DataInteractor @Inject constructor(
 
     private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {
-            Log.i("MYNAME", "request firebase")
+            Log.e("MYNAME", "request firebase")
             if (request is DataResponse.Success<*>) {
                 cache.clear()
                 cache.put(request)
             }
-            request
+            cache.get()
         } else {
-            Log.i("MYNAME", "Cash")
+            Log.e("MYNAME", "Cash")
             cache.get()
         }
     }

@@ -32,6 +32,8 @@ fun CategoryScreen(
     forceLoad: MutableState<Boolean>,
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
+    categoryViewModel.getData()
+
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
     val currentState = remember { mutableStateOf(CategoryType.INCOME) }
 

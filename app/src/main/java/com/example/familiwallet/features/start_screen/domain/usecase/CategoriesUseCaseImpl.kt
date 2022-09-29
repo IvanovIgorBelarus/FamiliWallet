@@ -5,9 +5,9 @@ import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.repository.DataRepository
 import javax.inject.Inject
 
-class StartScreenInfoUseCaseImpl @Inject constructor(
+class CategoriesUseCaseImpl @Inject constructor(
     private val repo: DataRepository
-) : StartScreenInfoUseCase {
+) : CategoriesUseCase {
     override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>> {
         return when (val response = repo.getCategoriesList(forceLoad)) {
             is DataResponse.Success -> DataResponse.Success(
@@ -17,7 +17,4 @@ class StartScreenInfoUseCaseImpl @Inject constructor(
             else -> DataResponse.Error(Throwable("Нет данных"))
         }
     }
-
-    override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? =
-        repo.getTransactionsList(forceLoad)
 }

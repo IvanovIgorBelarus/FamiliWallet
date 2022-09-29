@@ -8,7 +8,8 @@ import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.ui.UiState
 import com.example.familiwallet.features.start_screen.data.StartScreenViewState
-import com.example.familiwallet.features.start_screen.domain.usecase.StartScreenInfoUseCase
+import com.example.familiwallet.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.familiwallet.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -16,12 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val startScreenInfoUseCase: StartScreenInfoUseCase
+    private val categoriesUseCase: CategoriesUseCase,
+    private val transactionUseCase: TransactionUseCase
 ) : BaseViewModel<StartScreenViewState>() {
 
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
-            uiState.value = UiState.Loading
             try {
                 val categoriesList = mutableListOf<UIModel.CategoryModel>()
                 val transactionsList = mutableListOf<UIModel.TransactionModel>()
@@ -48,7 +49,7 @@ class StartViewModel @Inject constructor(
 
     private suspend fun getPersonData(forceLoad: Boolean) = viewModelScope.async {
         try {
-            val categoryListResponse = startScreenInfoUseCase.getCategoriesList(forceLoad)
+            val categoryListResponse = categoriesUseCase.getCategoriesList(forceLoad)
             val categoriesList = mutableListOf<UIModel.CategoryModel>()
             when (categoryListResponse) {
                 is DataResponse.Success -> {
@@ -60,7 +61,7 @@ class StartViewModel @Inject constructor(
                 }
             }
 
-            val transactionsListResponse = startScreenInfoUseCase.getTransactionsList(forceLoad)
+            val transactionsListResponse = transactionUseCase.getTransactionsList(forceLoad)
             val transactionsList = mutableListOf<UIModel.TransactionModel>()
             when (transactionsListResponse) {
                 is DataResponse.Success -> {

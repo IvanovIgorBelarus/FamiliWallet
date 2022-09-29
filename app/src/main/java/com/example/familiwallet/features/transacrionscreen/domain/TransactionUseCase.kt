@@ -5,4 +5,6 @@ import com.example.familiwallet.core.data.UIModel
 
 interface TransactionUseCase {
     suspend fun doTransaction(request: UIModel.TransactionModel ): DataResponse<Unit>
+
+    suspend fun getTransactionsList(forceLoad: Boolean = false): DataResponse<List<UIModel.TransactionModel>>?
 }
