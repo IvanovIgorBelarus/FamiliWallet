@@ -58,10 +58,10 @@ fun List<UIModel.TransactionModel>.currentRangeFilter(): List<UIModel.Transactio
 
 fun List<UIModel.TransactionModel>.currentDateFilter(): List<UIModel.TransactionModel> {
     return when (dateFilterType) {
-        MONTH_FILTER -> this.currentMonthFilter()
-        WEEK_FILTER -> this.currentWeekFilter()
-        DAY_FILTER -> this.currentDayFilter()
-        RANGE_FILTER -> this.currentRangeFilter()
+        TimeRangeType.DAY -> this.currentMonthFilter()
+        TimeRangeType.WEEK -> this.currentWeekFilter()
+        TimeRangeType.MONTH -> this.currentDayFilter()
+//        RANGE_FILTER -> this.currentRangeFilter()
         else -> this
     }
 }

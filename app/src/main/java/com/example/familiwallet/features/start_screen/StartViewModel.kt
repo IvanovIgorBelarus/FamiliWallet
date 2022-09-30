@@ -2,7 +2,9 @@ package com.example.familiwallet.features.start_screen
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.familiwallet.App.Companion.dateFilterType
 import com.example.familiwallet.core.common.BaseViewModel
+import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.common.currentDateFilter
 import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
@@ -91,6 +93,12 @@ class StartViewModel @Inject constructor(
                 is DataResponse.Error -> UiState.Error(response.exception)
             }
         }
+    }
+
+    fun changeTimeRange(timeRange: TimeRangeType){
+        uiState.value = UiState.Loading
+        dateFilterType = timeRange
+        getData()
     }
 
 }

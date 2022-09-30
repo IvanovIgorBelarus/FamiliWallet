@@ -3,7 +3,10 @@ package com.example.familiwallet.features.diagram
 import android.content.res.Resources
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +29,8 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import com.example.familiwallet.core.common.EXPENSES
+import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.features.diagram.data.CategorySumItem
 import com.example.familiwallet.features.diagram.data.DrawItem
@@ -37,15 +42,24 @@ import kotlin.math.sin
 @Composable
 fun DiagramScreen(
     modifier: Modifier = Modifier,
-    expansesList: List<UIModel.TransactionModel>,
+    transactionsList: List<UIModel.TransactionModel>,
     categoriesList: List<UIModel.CategoryModel>
 ) {
-    if (expansesList.isNotEmpty() && categoriesList.isNotEmpty()) {
-        val sumList = DiagramMapper.mapDiagramItems(expansesList, categoriesList)
-        val summary = floor(DiagramMapper.getSum(sumList) * 100) / 100
+    if (transactionsList.isNotEmpty() && categoriesList.isNotEmpty()) {
+        val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList.filter { it.type == EXPENSES }, categoriesList)
+        val expensesSum = floor(DiagramMapper.getSum(expensesSumList) * 100) / 100
+
+        val incomesList = DiagramMapper.mapDiagramItems(transactionsList.filter { it.type == INCOMES }, categoriesList)
+        val incomesSum = floor(DiagramMapper.getSum(incomesList) * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
-            DrawDiagram(modifier, expansesList = sumList, summary = summary)
-            Text(text = "$summary BYN", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+            DrawDiagram(modifier, expansesList = expensesSumList, summary = expensesSum)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.W500, color = Color.DarkGray)
+                Text(text = "-$expensesSum BYN", fontSize = 20.sp, fontWeight = FontWeight.W400, color = Color.DarkGray)
+            }
         }
     } else {
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
@@ -60,7 +74,6 @@ private fun DrawDiagram(
     expansesList: List<CategorySumItem>,
     summary: Double
 ) {
-
     //for diagram get only 7 values!!!
     DrawArc(
         modifier = modifier,
@@ -77,7 +90,7 @@ private fun DrawArc(
 ) {
     val resources = LocalContext.current.resources
     val offsetOverviewList = mutableListOf<OverviewItem>()
-    Canvas(modifier = modifier) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
         //calculate center of diagram circle
         val centerX = (size.width / 2 - drawItems[0].radius)
         val centerY = (size.height / 2 - drawItems[0].radius)
@@ -131,20 +144,6 @@ private fun DrawArc(
                     icon = drawItem.icon
                 )
             )
-
-            //draw overviews lines
-//            drawCircle(
-//                color = drawItem.color,
-//                radius = 10f,
-//                center = Offset(x = x, y = y)
-//            )
-
-//            drawLine(
-//                color = textUnderLineColor,
-//                strokeWidth = 2f,
-//                start = Offset(x = x, y = y),
-//                end = endLineOffset
-//            )
         }
         drawOverviews(resources, offsetOverviewList, this)
     }

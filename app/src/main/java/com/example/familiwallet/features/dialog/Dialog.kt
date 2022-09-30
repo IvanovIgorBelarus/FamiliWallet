@@ -1,21 +1,28 @@
 package com.example.familiwallet.features.dialog
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Button
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.familiwallet.R
+import com.example.familiwallet.core.common.TimeRangeType
 
 @Composable
 fun ShowErrorDialog(text: String?) {
@@ -58,7 +65,7 @@ fun ShowDeleteDialog(
     onClick: () -> Unit
 ) {
     val resources = LocalContext.current.resources
-//    val openDialog = remember { mutableStateOf(true) }
+
     val description = if (textResId != null) {
         resources.getString(textResId)
     } else {
@@ -98,6 +105,68 @@ fun ShowDeleteDialog(
                         }
                     ) {
                         Text(resources.getString(R.string.ok))
+                    }
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun ShowTimeDialog(
+    text: String? = null,
+    textResId: Int? = null,
+    openDialog: MutableState<Boolean>,
+    onClick: (TimeRangeType) -> Unit
+) {
+    val resources = LocalContext.current.resources
+
+    val description = if (textResId != null) {
+        resources.getString(textResId)
+    } else {
+        text.orEmpty()
+    }
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onClick.invoke(TimeRangeType.DAY)
+                            openDialog.value = false
+                        }
+                    ) {
+                        Text("День")
+                    }
+
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onClick.invoke(TimeRangeType.WEEK)
+                            openDialog.value = false
+                        }
+                    ) {
+                        Text("Неделя")
+                    }
+
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onClick.invoke(TimeRangeType.MONTH)
+                            openDialog.value = false
+                        }
+                    ) {
+                        Text("Месяц")
                     }
                 }
             }

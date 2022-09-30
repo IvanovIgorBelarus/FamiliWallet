@@ -1,5 +1,6 @@
 package com.example.familiwallet.core.repository
 
+import com.example.familiwallet.App.Companion.dateFilterType
 import com.example.familiwallet.core.common.BANK_MINUS
 import com.example.familiwallet.core.common.CATEGORIES
 import com.example.familiwallet.core.common.CATEGORY
@@ -12,6 +13,7 @@ import com.example.familiwallet.core.common.NEW_SMS
 import com.example.familiwallet.core.common.PARTNER_UID
 import com.example.familiwallet.core.common.TRANSACTIONS
 import com.example.familiwallet.core.common.TRANSACTION_TYPE
+import com.example.familiwallet.core.common.TimeRangeType
 import com.example.familiwallet.core.common.UID
 import com.example.familiwallet.core.common.USERS
 import com.example.familiwallet.core.common.VALUE
@@ -19,6 +21,7 @@ import com.example.familiwallet.core.data.DataResponse
 import com.example.familiwallet.core.data.UIModel
 import com.example.familiwallet.core.utils.UserUtils
 import com.example.familiwallet.core.utils.toStartOfDay
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import javax.inject.Inject
@@ -112,10 +115,10 @@ class FirebaseRepositoryImpl @Inject constructor() {
     suspend fun getPersonTransactionList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
         if (partnerRequest is DataResponse.Success) {
             val account = partnerRequest.data
-            val firstDay = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -6) }.time.toStartOfDay.time
             db.collection(TRANSACTIONS)
                 .whereIn(UID, listOf(account.uid, account.partnerUid))
-                .whereGreaterThanOrEqualTo(DATE, firstDay)
+                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
+                .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
