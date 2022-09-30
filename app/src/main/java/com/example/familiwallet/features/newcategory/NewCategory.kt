@@ -124,7 +124,7 @@ fun NewCategoryScreen(
                             icon = icon.value,
                             color = categoryColor.value
                         ){
-                            forceLoad.value = true
+                            forceLoad.value = !forceLoad.value
                             navigation.popBackStack()
                         }
                     }

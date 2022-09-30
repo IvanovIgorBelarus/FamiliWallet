@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.familiwallet.components.CategoryGridList
 import com.example.familiwallet.components.CategoryTabs
-import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.ShowScreen
 import com.example.familiwallet.features.newcategory.data.NewCategoryModel
 import com.example.familiwallet.features.transacrionscreen.data.TransactionTabItem
@@ -31,8 +31,6 @@ fun CategoryScreen(
     forceLoad: MutableState<Boolean>,
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
-    categoryViewModel.getData()
-
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
     val currentState = remember { mutableStateOf(NewCategoryModel.getCategoryType()) }
 
@@ -60,6 +58,10 @@ fun CategoryScreen(
             viewState = it as CategoryScreenViewState
         }
     )
+
+    LaunchedEffect(Unit) {
+        categoryViewModel.getData()
+    }
 }
 
 private val tabList = listOf(

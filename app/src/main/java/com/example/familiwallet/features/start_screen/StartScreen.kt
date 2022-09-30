@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -80,4 +81,8 @@ fun StartScreen(
             viewState = it as StartScreenViewState
         }
     )
+
+    LaunchedEffect(Unit) {
+        startViewModel.getData()
+    }
 }

@@ -43,6 +43,7 @@ class NewCategoryViewModel @Inject constructor(
         color: CategoryColor,
         onSuccess: () -> Unit = {}
     ) {
+        uiState.value = UiState.Loading
         viewModelScope.launch {
             val request = UIModel.CategoryModel(
                 uid = UserUtils.getUsersUid(),
