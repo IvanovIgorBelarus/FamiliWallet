@@ -1,6 +1,8 @@
 package com.example.familiwallet.core.common
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.remember
@@ -92,4 +94,14 @@ inline fun Modifier.rippleClickable(color: Color = backgroundColor, crossinline 
     ) {
         onClick()
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+inline fun Modifier.longRippleClickable(color: Color = backgroundColor, crossinline onClick: () -> Unit): Modifier = composed {
+    combinedClickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = rememberRipple(bounded = true, color = color),
+        onLongClick = { onClick() },
+        onClick = {}
+    )
 }
