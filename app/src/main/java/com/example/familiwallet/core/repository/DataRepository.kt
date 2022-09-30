@@ -12,6 +12,6 @@ interface DataRepository {
     suspend fun getPartner(forceLoad: Boolean = false): DataResponse<UIModel.AccountModel>?
     suspend fun getTransactionsList(forceLoad: Boolean = false): DataResponse<List<UIModel.TransactionModel>>?
     suspend fun getCategoriesList(forceLoad: Boolean = false): DataResponse<List<UIModel.CategoryModel>>?
-    suspend fun deleteItem(item: Any?)
+    suspend fun deleteItem(item: Any?): DataResponse<Unit>
     suspend fun upDateItem(item: Any?): DataResponse<Unit>
 }

@@ -27,10 +27,9 @@ import com.example.familiwallet.R
 import com.example.familiwallet.components.EnterButton
 import com.example.familiwallet.components.TopScreenBlueHeader
 import com.example.familiwallet.core.common.EnterType
-import com.example.familiwallet.features.dialog.ShowDialog
+import com.example.familiwallet.features.dialog.ShowErrorDialog
 import com.example.familiwallet.features.loading.LoadingScreen
 import com.example.familiwallet.navigation.Screen
-import com.example.familiwallet.ui.theme.backgroundColor
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -54,7 +53,7 @@ fun AuthScreen(
         val errorMessage = remember { mutableStateOf("") }
 
         if (errorMessage.value.isNotEmpty()) {
-            ShowDialog(text = errorMessage.value)
+            ShowErrorDialog(text = errorMessage.value)
         }
         //for google button
         when (onGoogleClick.value) {

@@ -60,6 +60,7 @@ class NewCategoryViewModel @Inject constructor(
 
                 when (response) {
                     is DataResponse.Success -> {
+                        categoriesUseCase.getCategoriesList(true)
                         onSuccess.invoke()
                     }
                     is DataResponse.Error -> {

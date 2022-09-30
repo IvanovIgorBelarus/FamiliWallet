@@ -9,7 +9,7 @@ object NewCategoryModel {
 
     private var isNewCategory: Boolean = false
 
-    private var categoryType: CategoryType = CategoryType.UNKNOWN
+    private var categoryType: CategoryType = CategoryType.INCOME
 
     fun getCategoryModel() = model
 

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.example.familiwallet.core.ui.UiState
-import com.example.familiwallet.features.dialog.ShowDialog
+import com.example.familiwallet.features.dialog.ShowErrorDialog
 import com.example.familiwallet.features.loading.LoadingScreen
 
 @Composable
@@ -24,7 +24,7 @@ fun ShowScreen(
         }
         is UiState.Error -> {
             val errorText = (uiState as UiState.Error).exception.message
-            ShowDialog(text = errorText)
+            ShowErrorDialog(text = errorText)
         }
         is UiState.Loading -> LoadingScreen()
     }

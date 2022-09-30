@@ -30,7 +30,7 @@ fun MainScreenNavigation(
         composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
         composable(route = Screen.HistoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
         composable(route = Screen.SettingsScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
+        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation, forceLoad) }
     }
 }
 

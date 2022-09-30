@@ -80,4 +80,17 @@ class StartViewModel @Inject constructor(
         }
     }.await()
 
+    fun deleteItem(item: UIModel.TransactionModel) {
+        viewModelScope.launch {
+            uiState.value = UiState.Loading
+            when (val response = transactionUseCase.deleteTransaction(item)) {
+                is DataResponse.Success -> {
+                    transactionUseCase.getTransactionsList(true)
+                    getData(false)
+                }
+                is DataResponse.Error -> UiState.Error(response.exception)
+            }
+        }
+    }
+
 }

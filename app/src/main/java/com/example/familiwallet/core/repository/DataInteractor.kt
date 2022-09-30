@@ -46,9 +46,8 @@ class DataInteractor @Inject constructor(
         return get(CategoriesCache, firebaseRepository.getPersonCategoriesList(getPartner()), forceLoad)
     }
 
-    override suspend fun deleteItem(item: Any?) {
+    override suspend fun deleteItem(item: Any?) : DataResponse<Unit> =
         firebaseRepository.deleteItem(item)
-    }
 
     override suspend fun upDateItem(item: Any?): DataResponse<Unit> =
         firebaseRepository.upDateItem(item)

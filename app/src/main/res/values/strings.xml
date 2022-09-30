@@ -30,4 +30,8 @@
     <string name="amount">Сумма</string>
 
     <string name="category_name_hint">Введите имя категории</string>
+    <string name="ok">Ok</string>
+
+    <string name="delete_title">Удаление операции</string>
+    <string name="delete_description">Вы уверены, что хотите удалить данную операцию?</string>
 </resources>

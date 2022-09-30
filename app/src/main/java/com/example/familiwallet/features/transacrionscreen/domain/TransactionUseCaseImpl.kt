@@ -13,4 +13,7 @@ class TransactionUseCaseImpl @Inject constructor(
 
     override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? =
         repo.getTransactionsList(forceLoad)
+
+    override suspend fun deleteTransaction(request: UIModel.TransactionModel): DataResponse<Unit> =
+        repo.deleteItem(request)
 }

@@ -34,7 +34,7 @@ fun CategoryScreen(
     categoryViewModel.getData()
 
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
-    val currentState = remember { mutableStateOf(CategoryType.INCOME) }
+    val currentState = remember { mutableStateOf(NewCategoryModel.getCategoryType()) }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),

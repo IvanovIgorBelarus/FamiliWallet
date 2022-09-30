@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import com.example.familiwallet.ui.theme.bottomBarUnselectedContentColor
 fun NewCategoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
+    forceLoad: MutableState<Boolean>,
     newCategoryViewModel: NewCategoryViewModel = hiltViewModel()
 ) {
     val resources = LocalContext.current.resources
@@ -122,6 +124,7 @@ fun NewCategoryScreen(
                             icon = icon.value,
                             color = categoryColor.value
                         ){
+                            forceLoad.value = true
                             navigation.popBackStack()
                         }
                     }

@@ -16,6 +16,7 @@ abstract class BaseViewModel<T> : ViewModel() {
     var start: Boolean = false
         set(value) {
             if (field != value) {
+                uiState.value = UiState.Loading
                 field = value
                 getData(field)
             }
