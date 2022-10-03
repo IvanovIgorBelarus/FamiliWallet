@@ -117,8 +117,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
             val account = partnerRequest.data
             db.collection(TRANSACTIONS)
                 .whereIn(UID, listOf(account.uid, account.partnerUid))
-                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
-                .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
+                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.startDate)
+                .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.endDate)
                 .get()
                 .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
                 .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }

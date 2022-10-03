@@ -8,7 +8,7 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class App: Application(){
     companion object {
-        var dateFilterType: TimeRangeType = TimeRangeType.WEEK
+        var dateFilterType: TimeRangeType = TimeRangeType.MONTH
         var startDate: Long? = null
         var endDate: Long? = null
     }

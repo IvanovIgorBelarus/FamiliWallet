@@ -1,5 +1,8 @@
 package com.example.familiwallet.features.diagram
 
+import com.example.familiwallet.core.common.CategoryType
+import com.example.familiwallet.core.common.categoryTypeFilter
+import com.example.familiwallet.core.common.typeFilter
 import com.example.familiwallet.core.data.AppIcons
 import com.example.familiwallet.core.data.CategoryColor
 import com.example.familiwallet.core.data.UIModel
@@ -19,7 +22,7 @@ object DiagramMapper {
         categoriesList: List<UIModel.CategoryModel>
     ): List<CategorySumItem> {
         val sumList = mutableListOf<CategorySumItem>()
-        categoriesList.forEach { categoryItem ->
+        categoriesList.categoryTypeFilter(CategoryType.EXPENSE.type).forEach { categoryItem ->
             sumList.add(
                 CategorySumItem(
                     category = categoryItem.category,
@@ -28,7 +31,7 @@ object DiagramMapper {
                 )
             )
         }
-        expansesList.forEach { transaction ->
+        expansesList.typeFilter(CategoryType.EXPENSE.type).forEach { transaction ->
             sumList.forEach { categorySum ->
                 if (transaction.category == categorySum.category) {
                     categorySum.sum += transaction.value ?: 0.0

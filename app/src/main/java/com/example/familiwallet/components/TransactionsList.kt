@@ -68,7 +68,7 @@ fun TransactionRow(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category }
+        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category && it.type == transaction.type}
         val iconRes = AppIcons.getImageRes(itemCategory?.icon)
 
         Spacer(modifier = Modifier.size(16.dp))

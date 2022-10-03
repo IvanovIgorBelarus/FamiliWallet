@@ -29,6 +29,7 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import com.example.familiwallet.core.common.CategoryType
 import com.example.familiwallet.core.common.EXPENSES
 import com.example.familiwallet.core.common.INCOMES
 import com.example.familiwallet.core.data.UIModel
@@ -46,11 +47,11 @@ fun DiagramScreen(
     categoriesList: List<UIModel.CategoryModel>
 ) {
     if (transactionsList.isNotEmpty() && categoriesList.isNotEmpty()) {
-        val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList.filter { it.type == EXPENSES }, categoriesList)
+        val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList, categoriesList)
         val expensesSum = floor(DiagramMapper.getSum(expensesSumList) * 100) / 100
 
-        val incomesList = DiagramMapper.mapDiagramItems(transactionsList.filter { it.type == INCOMES }, categoriesList)
-        val incomesSum = floor(DiagramMapper.getSum(incomesList) * 100) / 100
+        val incomesList = transactionsList.filter { it.type == CategoryType.INCOME.type }
+        val incomesSum = floor(incomesList.sumOf { it.value?:0.0 } * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             DrawDiagram(modifier, expansesList = expensesSumList, summary = expensesSum)
             Column(
