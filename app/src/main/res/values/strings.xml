@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FamiliWallet</string>
+    <string name="app_name">ExpensesObserver</string>
     <string name="money">Money</string>
     <string name="greetings">"Добро пожаловать в приложение Money"</string>
     <string name="enter">Вход</string>

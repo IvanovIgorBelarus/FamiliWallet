@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.familiwallet">
+    package="com.example.expenseobserver">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.example.familiwallet.App"
+        android:name="com.example.expenseobserver.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,9 +17,8 @@
         android:theme="@style/Theme.FamiliWallet"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.expenseobserver.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.FamiliWallet"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
