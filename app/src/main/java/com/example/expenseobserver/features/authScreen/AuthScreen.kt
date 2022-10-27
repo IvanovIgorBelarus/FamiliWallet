@@ -117,19 +117,19 @@ private fun AuthScreenContent(
             onGoogleClick.value = EnterType.GOOGLE
             isLoading.value = true
         }
-
-        EnterButton(
-            text = R.string.facebook,
-            modifier = Modifier
-                .constrainAs(facebookButton) {
-                    top.linkTo(googleButton.bottom, margin = 24.dp)
-                    start.linkTo(parent.start, margin = 16.dp)
-                    end.linkTo(parent.end, margin = 16.dp)
-                    width = Dimension.fillToConstraints
-                }) {
-            onGoogleClick.value = EnterType.FACEBOOK
-            isLoading.value = true
-        }
+        //Facebook пока оставим на потом
+//        EnterButton(
+//            text = R.string.facebook,
+//            modifier = Modifier
+//                .constrainAs(facebookButton) {
+//                    top.linkTo(googleButton.bottom, margin = 24.dp)
+//                    start.linkTo(parent.start, margin = 16.dp)
+//                    end.linkTo(parent.end, margin = 16.dp)
+//                    width = Dimension.fillToConstraints
+//                }) {
+//            onGoogleClick.value = EnterType.FACEBOOK
+//            isLoading.value = true
+//        }
     }
 }
 

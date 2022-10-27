@@ -56,7 +56,7 @@ fun DiagramScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.W500, color = Color.DarkGray)
+                Text(text = "+$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.W500, color = Color.DarkGray)
                 Text(text = "-$expensesSum BYN", fontSize = 20.sp, fontWeight = FontWeight.W400, color = Color.DarkGray)
             }
         }
@@ -126,12 +126,12 @@ private fun DrawArc(
             // coordinates of start line
             val x = (radius + 100) * cos(rad) + size.width / 2
             val y = (radius + 100) * sin(rad) + size.height / 2
-            val iconOffset = Offset(x, y)
+            val iconOffset = Offset(x-36, y-36)
 
             // coordinates for drawing lines
-            val endLineX = (radius + 75) * cos(rad) + size.width / 2
+            val endLineX = (radius + 100) * cos(rad) + size.width / 2
             val endLineY = (radius + 100) * sin(rad) + size.height / 2
-            val textOffset = Offset(endLineX, endLineY)
+            val textOffset = Offset(endLineX, endLineY-36)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             offsetOverviewList.add(
