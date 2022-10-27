@@ -124,14 +124,14 @@ private fun DrawArc(
             val rad = ((angle - drawItem.sweepAngle / 2) * 2 * Math.PI / 360).toFloat()
 
             // coordinates of start line
-            val x = (radius + 100) * cos(rad) + size.width / 2
-            val y = (radius + 100) * sin(rad) + size.height / 2
+            val x = (radius + 90) * cos(rad) + size.width / 2
+            val y = (radius + 90) * sin(rad) + size.height / 2
             val iconOffset = Offset(x-36, y-36)
 
             // coordinates for drawing lines
-            val endLineX = (radius + 100) * cos(rad) + size.width / 2
-            val endLineY = (radius + 100) * sin(rad) + size.height / 2
-            val textOffset = Offset(endLineX, endLineY-36)
+            val endLineX = (radius + 90) * cos(rad) + size.width / 2
+            val endLineY = (radius + 90) * sin(rad) + size.height / 2
+            val textOffset = Offset(endLineX, endLineY-40)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             offsetOverviewList.add(
