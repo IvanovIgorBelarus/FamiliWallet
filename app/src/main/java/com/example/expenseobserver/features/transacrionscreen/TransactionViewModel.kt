@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.ui.UiState
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +27,7 @@ class TransactionViewModel @Inject constructor(
             try {
                 when (val categoryListResponse = categoriesUseCase.getCategoriesList()) {
                     is DataResponse.Success -> {
-                        onSuccess.invoke(categoryListResponse.data)
+                        onSuccess.invoke(TransactionMapper.mapCategoryQueue(categoryListResponse.data, getTransactions()))
                     }
                     is DataResponse.Error -> {
                         Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
@@ -55,4 +57,20 @@ class TransactionViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun getTransactions() = viewModelScope.async {
+        val transactionsListResponse = transactionUseCase.getTransactionsList()
+        val transactionsList = mutableListOf<UIModel.TransactionModel>()
+        when (transactionsListResponse) {
+            is DataResponse.Success -> {
+                transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
+            }
+            is DataResponse.Error -> {
+                Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
+                return@async emptyList()
+            }
+            else -> {}
+        }
+        return@async transactionsList
+    }.await()
 }
