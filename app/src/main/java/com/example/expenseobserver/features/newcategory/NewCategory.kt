@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -78,88 +79,84 @@ fun NewCategoryScreen(
         modifier = modifier.padding(horizontal = 8.dp),
         backgroundColor = Color.White
     ) {
-        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-            item {
-                Spacer(modifier = Modifier.size(24.dp))
-                Box(
-                    modifier = Modifier
-                        .background(backgroundColor, RoundedCornerShape(20.dp))
-                        .size(150.dp),
-                    contentAlignment = Alignment.Center
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.size(24.dp))
+            Box(
+                modifier = Modifier
+                    .background(backgroundColor, RoundedCornerShape(20.dp))
+                    .size(150.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CategoryRowWithoutText(categoryColor, icon)
+            }
+            Spacer(modifier = Modifier.size(24.dp))
+
+            AmountTextField(
+                stringValue = categoryName,
+                placeHolderText = resources.getString(R.string.category_name_hint),
+                modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
+                showError = showError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                textBackgroundColor = Color.White
+            )
+            Spacer(modifier = Modifier.size(24.dp))
+
+            Row(horizontalArrangement = Arrangement.Center) {
+                TransactionButton(
+                    modifier = Modifier.weight(1f),
+                    text = R.string.cancel,
+                    isSelected = mutableStateOf(false)
                 ) {
-                    CategoryRowWithoutText(categoryColor, icon)
+                    navigation.popBackStack()
                 }
                 Spacer(modifier = Modifier.size(24.dp))
-            }
-
-            item {
-                AmountTextField(
-                    stringValue = categoryName,
-                    placeHolderText = resources.getString(R.string.category_name_hint),
-                    modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
-                    showError = showError,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    textBackgroundColor = Color.White
-                )
-                Spacer(modifier = Modifier.size(24.dp))
-            }
-
-            item {
-                Row(horizontalArrangement = Arrangement.Center) {
-                    TransactionButton(
-                        modifier = Modifier.weight(1f),
-                        text = R.string.cancel,
-                        isSelected = mutableStateOf(false)
+                TransactionButton(
+                    modifier = Modifier.weight(1f),
+                    text = R.string.done,
+                    isSelected = mutableStateOf(true)
+                ) {
+                    newCategoryViewModel.sendCategoryRequest(
+                        category = categoryName.value,
+                        icon = icon.value,
+                        color = categoryColor.value
                     ) {
+                        forceLoad.value = !forceLoad.value
                         navigation.popBackStack()
                     }
-                    Spacer(modifier = Modifier.size(24.dp))
-                    TransactionButton(
-                        modifier = Modifier.weight(1f),
-                        text = R.string.done,
-                        isSelected = mutableStateOf(true)
+                }
+            }
+            Spacer(modifier = Modifier.size(24.dp))
+
+            LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+                item {
+                    LazyHorizontalGrid(
+                        rows = GridCells.Fixed(2),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .requiredHeight(96.dp)
+                            .padding(4.dp)
+
                     ) {
-                        newCategoryViewModel.sendCategoryRequest(
-                            category = categoryName.value,
-                            icon = icon.value,
-                            color = categoryColor.value
-                        ){
-                            forceLoad.value = !forceLoad.value
-                            navigation.popBackStack()
+                        items(newCategoryViewModel.getCategoriesColors()) { item ->
+                            Box(modifier = Modifier
+                                .padding(4.dp)
+                                .size(36.dp)
+                                .background(item.color, CircleShape)
+                                .aspectRatio(1f)
+                                .rippleClickable {
+                                    categoryColor.value = CategoryColor.getColor(item.name)
+                                })
                         }
                     }
+                    Spacer(modifier = Modifier.size(24.dp))
                 }
-                Spacer(modifier = Modifier.size(24.dp))
-            }
 
-            item {
-                LazyHorizontalGrid(
-                    rows = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .requiredHeight(96.dp)
-                        .padding(4.dp)
-
-                ) {
-                    items(newCategoryViewModel.getCategoriesColors()) { item ->
-                        Box(modifier = Modifier
-                            .padding(4.dp)
-                            .size(36.dp)
-                            .background(item.color, CircleShape)
-                            .aspectRatio(1f)
-                            .rippleClickable {
-                                categoryColor.value = CategoryColor.getColor(item.name)
-                            })
+                newCategoryViewModel.getIcons().forEach { categoryItem ->
+                    item {
+                        CategoryIconGrid(item = categoryItem, icon)
                     }
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-            }
-
-            newCategoryViewModel.getIcons().forEach { categoryItem ->
-                item {
-                    CategoryIconGrid(item = categoryItem, icon)
                 }
             }
         }
