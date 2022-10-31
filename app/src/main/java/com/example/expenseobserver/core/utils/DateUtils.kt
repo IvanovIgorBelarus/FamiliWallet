@@ -102,3 +102,6 @@ val String.formatToDate: Date?
 
 val Long.toStringFormat: String
     get() = SimpleDateFormat("dd.MM.yyyy hh:mm").format(this)
+
+val Long.toStringDayFormat: String
+    get() = SimpleDateFormat("dd.MM.yyyy").format(this)

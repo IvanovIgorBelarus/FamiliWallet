@@ -11,7 +11,10 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.core.utils.toStartOfDay
 import com.example.expenseobserver.ui.theme.backgroundColor
+import java.util.*
+import java.util.Calendar.DATE
 import kotlin.math.roundToInt
 
 fun List<UIModel.TransactionModel>.typeFilter(type: String): List<UIModel.TransactionModel> =
@@ -27,6 +30,11 @@ fun List<UIModel.TransactionModel>.balanceFilter(): Double = this.sumOf {
 
 fun List<UIModel.TransactionModel>.currentDateFilter(): List<UIModel.TransactionModel> =
     this.filter { (it.date ?: 0L) in dateFilterType.startDate..dateFilterType.endDate }
+
+fun List<UIModel.TransactionModel>.mapDataToStartOfDay(): List<UIModel.TransactionModel> = this.map {
+    it.date = Date(it.date ?: 0).toStartOfDay.time
+    it
+}
 
 fun List<UIModel.CategoryModel>.categoryTypeFilter(type: String): List<UIModel.CategoryModel> = this.filter { it.type == type }
 
