@@ -134,15 +134,18 @@ private fun DrawArc(
             val textOffset = Offset(endLineX, endLineY-40)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
-            offsetOverviewList.add(
-                OverviewItem(
-                    text = "$drawItemValue %",
-                    textOffset = textOffset,
-                    iconOffset = iconOffset,
-                    color = drawItem.color,
-                    icon = drawItem.icon
+            //don't show little values
+            if (drawItemValue > 0.1) {
+                offsetOverviewList.add(
+                    OverviewItem(
+                        text = "$drawItemValue %",
+                        textOffset = textOffset,
+                        iconOffset = iconOffset,
+                        color = drawItem.color,
+                        icon = drawItem.icon
+                    )
                 )
-            )
+            }
         }
         drawOverviews(resources, offsetOverviewList, this)
     }
