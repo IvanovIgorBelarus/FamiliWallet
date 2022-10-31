@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.rippleClickable
@@ -102,20 +103,24 @@ fun CategoryRow(
 ) {
     val iconColor = CategoryColor.getColor(category.color.orEmpty()).color
     val backgroundColor = if (selectedCategory.value == category.category) bottomBarUnselectedContentColor else backgroundColor
-    Column(
+    ConstraintLayout(
         modifier = Modifier
             .padding(2.dp)
             .width(62.dp)
             .height(80.dp)
             .rippleClickable(color = Color.White) { onItemClick.invoke() }
-            .background(backgroundColor, RoundedCornerShape(4.dp)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+            .background(backgroundColor, RoundedCornerShape(4.dp))
     ) {
+        val (icon, text) = createRefs()
         Box(
             modifier = Modifier
                 .border(BorderStroke(4.dp, iconColor), CircleShape)
-                .size(54.dp),
+                .size(54.dp)
+                .constrainAs(icon){
+                    top.linkTo(parent.top, 4.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -129,7 +134,12 @@ fun CategoryRow(
             text = category.category.orEmpty(),
             color = textColor,
             fontSize = 10.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.constrainAs(text){
+                top.linkTo(icon.bottom, 4.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
         )
     }
 }
