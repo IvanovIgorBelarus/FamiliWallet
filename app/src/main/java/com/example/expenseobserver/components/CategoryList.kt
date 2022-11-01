@@ -46,11 +46,11 @@ import com.example.expenseobserver.ui.theme.textColor
 @Composable
 fun CategoryRowList(
     list: List<UIModel.CategoryModel>,
-    currentState: MutableState<CategoryType>,
+    currentState: MutableState<Int>,
     selectedCategory: MutableState<String>,
     showError: MutableState<Boolean>
 ) {
-    val itemList = list.filter { it.type == currentState.value.type }
+    val itemList = list.filter { it.type == CategoryType.getCategory(currentState.value).type }
 
     Text(
         text = "Последние",
@@ -75,7 +75,7 @@ fun CategoryRowList(
 @Composable
 fun CategoryGridList(
     list: List<UIModel.CategoryModel>,
-    currentState: MutableState<CategoryType>,
+    currentState: MutableState<Int>,
     onItemClick: (UIModel.CategoryModel) -> Unit
 ) {
     val itemList = mutableListOf(
@@ -84,7 +84,7 @@ fun CategoryGridList(
             color = CategoryColor.COLOR12.name
         )
     )
-    val items = list.filter { it.type == currentState.value.type }
+    val items = list.filter { it.type == CategoryType.getCategory(currentState.value).type }
     itemList.addAll(items)
     LazyVerticalGrid(columns = GridCells.Adaptive(80.dp)) {
         items(itemList) { item ->
@@ -180,7 +180,7 @@ private fun CategoryListPreview() {
                 icon = "BUG_REPORT"
             )
         ),
-        mutableStateOf(CategoryType.EXPENSE),
+        mutableStateOf(0),
         mutableStateOf(""),
         mutableStateOf(false)
     )

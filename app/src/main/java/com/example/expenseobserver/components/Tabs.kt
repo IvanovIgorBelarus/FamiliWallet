@@ -18,26 +18,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expenseobserver.core.common.CategoryType
+import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
 import com.example.expenseobserver.ui.theme.textColor
 
 @Composable
-fun CategoryTabs(tabList: List<TransactionTabItem>, currentState: MutableState<CategoryType>) {
+fun ThreeTabsLay(tabList: List<Any>, currentState: MutableState<Int>) {
+
     TabRow(
         modifier = Modifier
             .fillMaxWidth()
             .requiredHeight(36.dp)
             .clip(RoundedCornerShape(10.dp)),
-        selectedTabIndex = currentState.value.position,
+        selectedTabIndex = currentState.value,
         backgroundColor = buttonColor,
         indicator = { tabPositions ->
 
         }
     ) {
         tabList.forEachIndexed { index, transactionTabItem ->
+            val titleText = when (transactionTabItem) {
+                is TransactionTabItem -> transactionTabItem.title
+                is TimeRangeType -> transactionTabItem.text
+                else -> ""
+            }
             Tab(
                 modifier = Modifier
                     .border(
@@ -50,15 +56,15 @@ fun CategoryTabs(tabList: List<TransactionTabItem>, currentState: MutableState<C
                         }
                     )
                     .background(
-                        if (currentState.value == CategoryType.getCategory(index)) buttonColor else backgroundColor,
-                        RoundedCornerShape(if (currentState.value.position == index) 10.dp else 0.dp)
+                        if (currentState.value == index) buttonColor else backgroundColor,
+                        RoundedCornerShape(if (currentState.value == index) 10.dp else 0.dp)
                     ),
-                selected = currentState.value.position == index,
-                onClick = { currentState.value = CategoryType.getCategory(index) },
+                selected = currentState.value == index,
+                onClick = { currentState.value = index },
                 text = {
                     Text(
-                        text = transactionTabItem.title,
-                        color = if (currentState.value.position == index) Color.White else textColor,
+                        text = titleText,
+                        color = if (currentState.value == index) Color.White else textColor,
                         fontSize = 14.sp
                     )
                 }
@@ -70,8 +76,8 @@ fun CategoryTabs(tabList: List<TransactionTabItem>, currentState: MutableState<C
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFFF19BF3)
 private fun TabsPreview() {
-    CategoryTabs(
+    ThreeTabsLay(
         tabList = listOf(TransactionTabItem.Income, TransactionTabItem.Expense, TransactionTabItem.Bank),
-        currentState = mutableStateOf(CategoryType.EXPENSE)
+        currentState = mutableStateOf(0)
     )
 }

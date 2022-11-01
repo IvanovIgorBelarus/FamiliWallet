@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.components.CategoryGridList
-import com.example.expenseobserver.components.CategoryTabs
+import com.example.expenseobserver.components.ThreeTabsLay
+import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
@@ -32,20 +33,20 @@ fun CategoryScreen(
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
-    val currentState = remember { mutableStateOf(NewCategoryModel.getCategoryType()) }
+    val currentState = remember { mutableStateOf(0) }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CategoryTabs(tabList = tabList, currentState = currentState)
+            ThreeTabsLay(tabList = tabList, currentState = currentState)
             Spacer(modifier = Modifier.size(24.dp))
 
             CategoryGridList(list = viewState.categoriesList, currentState = currentState) {
                 NewCategoryModel.setNewCategoryModel(
                     model = it,
                     isNewCategory = !viewState.categoriesList.contains(it),
-                    categoryType = currentState.value
+                    categoryType = CategoryType.getCategory(currentState.value)
                 )
                 navigation.navigate(Screen.NewCategoryScreen.route)
             }

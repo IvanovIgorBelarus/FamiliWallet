@@ -2,7 +2,9 @@ package com.example.expenseobserver.features.historyscreen
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.expenseobserver.App
 import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.common.mapDataToStartOfDay
 import com.example.expenseobserver.core.data.DataResponse
@@ -65,7 +67,12 @@ class HistoryViewModel @Inject constructor(
             val transactionsList = mutableListOf<UIModel.TransactionModel>()
             when (transactionsListResponse) {
                 is DataResponse.Success -> {
-                    transactionsList.addAll(transactionsListResponse.data.currentDateFilter().mapDataToStartOfDay())
+                    transactionsList.addAll(
+                        transactionsListResponse.data
+                            .currentDateFilter()
+                            .sortedByDescending { it.date }
+                            .mapDataToStartOfDay()
+                    )
                 }
                 is DataResponse.Error -> {
                     Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
@@ -78,4 +85,10 @@ class HistoryViewModel @Inject constructor(
             return@async DataResponse.Error(e)
         }
     }.await()
+
+    fun changeTimeRange(timeRange: TimeRangeType){
+        uiState.value = UiState.Loading
+        App.dateFilterType = timeRange
+        getData()
+    }
 }

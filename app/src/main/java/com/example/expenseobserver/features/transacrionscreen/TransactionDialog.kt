@@ -28,7 +28,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryRowList
-import com.example.expenseobserver.components.CategoryTabs
+import com.example.expenseobserver.components.ThreeTabsLay
 import com.example.expenseobserver.components.TransactionButton
 import com.example.expenseobserver.core.common.CashType
 import com.example.expenseobserver.core.common.CategoryType
@@ -46,7 +46,7 @@ fun TransactionDialog(
     onButtonClick: (transactionModel: UIModel.TransactionModel) -> Unit
 ) {
     val resources = LocalContext.current.resources
-    val currentState = remember { mutableStateOf(CategoryType.INCOME) }
+    val currentState = remember { mutableStateOf(0) }
     val selectedCategory = remember { mutableStateOf("") }
     val cashType = remember { mutableStateOf(CashType.CARDS) }
     val amount = remember { mutableStateOf("") }
@@ -59,7 +59,7 @@ fun TransactionDialog(
                 .background(backgroundColor, RoundedCornerShape(10.dp))
                 .padding(8.dp, 16.dp)
         ) {
-            CategoryTabs(tabList = tabList, currentState = currentState)
+            ThreeTabsLay(tabList = tabList, currentState = currentState)
             Spacer(modifier = Modifier.size(24.dp))
 
             CategoryRowList(
@@ -111,7 +111,7 @@ fun TransactionDialog(
                     onButtonClick.invoke(
                         UIModel.TransactionModel(
                             uid = UserUtils.getUsersUid(),
-                            type = currentState.value.type,
+                            type = CategoryType.getCategory(currentState.value).type,
                             category = selectedCategory.value,
                             currency = "BYN",
                             moneyType = cashType.value.type,
