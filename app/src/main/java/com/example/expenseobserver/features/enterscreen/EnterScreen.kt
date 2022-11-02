@@ -66,7 +66,7 @@ fun EnterScreen(
                     },
                 fontSize = 30.sp,
                 color = enterTextColor,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.Medium
             )
             EnterButton(Modifier
                 .constrainAs(button) {

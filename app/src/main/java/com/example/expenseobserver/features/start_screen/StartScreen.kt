@@ -2,6 +2,7 @@ package com.example.expenseobserver.features.start_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -66,6 +67,7 @@ fun StartScreen(
     ) {
         LazyColumn {
             item {
+                Spacer(modifier = Modifier.size(8.dp))
                 ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
                     val (diagram, timeRangeButton) = createRefs()
                     DiagramScreen(
