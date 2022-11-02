@@ -96,7 +96,7 @@ fun TransactionRow(
             text = transaction.value.toString(),
             color = textColor,
             fontSize = 16.sp,
-            fontWeight = FontWeight.W500,
+            fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.size(16.dp))

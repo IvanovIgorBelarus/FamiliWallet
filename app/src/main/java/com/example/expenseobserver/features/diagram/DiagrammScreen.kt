@@ -56,8 +56,8 @@ fun DiagramScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "+$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.W500, color = Color.DarkGray)
-                Text(text = "-$expensesSum BYN", fontSize = 20.sp, fontWeight = FontWeight.W400, color = Color.DarkGray)
+                Text(text = "+$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+                Text(text = "-$expensesSum BYN", fontSize = 20.sp, fontWeight = FontWeight.Medium, color = Color.DarkGray)
             }
         }
     } else {

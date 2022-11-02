@@ -32,7 +32,7 @@ fun TopScreenBlueHeader(modifier: Modifier = Modifier, text: String) {
                 .padding(top = 56.dp),
             fontSize = 36.sp,
             color = backgroundColor,
-            fontWeight = FontWeight.W500,
+            fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
     }

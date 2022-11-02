@@ -70,7 +70,7 @@ fun HistoryScreen(
                             color = textColor,
                             fontSize = 18.sp,
                             textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.W500,
+                            fontWeight = FontWeight.Medium,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White)
