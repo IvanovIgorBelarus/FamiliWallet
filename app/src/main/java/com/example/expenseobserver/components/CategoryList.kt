@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.rippleClickable
@@ -107,7 +109,7 @@ fun CategoryRow(
         modifier = Modifier
             .padding(2.dp)
             .width(62.dp)
-            .height(80.dp)
+            .wrapContentHeight()
             .rippleClickable(color = Color.White) { onItemClick.invoke() }
             .background(backgroundColor, RoundedCornerShape(4.dp))
     ) {
