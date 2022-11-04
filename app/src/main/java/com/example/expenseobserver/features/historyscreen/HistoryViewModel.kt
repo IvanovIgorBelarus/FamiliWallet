@@ -6,16 +6,17 @@ import com.example.expenseobserver.App
 import com.example.expenseobserver.core.common.BaseViewModel
 import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
-import com.example.expenseobserver.core.common.mapDataToStartOfDay
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.utils.toStartOfDay
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +36,7 @@ class HistoryViewModel @Inject constructor(
                         uiState.value = UiState.Success(
                             HistoryViewState(
                                 categoriesList = categoriesList,
-                                transactionsGroupList = transactionsList.groupBy { it.date })
+                                transactionsGroupList = transactionsList.groupBy { Date(it.date ?: 0).toStartOfDay.time })
                         )
                     }
                     is DataResponse.Error -> {
@@ -71,7 +72,6 @@ class HistoryViewModel @Inject constructor(
                         transactionsListResponse.data
                             .currentDateFilter()
                             .sortedByDescending { it.date }
-                            .mapDataToStartOfDay()
                     )
                 }
                 is DataResponse.Error -> {

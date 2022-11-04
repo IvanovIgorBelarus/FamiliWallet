@@ -60,7 +60,6 @@ fun HistoryScreen(
         ) {
             Spacer(modifier = Modifier.size(24.dp))
             ThreeTabsLay(tabList = tabList, currentState = currentState)
-            Spacer(modifier = Modifier.size(24.dp))
 
             LazyColumn {
                 viewState.transactionsGroupList.forEach { (date, transactionList) ->

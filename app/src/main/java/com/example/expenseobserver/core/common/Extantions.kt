@@ -31,14 +31,7 @@ fun List<UIModel.TransactionModel>.balanceFilter(): Double = this.sumOf {
 fun List<UIModel.TransactionModel>.currentDateFilter(): List<UIModel.TransactionModel> =
     this.filter { (it.date ?: 0L) in dateFilterType.startDate..dateFilterType.endDate }
 
-fun List<UIModel.TransactionModel>.mapDataToStartOfDay(): List<UIModel.TransactionModel> = this.map {
-    it.date = Date(it.date ?: 0).toStartOfDay.time
-    it
-}
-
 fun List<UIModel.CategoryModel>.categoryTypeFilter(type: String): List<UIModel.CategoryModel> = this.filter { it.type == type }
-
-fun List<UIModel.TransactionModel>.categoryFilter(category: String): List<UIModel.TransactionModel> = this.filter { it.category == category }.sortedByDescending { it.date }
 
 val Double.round: Double
     get() = (this * 100).roundToInt().toDouble() / 100
