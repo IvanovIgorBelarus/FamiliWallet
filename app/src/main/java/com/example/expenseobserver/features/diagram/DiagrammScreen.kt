@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,9 +32,11 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.core.ui.UiState
 import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
 import com.example.expenseobserver.features.diagram.data.OverviewItem
+import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
@@ -42,14 +45,15 @@ import kotlin.math.sin
 fun DiagramScreen(
     modifier: Modifier = Modifier,
     transactionsList: List<UIModel.TransactionModel>,
-    categoriesList: List<UIModel.CategoryModel>
+    categoriesList: List<UIModel.CategoryModel>,
+    uiState: MutableState<UiState<StartScreenViewState>>
 ) {
     if (transactionsList.isNotEmpty() && categoriesList.isNotEmpty()) {
         val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList, categoriesList)
         val expensesSum = floor(DiagramMapper.getSum(expensesSumList) * 100) / 100
 
         val incomesList = transactionsList.filter { it.type == CategoryType.INCOME.type }
-        val incomesSum = floor(incomesList.sumOf { it.value?:0.0 } * 100) / 100
+        val incomesSum = floor(incomesList.sumOf { it.value ?: 0.0 } * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             DrawDiagram(modifier, expansesList = expensesSumList, summary = expensesSum)
             Column(
@@ -61,8 +65,10 @@ fun DiagramScreen(
             }
         }
     } else {
-        Box(contentAlignment = Alignment.Center, modifier = modifier) {
-            Text(text = "у вас нет данных", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+        if (uiState.value != UiState.Loading) {
+            Box(contentAlignment = Alignment.Center, modifier = modifier) {
+                Text(text = "у вас нет данных", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+            }
         }
     }
 }
@@ -126,12 +132,12 @@ private fun DrawArc(
             // coordinates of start line
             val x = (radius + 90) * cos(rad) + size.width / 2
             val y = (radius + 90) * sin(rad) + size.height / 2
-            val iconOffset = Offset(x-36, y-36)
+            val iconOffset = Offset(x - 36, y - 36)
 
             // coordinates for drawing lines
             val endLineX = (radius + 90) * cos(rad) + size.width / 2
             val endLineY = (radius + 90) * sin(rad) + size.height / 2
-            val textOffset = Offset(endLineX, endLineY-40)
+            val textOffset = Offset(endLineX, endLineY - 40)
 
             val drawItemValue = floor(drawItem.value / sum * 10000) / 100
             //don't show little values

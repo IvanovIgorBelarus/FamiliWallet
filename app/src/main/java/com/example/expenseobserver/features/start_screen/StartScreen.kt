@@ -80,7 +80,8 @@ fun StartScreen(
                             }
                             .defaultMinSize(minHeight = 400.dp),
                         transactionsList = viewState.transactionsList,
-                        categoriesList = viewState.categoriesList
+                        categoriesList = viewState.categoriesList,
+                        uiState = startViewModel.uiState
                     )
 
                     Box(

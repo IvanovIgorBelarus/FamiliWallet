@@ -18,4 +18,4 @@ val fonts = FontFamily(
 )
 
 // Set of Material typography styles to start with
-val Typography = Typography(defaultFontFamily = fonts)
+val Typography = Typography()
