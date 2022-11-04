@@ -68,7 +68,7 @@ fun TransactionDialog(
                 selectedCategory,
                 showError
             )
-            Spacer(modifier = Modifier.size(4.dp))
+
             Row(horizontalArrangement = Arrangement.Center) {
                 TransactionButton(
                     modifier = Modifier.weight(1f),
