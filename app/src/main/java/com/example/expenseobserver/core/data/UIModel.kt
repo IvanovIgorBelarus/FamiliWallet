@@ -1,11 +1,11 @@
 package com.example.expenseobserver.core.data
 
-sealed class UIModel{
+sealed class UIModel {
     data class AccountModel(
         var id: String? = null,
         var uid: String? = null,
         var partnerUid: String? = null
-    ):BaseModel(id)
+    ) : BaseModel(id)
 
     data class CategoryModel(
         var id: String? = null,
@@ -15,7 +15,7 @@ sealed class UIModel{
         var icon: String? = null,
         var color: String? = null,
         var count: Int = 0
-    ):BaseModel(id)
+    ) : BaseModel(id)
 
     data class StatisticModel(
         var category: String?,
@@ -33,7 +33,7 @@ sealed class UIModel{
         var moneyType: String? = null,
         var date: Long? = null,
         var value: Double? = null
-    ):BaseModel(id)
+    ) : BaseModel(id)
 
     data class ArchiveMonthModel(
         val monthAndYear: String,
@@ -44,9 +44,14 @@ sealed class UIModel{
     data class SmsModel(
         var id: String? = null,
         var date: Long? = null,
-        var value: Double?=null,
+        var value: Double? = null,
         var currency: String? = null
-    ):BaseModel(id)
+    ) : BaseModel(id)
+
+    data class UpdateModel(
+        var url: String? = null,
+        var versionCode: Long? = null
+    )
 
     open class BaseModel(
         var itemId: String? = null

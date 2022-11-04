@@ -168,3 +168,58 @@ fun ShowTimeDialog(
     }
 }
 
+@Composable
+fun ShowUpdateDialog(
+    text: String? = null,
+    textResId: Int? = null,
+    openDialog: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    val resources = LocalContext.current.resources
+
+    val description = if (textResId != null) {
+        resources.getString(textResId)
+    } else {
+        text.orEmpty()
+    }
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text(text = resources.getString(R.string.update_title))
+            },
+            text = {
+                Text(text = description)
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = { openDialog.value = false }
+                    ) {
+                        Text(resources.getString(R.string.cancel))
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onClick.invoke()
+                            openDialog.value = false
+                        }
+                    ) {
+                        Text(resources.getString(R.string.ok))
+                    }
+                }
+            }
+        )
+    }
+}
+

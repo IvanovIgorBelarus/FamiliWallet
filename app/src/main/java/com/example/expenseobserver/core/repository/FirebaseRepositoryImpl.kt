@@ -16,6 +16,7 @@ import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.UID
 import com.example.expenseobserver.core.common.USERS
 import com.example.expenseobserver.core.common.VALUE
+import com.example.expenseobserver.core.common.VERSION
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.UserUtils
@@ -194,6 +195,12 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
         db.collection(collectionPath).document(itemId).update(data)
             .addOnSuccessListener { continuation.resume(DataResponse.Success(Unit)) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+    }
+
+    suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel> = suspendCoroutine { continuation ->
+        db.collection(VERSION).get()
+            .addOnSuccessListener { continuation.resume(DataResponse.Success(RepositoryMapper.getUpdateModel(it))) }
             .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 }

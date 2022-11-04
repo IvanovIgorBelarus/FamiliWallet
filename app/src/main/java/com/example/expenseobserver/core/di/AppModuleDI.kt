@@ -8,6 +8,8 @@ import com.example.expenseobserver.features.start_screen.domain.usecase.Categori
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCaseImpl
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCaseImpl
+import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCase
+import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,4 +37,9 @@ abstract class AppModule {
     abstract fun provideTransactionUseCase(
         transactionUseCase: TransactionUseCaseImpl
     ): TransactionUseCase
+
+    @Binds
+    abstract fun provideUpdateAppUseCase(
+        updateAppUseCase: UpdateAppUseCaseImpl
+    ): UpdateAppUseCase
 }

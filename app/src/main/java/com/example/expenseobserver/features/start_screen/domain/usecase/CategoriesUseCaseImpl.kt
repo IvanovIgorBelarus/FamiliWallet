@@ -12,7 +12,7 @@ class CategoriesUseCaseImpl @Inject constructor(
         repo.getCategoriesList(forceLoad)
 
     override suspend fun updateCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
-        repo.upDateItem(category)
+        repo.updateItem(category)
 
     override suspend fun addNewCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
         repo.addNewCategory(category)

@@ -49,8 +49,11 @@ class DataInteractor @Inject constructor(
     override suspend fun deleteItem(item: Any?) : DataResponse<Unit> =
         firebaseRepository.deleteItem(item)
 
-    override suspend fun upDateItem(item: Any?): DataResponse<Unit> =
+    override suspend fun updateItem(item: Any?): DataResponse<Unit> =
         firebaseRepository.upDateItem(item)
+
+    override suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel> =
+        firebaseRepository.checkUpdates()
 
     private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
         return if (cache.isEmpty() || forceLoad) {

@@ -41,3 +41,6 @@ const val NEW_SMS = "sms"
 const val FULL_DATE = "dd.MM.yyyy"
 
 const val BASE_CURRENCY_URL = "https://www.nbrb.by/api/exrates/"
+
+const val VERSION = "Version"
+const val URL = "url"
