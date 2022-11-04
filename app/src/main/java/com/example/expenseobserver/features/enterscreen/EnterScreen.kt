@@ -102,7 +102,6 @@ fun EnterScreen(
     }
 
     //check new version
-    val activity = LocalContext.current as Activity
 
     when (uiState) {
         is UiState.Success -> {
@@ -114,14 +113,7 @@ fun EnterScreen(
                     textResId = R.string.update_title_description,
                     openDialog = showUpdateDialog
                 ) {
-                    val updateAppUtils = UpdateAppUtils(
-                        activity = activity,
-                        appUrl = updateModel.url.orEmpty(),
-                        openProgressDialog = {},
-                        showErrorDialog = {}
-                    )
-
-                    updateAppUtils.installApp()
+                    //update
                 }
             }
         }
