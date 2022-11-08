@@ -9,4 +9,6 @@ interface CategoriesUseCase {
     suspend fun updateCategory(category: UIModel.CategoryModel): DataResponse<Unit>
 
     suspend fun addNewCategory(category: UIModel.CategoryModel): DataResponse<Unit>
+
+    suspend fun deleteCategory(category: UIModel.CategoryModel): DataResponse<Unit>
 }

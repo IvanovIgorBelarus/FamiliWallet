@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.common.BaseViewModel
 import com.example.expenseobserver.core.data.DataResponse
+import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.ui.UiState
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,19 @@ class CategoryViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
+            }
+        }
+    }
+
+    fun deleteItem(item: UIModel.CategoryModel) {
+        viewModelScope.launch {
+            uiState.value = UiState.Loading
+            when (val response = categoriesUseCase.deleteCategory(item)) {
+                is DataResponse.Success -> {
+                    categoriesUseCase.getCategoriesList(true)
+                    getData(false)
+                }
+                is DataResponse.Error -> UiState.Error(response.exception)
             }
         }
     }

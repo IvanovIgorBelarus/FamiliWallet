@@ -11,10 +11,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.utils.toStartOfDay
 import com.example.expenseobserver.ui.theme.backgroundColor
-import java.util.*
-import java.util.Calendar.DATE
 import kotlin.math.roundToInt
 
 fun List<UIModel.TransactionModel>.typeFilter(type: String): List<UIModel.TransactionModel> =
@@ -55,11 +52,15 @@ inline fun Modifier.rippleClickable(color: Color = backgroundColor, crossinline 
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-inline fun Modifier.longRippleClickable(color: Color = backgroundColor, crossinline onClick: () -> Unit): Modifier = composed {
+inline fun Modifier.longRippleClickable(
+    color: Color = backgroundColor,
+    crossinline onClick: () -> Unit = {},
+    crossinline onLongClick: () -> Unit = {}
+): Modifier = composed {
     combinedClickable(
         interactionSource = remember { MutableInteractionSource() },
         indication = rememberRipple(bounded = true, color = color),
-        onLongClick = { onClick() },
-        onClick = {}
+        onLongClick = { onLongClick() },
+        onClick = { onClick() }
     )
 }

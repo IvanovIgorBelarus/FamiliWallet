@@ -3,11 +3,8 @@ package com.example.expenseobserver.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -33,10 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.EXPENSES
-import com.example.expenseobserver.core.common.rippleClickable
+import com.example.expenseobserver.core.common.longRippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.UIModel
@@ -78,7 +74,8 @@ fun CategoryRowList(
 fun CategoryGridList(
     list: List<UIModel.CategoryModel>,
     currentState: MutableState<Int>,
-    onItemClick: (UIModel.CategoryModel) -> Unit
+    onItemClick: (UIModel.CategoryModel) -> Unit,
+    onLongClick: (UIModel.CategoryModel) -> Unit
 ) {
     val itemList = mutableListOf(
         UIModel.CategoryModel(
@@ -90,9 +87,12 @@ fun CategoryGridList(
     itemList.addAll(items)
     LazyVerticalGrid(columns = GridCells.Adaptive(80.dp)) {
         items(itemList) { item ->
-            CategoryRow(category = item, mutableStateOf("")) {
-                onItemClick.invoke(item)
-            }
+            CategoryRow(
+                category = item,
+                selectedCategory = mutableStateOf(""),
+                onItemClick = { onItemClick.invoke(item) },
+                onLongClick = { onLongClick.invoke(item) }
+            )
         }
     }
 }
@@ -101,7 +101,8 @@ fun CategoryGridList(
 fun CategoryRow(
     category: UIModel.CategoryModel,
     selectedCategory: MutableState<String>,
-    onItemClick: () -> Unit = {}
+    onItemClick: () -> Unit = {},
+    onLongClick: () -> Unit = {}
 ) {
     val iconColor = CategoryColor.getColor(category.color.orEmpty()).color
     val backgroundColor = if (selectedCategory.value == category.category) bottomBarUnselectedContentColor else backgroundColor
@@ -110,7 +111,10 @@ fun CategoryRow(
             .padding(2.dp)
             .width(62.dp)
             .wrapContentHeight()
-            .rippleClickable(color = Color.White) { onItemClick.invoke() }
+            .longRippleClickable(
+                color = Color.White,
+                onClick = { onItemClick.invoke() },
+                onLongClick = { onLongClick.invoke() })
             .background(backgroundColor, RoundedCornerShape(4.dp))
     ) {
         val (icon, text) = createRefs()
@@ -118,7 +122,7 @@ fun CategoryRow(
             modifier = Modifier
                 .border(BorderStroke(4.dp, iconColor), CircleShape)
                 .size(54.dp)
-                .constrainAs(icon){
+                .constrainAs(icon) {
                     top.linkTo(parent.top, 4.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -137,7 +141,7 @@ fun CategoryRow(
             color = textColor,
             fontSize = 10.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.constrainAs(text){
+            modifier = Modifier.constrainAs(text) {
                 top.linkTo(icon.bottom, 4.dp)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)

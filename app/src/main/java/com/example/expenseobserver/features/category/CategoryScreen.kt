@@ -17,10 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.expenseobserver.R
 import com.example.expenseobserver.components.CategoryGridList
 import com.example.expenseobserver.components.ThreeTabsLay
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.ShowScreen
+import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
 import com.example.expenseobserver.navigation.Screen
@@ -34,6 +37,12 @@ fun CategoryScreen(
 ) {
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
     val currentState = remember { mutableStateOf(0) }
+    val showDeleteDialog = remember { mutableStateOf(false) }
+    var deleteItem = UIModel.CategoryModel()
+
+    ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
+        categoryViewModel.deleteItem(deleteItem)
+    }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
@@ -42,18 +51,28 @@ fun CategoryScreen(
             ThreeTabsLay(tabList = tabList, currentState = currentState)
             Spacer(modifier = Modifier.size(24.dp))
 
-            CategoryGridList(list = viewState.categoriesList, currentState = currentState) {
-                NewCategoryModel.setNewCategoryModel(
-                    model = it,
-                    isNewCategory = !viewState.categoriesList.contains(it),
-                    categoryType = CategoryType.getCategory(currentState.value)
-                )
-                navigation.navigate(Screen.NewCategoryScreen.route)
-            }
+            CategoryGridList(
+                list = viewState.categoriesList,
+                currentState = currentState,
+                onItemClick = {
+                    NewCategoryModel.setNewCategoryModel(
+                        model = it,
+                        isNewCategory = !viewState.categoriesList.contains(it),
+                        categoryType = CategoryType.getCategory(currentState.value)
+                    )
+                    navigation.navigate(Screen.NewCategoryScreen.route)
+                },
+                onLongClick = {
+                    deleteItem = it
+                    if (deleteItem.id != null) {
+                        showDeleteDialog.value = true
+                    }
+                })
         }
     }
 
-    ShowScreen(viewModel = categoryViewModel,
+    ShowScreen(
+        viewModel = categoryViewModel,
         forceLoad = forceLoad,
         onSuccess = {
             viewState = it as CategoryScreenViewState

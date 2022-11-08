@@ -60,12 +60,11 @@ fun TransactionRow(
             .padding(0.dp, 4.dp)
             .fillMaxWidth()
             .requiredHeight(80.dp)
-            .longRippleClickable { onClick.invoke(transaction) }
-        ,
+            .longRippleClickable(onLongClick = { onClick.invoke(transaction) }),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category && it.type == transaction.type}
+        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category && it.type == transaction.type }
         val iconRes = AppIcons.getImageRes(itemCategory?.icon)
 
         Spacer(modifier = Modifier.size(16.dp))
