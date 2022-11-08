@@ -44,6 +44,16 @@ class NewCategoryViewModel @Inject constructor(
         onSuccess: () -> Unit = {}
     ) {
         uiState.value = UiState.Loading
+        val error = when {
+            category.isEmpty() -> "Введите имя категории"
+            icon == AppIcons.UNKNOWN||icon == AppIcons.PLUS -> "Выберите иконку для категории"
+            else -> null
+        }
+        if (!error.isNullOrEmpty()) {
+            uiState.value = UiState.Error(Exception(error))
+            return
+        }
+
         viewModelScope.launch {
             val request = UIModel.CategoryModel(
                 uid = UserUtils.getUsersUid(),
