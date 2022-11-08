@@ -50,7 +50,8 @@ sealed class UIModel {
 
     data class UpdateModel(
         var url: String? = null,
-        var versionCode: Long? = null
+        var versionCode: Long? = null,
+        var description: String? = null
     )
 
     open class BaseModel(

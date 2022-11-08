@@ -1,6 +1,6 @@
 package com.example.expenseobserver.features.enterscreen
 
-import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -24,13 +23,13 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.BuildConfig
-import com.example.expenseobserver.MainActivity
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.EnterButton
 import com.example.expenseobserver.components.TopScreenBlueHeader
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.ui.UiState
 import com.example.expenseobserver.core.utils.UserUtils
+import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
@@ -102,7 +101,8 @@ fun EnterScreen(
     }
 
     //check new version
-
+    val error = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
     when (uiState) {
         is UiState.Success -> {
             val updateModel = (uiState as UiState.Success<UIModel.UpdateModel>).data
@@ -110,10 +110,19 @@ fun EnterScreen(
             if (currentVersionCode < (updateModel.versionCode ?: 0)) {
                 showUpdateDialog.value = true
                 ShowUpdateDialog(
-                    textResId = R.string.update_title_description,
+                    text = updateModel.description?: LocalContext.current.resources.getString(R.string.update_title_description),
                     openDialog = showUpdateDialog
                 ) {
-                    //update
+                    Log.e("MYNAME", LocalContext.current.applicationContext.packageName + ".provider")
+                    val up = UpdateAppUtils(
+                        description = updateModel.description,
+                        appUrl = updateModel.url.orEmpty(),
+                        showErrorDialog = { exception ->
+                            error.value = true
+                            errorMessage.value = exception.message.orEmpty()
+                        }
+                    )
+                    up.installApp()
                 }
             }
         }
@@ -121,6 +130,10 @@ fun EnterScreen(
         is UiState.Loading -> {
             LoadingScreen()
         }
+    }
+
+    if (error.value) {
+        ShowErrorDialog(text = errorMessage.value)
     }
 
     LaunchedEffect(Unit) {

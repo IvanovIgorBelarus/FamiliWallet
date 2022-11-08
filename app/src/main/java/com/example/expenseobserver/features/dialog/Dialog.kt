@@ -173,9 +173,10 @@ fun ShowUpdateDialog(
     text: String? = null,
     textResId: Int? = null,
     openDialog: MutableState<Boolean>,
-    onClick: () -> Unit
+    onClick: @Composable () -> Unit
 ) {
     val resources = LocalContext.current.resources
+    val click = remember { mutableStateOf(false) }
 
     val description = if (textResId != null) {
         resources.getString(textResId)
@@ -186,7 +187,7 @@ fun ShowUpdateDialog(
     if (openDialog.value) {
         AlertDialog(
             onDismissRequest = {
-                openDialog.value = false
+
             },
             title = {
                 Text(text = resources.getString(R.string.update_title))
@@ -211,7 +212,7 @@ fun ShowUpdateDialog(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onClick.invoke()
+                            click.value = true
                             openDialog.value = false
                         }
                     ) {
@@ -220,6 +221,10 @@ fun ShowUpdateDialog(
                 }
             }
         )
+    }
+
+    if (click.value) {
+        onClick.invoke()
     }
 }
 

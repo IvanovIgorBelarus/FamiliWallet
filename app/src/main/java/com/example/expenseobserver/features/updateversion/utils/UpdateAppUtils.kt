@@ -1,6 +1,5 @@
 package com.example.expenseobserver.features.updateversion.utils
 
-import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,17 +9,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import java.io.File
 
 class UpdateAppUtils(
-    private val activity: Activity,
-    private var description: String = "Идёт установка ExpensesObserver",
+    private var description: String? = "Идёт установка ExpensesObserver",
     private var title: String = "Обновление ExpensesObserver",
     private var appUrl: String = "https://www.vtb.by/app/vtb_mobile_app.apk",
     private var fileName: String = "ExpensesObserver.apk",
     private val openProgressDialog: (Long) -> Unit = {},
-    private val showErrorDialog: () -> Unit = {}
+    private val showErrorDialog: (e: Throwable) -> Unit = {}
 ) {
 
     private var uri: Uri? = null
@@ -28,10 +28,13 @@ class UpdateAppUtils(
 
     private var receiver: BroadcastReceiver? = null
     private var installIntent: Intent? = null
+    private var context: Context? = null
 
+    @Composable
     fun installApp() {
+        context = LocalContext.current
         val externalStorageDir = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
         } else {
             @Suppress("DEPRECATION")
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -48,7 +51,7 @@ class UpdateAppUtils(
             it.setTitle(title)
             it.setDestinationUri(uri)
         }
-        val manager: DownloadManager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val manager: DownloadManager = LocalContext.current.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         registerReceiver()
         openProgressDialog.invoke(manager.enqueue(request))
     }
@@ -79,13 +82,14 @@ class UpdateAppUtils(
                 installFromAPK()
             } catch (e: Exception) {
                 Log.e("MYNAME", e.toString())
-                showErrorDialog.invoke()
+                showErrorDialog.invoke(e)
             }
         }
     }
 
+    @Composable
     private fun registerReceiver() {
-        activity.registerReceiver(
+        LocalContext.current.registerReceiver(
             onDownloadComplete,
             IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         )
@@ -93,11 +97,11 @@ class UpdateAppUtils(
 
     private fun installFromAPK() {
         try {
-            activity.startActivity(installIntent)
-            activity.unregisterReceiver(receiver)
+            context?.startActivity(installIntent)
+            context?.unregisterReceiver(receiver)
         } catch (e: Exception) {
             Log.e("MYNAME", e.toString())
-            showErrorDialog.invoke()
+            showErrorDialog.invoke(e)
         }
     }
 }

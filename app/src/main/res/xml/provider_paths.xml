@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="files_root"
+        path="Android/data/com.example.familiwallet/files" />
+    <external-path
+        name="external_storage_root"
+        path="." />
+    <external-path
+        name="Download"
+        path="Download/" />
+    <external-files-path
+        name="Download"
+        path="Download/" />
+    <files-path
+        name="all_files"
+        path="." />
+    <external-files-path
+        name="my_images"
+        path="Android/data/com.example.familiwallet/files/Pictures" />
+</paths>

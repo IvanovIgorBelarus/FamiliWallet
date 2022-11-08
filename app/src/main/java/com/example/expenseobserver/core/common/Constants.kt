@@ -44,3 +44,4 @@ const val BASE_CURRENCY_URL = "https://www.nbrb.by/api/exrates/"
 
 const val VERSION = "Version"
 const val URL = "url"
+const val DESCRIPTION = "description"

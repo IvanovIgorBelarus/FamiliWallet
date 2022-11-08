@@ -6,6 +6,7 @@ import com.example.expenseobserver.core.common.CATEGORY
 import com.example.expenseobserver.core.common.COLOR
 import com.example.expenseobserver.core.common.CURRENCY
 import com.example.expenseobserver.core.common.DATE
+import com.example.expenseobserver.core.common.DESCRIPTION
 import com.example.expenseobserver.core.common.ICON
 import com.example.expenseobserver.core.common.MONEY_TYPE
 import com.example.expenseobserver.core.common.PARTNER_UID
@@ -93,5 +94,6 @@ object RepositoryMapper {
         val doc = response.firstOrNull()
         url = doc?.getString(URL)
         versionCode = doc?.getLong(VERSION)
+        description = doc?.getString(DESCRIPTION)
     }
 }
