@@ -115,7 +115,6 @@ fun EnterScreen(
                 ) {
                     Log.e("MYNAME", LocalContext.current.applicationContext.packageName + ".provider")
                     val up = UpdateAppUtils(
-                        description = updateModel.description,
                         appUrl = updateModel.url.orEmpty(),
                         showErrorDialog = { exception ->
                             error.value = true
