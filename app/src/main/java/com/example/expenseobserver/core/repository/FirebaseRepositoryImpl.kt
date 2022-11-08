@@ -111,32 +111,26 @@ class FirebaseRepositoryImpl @Inject constructor() {
     }
 
     suspend fun getPersonTransactionList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
-        if (partnerRequest is DataResponse.Success) {
-            val account = partnerRequest.data
-            db.collection(TRANSACTIONS)
-                .whereIn(UID, listOf(account.uid, account.partnerUid))
-                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.startDate)
-                .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.endDate)
-                .get()
-                .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
-                .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
-        } else {
-            continuation.resume(DataResponse.Error(Throwable("Нет данных о транзакциях")))
-        }
+        val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
+
+        db.collection(TRANSACTIONS)
+            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
+            .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.startDate)
+            .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.endDate)
+            .get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
 
     suspend fun getPersonCategoriesList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
-        if (partnerRequest is DataResponse.Success) {
-            val account = partnerRequest.data
-            db.collection(CATEGORIES)
-                .whereIn(UID, listOf(account.uid, account.partnerUid))
-                .get()
-                .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
-                .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
-        } else {
-            continuation.resume(DataResponse.Error(Throwable("Нет данных по категориям")))
-        }
+        val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
+
+        db.collection(CATEGORIES)
+            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
+            .get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
     suspend fun deleteItem(item: Any?): DataResponse<Unit> = suspendCoroutine { continuation ->
