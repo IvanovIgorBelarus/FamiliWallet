@@ -109,6 +109,7 @@ fun CategoryRow(
     val backgroundColor = if (selectedCategory.value == category.category) bottomBarUnselectedContentColor else backgroundColor
     ConstraintLayout(
         modifier = Modifier
+            .background(backgroundColor, RoundedCornerShape(4.dp))
             .padding(2.dp)
             .width(62.dp)
             .wrapContentHeight()
@@ -116,7 +117,6 @@ fun CategoryRow(
                 color = Color.White,
                 onClick = { onItemClick.invoke() },
                 onLongClick = { onLongClick.invoke() })
-            .background(backgroundColor, RoundedCornerShape(4.dp))
     ) {
         val (icon, text) = createRefs()
         Box(
