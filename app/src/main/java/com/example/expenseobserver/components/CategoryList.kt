@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -57,7 +58,7 @@ fun CategoryRowList(
         fontSize = 14.sp,
         modifier = Modifier.fillMaxWidth()
     )
-    LazyRow(Modifier.padding(vertical = 4.dp)) {
+    LazyRow(Modifier.height(120.dp).padding(vertical = 4.dp)) {
         items(itemList) { item ->
             CategoryRow(
                 category = item,
