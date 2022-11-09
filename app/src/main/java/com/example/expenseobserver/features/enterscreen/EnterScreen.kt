@@ -2,9 +2,15 @@ package com.example.expenseobserver.features.enterscreen
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,9 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -34,6 +43,8 @@ import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
 import com.example.expenseobserver.navigation.Screen
+import com.example.expenseobserver.ui.theme.backgroundColor
+import com.example.expenseobserver.ui.theme.buttonColor
 import com.example.expenseobserver.ui.theme.enterTextColor
 
 @Composable
@@ -48,25 +59,53 @@ fun EnterScreen(
         modifier = modifier.fillMaxSize()
     ) {
         val resources = LocalContext.current.resources
-
+        val topHeaderHeight = LocalConfiguration.current.screenHeightDp.dp/3
+        val imageWidth = LocalConfiguration.current.screenWidthDp.dp-LocalConfiguration.current.screenWidthDp.dp/4
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
             val (topHeader, image, text, button) = createRefs()
 
             TopScreenBlueHeader(
-                Modifier.constrainAs(topHeader) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-                text = resources.getString(R.string.money)
+                text = resources.getString(R.string.money),
+                modifier =  modifier
+                    .constrainAs(topHeader) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }
             )
+
+//            Box(
+//                modifier
+//                    .height(topHeaderHeight)
+//                    .constrainAs(topHeader) {
+//                        top.linkTo(parent.top)
+//                        start.linkTo(parent.start)
+//                        end.linkTo(parent.end)
+//                        width = Dimension.fillToConstraints
+//                    }
+//                    .background(color = buttonColor, RoundedCornerShape(0.dp, 0.dp, 20.dp, 20.dp))
+//            )
+//            Text(
+//                text = resources.getString(R.string.money),
+//                Modifier
+//                    .constrainAs(title) {
+//                        top.linkTo(topHeader.top,topHeaderHeight/4)
+//                        start.linkTo(parent.start)
+//                        end.linkTo(parent.end)
+//                    },
+//                fontSize = 36.sp,
+//                color = backgroundColor,
+//                fontWeight = FontWeight.Medium,
+//                textAlign = TextAlign.Center
+//            )
             Image(
                 modifier = modifier
+                    .width(imageWidth)
                     .constrainAs(image) {
-                        top.linkTo(parent.top, margin = 130.dp)
-                        start.linkTo(parent.start, margin = 36.dp)
-                        end.linkTo(parent.end, margin = 36.dp)
-                        width = Dimension.fillToConstraints
+                        top.linkTo(topHeader.top, topHeaderHeight/3)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
                     },
                 painter = painterResource(id = R.drawable.ic_cards),
                 contentDescription = null
@@ -77,7 +116,8 @@ fun EnterScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
                     .constrainAs(text) {
-                        top.linkTo(image.bottom, margin = 48.dp)
+                        top.linkTo(image.bottom)
+                        bottom.linkTo(button.top)
                     },
                 fontSize = 30.sp,
                 color = enterTextColor,
@@ -85,7 +125,8 @@ fun EnterScreen(
             )
             EnterButton(Modifier
                 .constrainAs(button) {
-                    bottom.linkTo(parent.bottom, margin = 60.dp)
+                    top.linkTo(text.bottom)
+                    bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start, margin = 16.dp)
                     end.linkTo(parent.end, margin = 16.dp)
                     width = Dimension.fillToConstraints
@@ -139,9 +180,9 @@ fun EnterScreen(
         enterViewModel.getData()
     }
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun EnterScreenPreview() {
-//    EnterScreen()
-//}
+
+@Preview(showBackground = true)
+@Composable
+private fun EnterScreenPreview() {
+    EnterScreen()
+}
