@@ -84,14 +84,14 @@ private fun MainTopBar(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_settings_screen),
-            contentDescription = "",
-            modifier = Modifier.size(24.dp),
-            tint = Color.Black
-        )
-        Spacer(modifier = Modifier.size(12.dp))
+        //hide settings
+//        Icon(
+//            painter = painterResource(id = R.drawable.ic_settings_screen),
+//            contentDescription = "",
+//            modifier = Modifier.size(24.dp),
+//            tint = Color.Black
+//        )
+//        Spacer(modifier = Modifier.size(12.dp))
     }
 }
 
