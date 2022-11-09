@@ -61,11 +61,11 @@ fun CategoryRowList(
         items(itemList) { item ->
             CategoryRow(
                 category = item,
-                selectedCategory = selectedCategory
-            ) {
-                selectedCategory.value = item.category.orEmpty()
-                showError.value = false
-            }
+                selectedCategory = selectedCategory,
+                onItemClick = {
+                    selectedCategory.value = item.category.orEmpty()
+                    showError.value = false
+                })
         }
     }
 }
