@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
@@ -17,14 +18,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryRowList
@@ -39,6 +43,7 @@ import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
 import java.util.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TransactionDialog(
     data: List<UIModel.CategoryModel>,
@@ -46,21 +51,27 @@ fun TransactionDialog(
     onButtonClick: (transactionModel: UIModel.TransactionModel) -> Unit
 ) {
     val resources = LocalContext.current.resources
+
+    val dialogWidth = LocalConfiguration.current.screenWidthDp.dp - 20.dp
+
     val currentState = remember { mutableStateOf(0) }
     val selectedCategory = remember { mutableStateOf("") }
     val cashType = remember { mutableStateOf(CashType.CARDS) }
     val amount = remember { mutableStateOf("") }
     val showError = remember { mutableStateOf(false) }
 
-    Dialog(onDismissRequest = { dismissDialog.invoke() }) {
+    Dialog(
+        onDismissRequest = { dismissDialog.invoke() },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .width(dialogWidth)
                 .background(backgroundColor, RoundedCornerShape(10.dp))
-                .padding(8.dp, 16.dp)
+                .padding(16.dp)
         ) {
             ThreeTabsLay(tabList = tabList, currentState = currentState)
-            Spacer(modifier = Modifier.size(24.dp))
 
             CategoryRowList(
                 list = data,

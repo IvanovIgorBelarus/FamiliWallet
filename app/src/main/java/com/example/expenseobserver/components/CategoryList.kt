@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,23 +52,47 @@ fun CategoryRowList(
 ) {
     val itemList = list.filter { it.type == CategoryType.getCategory(currentState.value).type }
 
-    Text(
-        text = "Последние",
-        color = mainColor,
-        textAlign = TextAlign.Start,
-        fontSize = 14.sp,
-        modifier = Modifier.fillMaxWidth()
-    )
-    LazyRow(Modifier.height(120.dp).padding(vertical = 4.dp)) {
-        items(itemList) { item ->
-            CategoryRow(
-                category = item,
-                selectedCategory = selectedCategory,
-                onItemClick = {
-                    selectedCategory.value = item.category.orEmpty()
-                    showError.value = false
-                })
+    if (itemList.isNotEmpty()) {
+        Spacer(modifier = Modifier.size(24.dp))
+        Text(
+            text = "Последние",
+            color = mainColor,
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        LazyRow(
+            Modifier
+                .height(120.dp)
+                .padding(vertical = 4.dp)) {
+            items(itemList) { item ->
+                CategoryRow(
+                    category = item,
+                    selectedCategory = selectedCategory,
+                    onItemClick = {
+                        selectedCategory.value = item.category.orEmpty()
+                        showError.value = false
+                    })
+            }
         }
+    } else {
+        Text(
+            text = "",
+            color = mainColor,
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Box(modifier = Modifier.height(120.dp), contentAlignment = Alignment.Center){
+            Text(
+                text = "У вас пока ещё нет категорий. Пожалуйста, перейдите в раздел \"Категории\" и создайте нужную.",
+                color = mainColor,
+                textAlign = TextAlign.Center,
+                fontSize = 18.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Spacer(modifier = Modifier.size(24.dp))
     }
 }
 

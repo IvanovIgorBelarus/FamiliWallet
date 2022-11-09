@@ -8,7 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,11 +15,9 @@ import androidx.navigation.NavHostController
 import com.example.expenseobserver.components.ActionButton
 import com.example.expenseobserver.components.BottomBar
 import com.example.expenseobserver.components.TopBar
-import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.loading.LoadingScreen
-import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.features.transacrionscreen.TransactionDialog
 import com.example.expenseobserver.features.transacrionscreen.TransactionViewModel
 import com.example.expenseobserver.navigation.MainScreenNavigation

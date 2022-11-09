@@ -2,15 +2,10 @@ package com.example.expenseobserver.features.enterscreen
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +18,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,15 +30,13 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.components.EnterButton
 import com.example.expenseobserver.components.TopScreenBlueHeader
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
 import com.example.expenseobserver.navigation.Screen
-import com.example.expenseobserver.ui.theme.backgroundColor
-import com.example.expenseobserver.ui.theme.buttonColor
 import com.example.expenseobserver.ui.theme.enterTextColor
 
 @Composable

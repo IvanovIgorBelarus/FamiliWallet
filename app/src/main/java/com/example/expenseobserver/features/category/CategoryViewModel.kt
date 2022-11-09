@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.common.BaseViewModel
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

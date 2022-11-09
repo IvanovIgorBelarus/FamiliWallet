@@ -32,7 +32,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
 import com.example.expenseobserver.features.diagram.data.OverviewItem

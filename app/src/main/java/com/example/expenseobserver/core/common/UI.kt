@@ -3,7 +3,7 @@ package com.example.expenseobserver.core.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 

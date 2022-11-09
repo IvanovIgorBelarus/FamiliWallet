@@ -7,7 +7,7 @@ import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.IconActionType
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.ui.UiState
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
