@@ -52,7 +52,7 @@ fun TransactionDialog(
 ) {
     val resources = LocalContext.current.resources
 
-    val dialogWidth = LocalConfiguration.current.screenWidthDp.dp - 20.dp
+    val dialogWidth = LocalConfiguration.current.screenWidthDp.dp*9/10
 
     val currentState = remember { mutableStateOf(0) }
     val selectedCategory = remember { mutableStateOf("") }

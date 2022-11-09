@@ -48,6 +48,7 @@ fun CategoryScreen(
         modifier = modifier.padding(horizontal = 8.dp),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.size(24.dp))
             ThreeTabsLay(tabList = tabList, currentState = currentState)
             Spacer(modifier = Modifier.size(24.dp))
 
