@@ -103,4 +103,8 @@ fun HistoryScreen(
     }
 }
 
-val tabList = TimeRangeType.values().toList()
+val tabList = listOf(
+    TimeRangeType.DAY,
+    TimeRangeType.WEEK,
+    TimeRangeType.MONTH
+)
