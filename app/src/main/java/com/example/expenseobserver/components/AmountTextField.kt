@@ -26,8 +26,11 @@ fun AmountTextField(
     showError: MutableState<Boolean>,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     inputTextColor: Color = textColor,
-    textBackgroundColor: Color = backgroundColor
-) {
+    textBackgroundColor: Color = backgroundColor,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null
+    ) {
     CustomInputTextField(
         value = stringValue.value,
         onValueChange = {
@@ -47,7 +50,10 @@ fun AmountTextField(
             backgroundColor = textBackgroundColor,
             focusedIndicatorColor = textBackgroundColor,
             unfocusedIndicatorColor = textBackgroundColor
-        )
+        ),
+        enabled = enabled,
+        readOnly = readOnly,
+        trailingIcon = trailingIcon
     )
 }
 

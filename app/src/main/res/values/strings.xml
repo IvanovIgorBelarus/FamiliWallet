@@ -37,4 +37,13 @@
 
     <string name="update_title">Новая версия!</string>
     <string name="update_title_description">Вышла новая версия приложения, хотите установить?</string>
+
+    <string name="time_range_title">Выбор периода отображения данных:</string>
+    <string name="time_range_day_title">За день</string>
+    <string name="time_range_week_title">За неделю</string>
+    <string name="time_range_month_title">За месяц</string>
+    <string name="time_range_other_title">За период</string>
+    <string name="time_range_start">Начало периода</string>
+    <string name="time_range_end">Конец периода</string>
+    <string name="edit">Применить</string>
 </resources>

@@ -25,7 +25,7 @@ import com.example.expenseobserver.ui.theme.buttonColor
 import com.example.expenseobserver.ui.theme.textColor
 
 @Composable
-fun TransactionButton(
+fun MainButton(
     modifier: Modifier = Modifier,
     text: Int = R.string.enter,
     isSelected: MutableState<Boolean>,
@@ -53,5 +53,5 @@ fun TransactionButton(
 @Preview(showBackground = true)
 @Composable
 private fun TransactionButtonPreview() {
-    TransactionButton(isSelected = mutableStateOf(false))
+    MainButton(isSelected = mutableStateOf(false))
 }

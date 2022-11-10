@@ -33,7 +33,7 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryRowList
 import com.example.expenseobserver.components.ThreeTabsLay
-import com.example.expenseobserver.components.TransactionButton
+import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.core.common.CashType
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.data.UIModel
@@ -81,13 +81,13 @@ fun TransactionDialog(
             )
 
             Row(horizontalArrangement = Arrangement.Center) {
-                TransactionButton(
+                MainButton(
                     modifier = Modifier.weight(1f),
                     text = R.string.card,
                     isSelected = mutableStateOf(cashType.value == CashType.CARDS)
                 ) { cashType.value = CashType.CARDS }
                 Spacer(modifier = Modifier.size(8.dp))
-                TransactionButton(
+                MainButton(
                     modifier = Modifier.weight(1f),
                     text = R.string.cash,
                     isSelected = mutableStateOf(cashType.value == CashType.CASHES)
@@ -113,7 +113,7 @@ fun TransactionDialog(
             }
             Spacer(modifier = Modifier.size(48.dp))
 
-            TransactionButton(
+            MainButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = R.string.confirm,
                 isSelected = mutableStateOf(true)

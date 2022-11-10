@@ -32,10 +32,11 @@ import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.diagram.DiagramScreen
 import com.example.expenseobserver.features.dialog.ShowDeleteDialog
-import com.example.expenseobserver.features.dialog.ShowTimeDialog
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
+import com.example.expenseobserver.features.timerange.TimeRangeDialog
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.mainColor
 
@@ -56,10 +57,18 @@ fun StartScreen(
         startViewModel.deleteItem(deleteItem)
     }
 
-    ShowTimeDialog(openDialog = showTimeRangeDialog){
-        startViewModel.changeTimeRange(it)
+    if (showTimeRangeDialog.value) {
+        TimeRangeDialog(
+            dismissDialog = {
+                showTimeRangeDialog.value = false
+            },
+            onButtonClick = {
+                startViewModel.uiState.value = UiState.Loading
+                startViewModel.getData()
+                showTimeRangeDialog.value = false
+            }
+        )
     }
-
 
     Scaffold(
         modifier = modifier,

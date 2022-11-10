@@ -40,7 +40,7 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryIconGrid
 import com.example.expenseobserver.components.CategoryRowWithoutText
-import com.example.expenseobserver.components.TransactionButton
+import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
@@ -102,7 +102,7 @@ fun NewCategoryScreen(
             Spacer(modifier = Modifier.size(24.dp))
 
             Row(horizontalArrangement = Arrangement.Center) {
-                TransactionButton(
+                MainButton(
                     modifier = Modifier.weight(1f),
                     text = R.string.cancel,
                     isSelected = mutableStateOf(false)
@@ -110,7 +110,7 @@ fun NewCategoryScreen(
                     navigation.popBackStack()
                 }
                 Spacer(modifier = Modifier.size(24.dp))
-                TransactionButton(
+                MainButton(
                     modifier = Modifier.weight(1f),
                     text = R.string.done,
                     isSelected = mutableStateOf(true)

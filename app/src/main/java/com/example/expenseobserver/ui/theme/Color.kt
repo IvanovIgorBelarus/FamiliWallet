@@ -55,3 +55,6 @@ val openColor10 = Color(0xFF669BD4)
 val openColor11 = Color(0xFF2A3650)
 val openColor12 = Color(0xFF93929A)
 val openColor13 = Color(0xFFA779E3)
+
+//switch colors
+val uncheckedThumbColor = Color(0xFFF1F3F2)

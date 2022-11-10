@@ -22,6 +22,18 @@ enum class TimeRangeType(val text: String, val startDate: Long, val endDate: Lon
         startDate = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH)-31) }.time.toStartOfDay.time,
         endDate = Calendar.getInstance().time.toEndOfDay.time,
         2
+    ),
+    RANGE(
+    "Период",
+    startDate = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH)-31) }.time.toStartOfDay.time,
+    endDate = Calendar.getInstance().time.toEndOfDay.time,
+    3
+    ),
+    UNKNOWN(
+        "",
+        startDate = -1,
+        endDate = -1,
+        -1
     );
 //    MONTH(
 //        "Месяц",
