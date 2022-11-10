@@ -1,5 +1,6 @@
 package com.example.expenseobserver.core.utils
 
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,3 +106,6 @@ val Long.toStringFormat: String
 
 val Long.toStringDayFormat: String
     get() = SimpleDateFormat("dd.MM.yyyy").format(this)
+
+val Long.toCountryDateFormat: String
+    get() = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault()).format(this)

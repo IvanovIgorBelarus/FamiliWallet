@@ -39,6 +39,7 @@ import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.SwitchWithText
 import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.core.utils.toCountryDateFormat
 import com.example.expenseobserver.core.utils.toStringDayFormat
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
@@ -117,8 +118,7 @@ fun TimeRangeDialog(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 AmountTextField(
-                    stringValue = mutableStateOf(dateFilterType.startDate.toStringDayFormat),
-                    placeHolderText = resources.getString(R.string.amount),
+                    stringValue = mutableStateOf(dateFilterType.startDate.toCountryDateFormat),
                     modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
                     showError = mutableStateOf(false),
                     enabled = enableEditText,
@@ -142,8 +142,7 @@ fun TimeRangeDialog(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 AmountTextField(
-                    stringValue = mutableStateOf(dateFilterType.endDate.toStringDayFormat),
-                    placeHolderText = resources.getString(R.string.amount),
+                    stringValue = mutableStateOf(dateFilterType.endDate.toCountryDateFormat),
                     modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
                     showError = mutableStateOf(false),
                     enabled = enableEditText,
