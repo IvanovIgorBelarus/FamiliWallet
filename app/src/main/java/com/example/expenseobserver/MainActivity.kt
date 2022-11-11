@@ -1,9 +1,12 @@
 package com.example.expenseobserver
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -26,6 +29,13 @@ class MainActivity : ComponentActivity() {
                 AppNavigation()
             }
         }
+    }
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     fun getFacebookHash(){

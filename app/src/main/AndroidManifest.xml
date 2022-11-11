@@ -22,7 +22,7 @@
             android:name="com.example.expenseobserver.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.FamiliWallet"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
