@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,9 +32,11 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.navigation.Screen
+import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.bottomBarBackgroundColor
 import com.example.expenseobserver.ui.theme.textColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     modifier: Modifier = Modifier,
@@ -46,16 +50,19 @@ fun TopBar(
     TopAppBar(
         modifier = modifier
             .height(56.dp),
-        backgroundColor = bottomBarBackgroundColor,
-        contentColor = Color.White,
-        elevation = 0.dp
-    ) {
-        if (showSettings) {
-            MainTopBar(painter = painter, titleText = titleText)
-        } else {
-            TransactionTopBar(titleText = titleText, navigation = navigation)
-        }
-    }
+        colors = TopAppBarDefaults.topAppBarColors(
+            titleContentColor = Color.White,
+            containerColor = backgroundColor
+        ),
+        title = {MainTopBar(painter = painter, titleText = titleText)}
+    )
+//    {
+//        if (showSettings) {
+//            MainTopBar(painter = painter, titleText = titleText)
+//        } else {
+//            TransactionTopBar(titleText = titleText, navigation = navigation)
+//        }
+//    }
 }
 
 @Composable

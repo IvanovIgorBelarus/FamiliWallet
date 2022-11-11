@@ -33,7 +33,7 @@ fun List<UIModel.CategoryModel>.categoryTypeFilter(type: String): List<UIModel.C
 val Double.round: Double
     get() = (this * 100).roundToInt().toDouble() / 100
 
-inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+ fun Modifier.noRippleClickable( onClick: () -> Unit): Modifier = composed {
     clickable(
         indication = null,
         interactionSource = remember { MutableInteractionSource() }
@@ -42,7 +42,7 @@ inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier
     }
 }
 
-inline fun Modifier.rippleClickable(color: Color = backgroundColor, crossinline onClick: () -> Unit): Modifier = composed {
+fun Modifier.rippleClickable(color: Color = backgroundColor, onClick: () -> Unit): Modifier = composed {
     clickable(
         interactionSource = remember { MutableInteractionSource() },
         indication = rememberRipple(bounded = true, color = color)
@@ -52,10 +52,10 @@ inline fun Modifier.rippleClickable(color: Color = backgroundColor, crossinline 
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-inline fun Modifier.longRippleClickable(
+ fun Modifier.longRippleClickable(
     color: Color = backgroundColor,
-    crossinline onClick: () -> Unit = {},
-    crossinline onLongClick: () -> Unit = {}
+     onClick: () -> Unit = {},
+     onLongClick: () -> Unit = {}
 ): Modifier = composed {
     combinedClickable(
         interactionSource = remember { MutableInteractionSource() },
@@ -64,3 +64,5 @@ inline fun Modifier.longRippleClickable(
         onClick = { onClick() }
     )
 }
+
+fun Color.disableColor(enable: Boolean = false) = this.copy(alpha = if (enable) 1f else 0.38f)

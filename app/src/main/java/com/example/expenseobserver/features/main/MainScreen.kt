@@ -1,8 +1,9 @@
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FabPosition
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,6 +24,7 @@ import com.example.expenseobserver.features.transacrionscreen.TransactionViewMod
 import com.example.expenseobserver.navigation.MainScreenNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @Composable
 fun MainScreen(
@@ -59,7 +61,7 @@ fun MainScreen(
                 }
             }
         },
-        isFloatingActionButtonDocked = true,
+//        isFloatingActionButtonDocked = true,   //no in material3
         floatingActionButtonPosition = FabPosition.Center
     ) {
         MainScreenNavigation(

@@ -9,7 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
@@ -42,6 +43,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
     navigation: NavHostController? = null,

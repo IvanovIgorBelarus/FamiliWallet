@@ -8,12 +8,12 @@ import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextFieldColors
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TextFieldDefaults.indicatorLine
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TextFieldDefaults.indicatorLine
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomInputTextField(
     value: String,
@@ -48,15 +48,15 @@ fun CustomInputTextField(
         MaterialTheme.shapes.small.copy(bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
 ){
-    val textColor = textStyle.color.takeOrElse {
-        colors.textColor(enabled).value
-    }
-    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
+//    val textColor = textStyle.color.takeOrElse {
+//        colors.textColor(enabled).value
+//    }
+//    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
     BasicTextField(
         value = value,
         modifier = modifier
-            .background(colors.backgroundColor(enabled).value, shape)
+//            .background(colors.containerColor(enabled).value, shape)
             .indicatorLine(enabled, isError, interactionSource, colors)
             .defaultMinSize(
                 minWidth = TextFieldDefaults.MinWidth,
@@ -65,8 +65,8 @@ fun CustomInputTextField(
         onValueChange = onValueChange,
         enabled = enabled,
         readOnly = readOnly,
-        textStyle = mergedTextStyle,
-        cursorBrush = SolidColor(colors.cursorColor(isError).value),
+//        textStyle = mergedTextStyle,
+//        cursorBrush = SolidColor(colors.cursorColor(isError).value),
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

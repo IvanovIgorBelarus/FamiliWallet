@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +40,7 @@ import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
 import com.example.expenseobserver.navigation.Screen
 import com.example.expenseobserver.ui.theme.enterTextColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterScreen(
     modifier: Modifier = Modifier,

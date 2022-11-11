@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -28,6 +29,7 @@ import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
 import com.example.expenseobserver.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
     modifier: Modifier = Modifier,

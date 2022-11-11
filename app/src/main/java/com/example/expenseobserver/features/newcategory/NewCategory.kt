@@ -20,7 +20,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -50,6 +51,7 @@ import com.example.expenseobserver.features.newcategory.data.NewCategoryViewStat
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryScreen(
     modifier: Modifier = Modifier,
@@ -77,7 +79,7 @@ fun NewCategoryScreen(
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
-        backgroundColor = Color.White
+        containerColor = Color.White
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.size(24.dp))

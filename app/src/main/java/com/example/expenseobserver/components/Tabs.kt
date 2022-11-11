@@ -4,12 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -31,11 +32,11 @@ fun ThreeTabsLay(tabList: List<Any>, currentState: MutableState<Int>) {
     TabRow(
         modifier = Modifier
             .fillMaxWidth()
-            .requiredHeight(36.dp)
+
             .clip(RoundedCornerShape(10.dp))
             .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
         selectedTabIndex = currentState.value,
-        backgroundColor = buttonColor,
+        containerColor = buttonColor,
         indicator = { }
     ) {
         tabList.forEachIndexed { index, transactionTabItem ->
@@ -46,6 +47,7 @@ fun ThreeTabsLay(tabList: List<Any>, currentState: MutableState<Int>) {
             }
             Tab(
                 modifier = Modifier
+                    .height(36.dp)
                     .padding(if (index == 1) 1.dp else 0.dp)
                     .background(
                         if (currentState.value == index) buttonColor else backgroundColor,

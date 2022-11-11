@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +38,7 @@ import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.SwitchWithText
 import com.example.expenseobserver.core.common.TimeRangeType
+import com.example.expenseobserver.core.common.disableColor
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.toCountryDateFormat
 import com.example.expenseobserver.core.utils.toStringDayFormat
@@ -127,7 +128,7 @@ fun TimeRangeDialog(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_time_range),
                             contentDescription = "",
-                            tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
+                            tint = mainColor.disableColor(enableEditText),
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -151,7 +152,7 @@ fun TimeRangeDialog(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_time_range),
                             contentDescription = "",
-                            tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
+                            tint = mainColor.disableColor(enableEditText),
                             modifier = Modifier.size(20.dp)
                         )
                     }
