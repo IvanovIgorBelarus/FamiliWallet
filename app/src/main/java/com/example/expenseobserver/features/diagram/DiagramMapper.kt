@@ -38,16 +38,23 @@ object DiagramMapper {
                 }
             }
         }
-        var resultList = sumList.sortedByDescending { it.sum }.subList(0, 6)
-        val overList = sumList.sortedByDescending { it.sum }.subList(7, sumList.size - 1)
-        val lastItem = CategorySumItem(
-            category = "other",
-            icon = AppIcons.UNKNOWN.imageRes,
-            color = CategoryColor.UNKNOWN.name
-        ).apply {
-            overList.forEach { item -> sum += item.sum }
+
+        var resultList = if (sumList.size > 7) {
+            sumList.sortedByDescending { it.sum }.subList(0, 6)
+        } else {
+            sumList.sortedByDescending { it.sum }
         }
-        resultList = resultList.plus(lastItem)
+        if (sumList.size > 7) {
+            val overList = sumList.sortedByDescending { it.sum }.subList(7, sumList.size - 1)
+            val lastItem = CategorySumItem(
+                category = "other",
+                icon = AppIcons.UNKNOWN.imageRes,
+                color = CategoryColor.UNKNOWN.name
+            ).apply {
+                overList.forEach { item -> sum += item.sum }
+            }
+            resultList = resultList.plus(lastItem)
+        }
         return resultList
     }
 
