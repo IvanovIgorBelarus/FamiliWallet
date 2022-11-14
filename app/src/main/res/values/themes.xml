@@ -2,15 +2,52 @@
 <resources>
 
     <style name="Theme.FamiliWallet" parent="Theme.MaterialComponents.Light.NoActionBar">
-<!--        <item name="colorOnSurface">@color/teal_200</item>-->
+        <!--        <item name="colorOnSurface">@color/teal_200</item>-->
         <item name="android:statusBarColor">@color/bottomBarBackgroundColor</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:actionBarItemBackground">@color/bottomBarContentColor</item>
+        <item name="materialCalendarStyle">@style/CalenderViewCustom</item>
+        <item name="materialCalendarFullscreenTheme">@style/CalenderViewCustom</item>
+        <item name="materialCalendarTheme">@style/CalenderViewCustom</item>
     </style>
 
     <style name="CalenderViewCustom" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="materialCalendarStyle">@style/CalendarStyle</item>
+        <item name="materialCalendarHeaderLayout">@style/CalendarHeaderLayout</item>
+        <item name="materialCalendarHeaderTitle">@style/CalendarHeaderTitle</item>
+        <item name="materialCalendarHeaderSelection">@style/CalendarHeaderSelection</item>
         <item name="colorAccent">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="colorSurface">@color/teal_200</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorPrimary">@color/bottomBarContentColor</item>
+    </style>
+
+    <style name="CalendarStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="rangeFillColor">@color/bottomBarContentColor</item>
+    </style>
+
+    <style name="CalendarHeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+        <item name="android:background">@color/bottomBarContentColor</item>
+    </style>
+
+    <style name="CalendarHeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
+        <item name="android:textAppearance">?attr/textAppearanceOverline</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">6sp</item>
+        <item name="autoSizeMinTextSize">2sp</item>
+    </style>
+
+    <style name="CalendarHeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
+        <item name="android:ellipsize">end</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">16sp</item>
+        <item name="autoSizeMinTextSize">2sp</item>
     </style>
 </resources>

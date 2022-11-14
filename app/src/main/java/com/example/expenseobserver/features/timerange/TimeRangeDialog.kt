@@ -140,9 +140,9 @@ fun TimeRangeDialog(
                     stringValue = mutableStateOf(TimeRangeType.RANGE.startDate.toCountryDateFormat),
                     modifier = Modifier
                         .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp))
-//                        .noRippleClickable {
-//                            showTimeRangeDialog.value = true
-//                        }
+                        .noRippleClickable {
+                            showTimeRangeDialog.value = true
+                        }
                     ,
                     showError = mutableStateOf(false),
                     enabled = enableEditText,

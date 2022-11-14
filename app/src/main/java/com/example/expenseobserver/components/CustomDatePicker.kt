@@ -18,16 +18,14 @@ fun CustomDatePicker(
     onDateSelected: (Pair<Long,Long>) -> Unit = {}
 ): MaterialDatePicker<Pair<Long,Long>> {
     val datePicker = MaterialDatePicker.Builder.dateRangePicker()
-        .setTitleText("Текст лэйбы")
+        .setTitleText("")
         .setSelection(
             Pair(
                 MaterialDatePicker.thisMonthInUtcMilliseconds(),
                 MaterialDatePicker.todayInUtcMilliseconds()
             )
         )
-        .setTitleText(title)
         .build()
-    datePicker.setStyle(R.style.CalenderViewCustom, R.style.Theme_FamiliWallet)
 
     DisposableEffect(datePicker) {
         val listener = MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>> {
