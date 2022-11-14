@@ -53,7 +53,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material:1.2.1"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.activity:activity-compose:1.5.1'
@@ -68,14 +68,14 @@ dependencies {
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
-    implementation 'com.google.firebase:firebase-firestore:24.2.1'
+    implementation 'com.google.firebase:firebase-firestore:24.4.0'
 
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Also declare the dependency for the Google Play services library and specify its version
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
@@ -86,7 +86,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
 
     //navigation
-    implementation "androidx.navigation:navigation-compose:2.5.1"
+    implementation "androidx.navigation:navigation-compose:2.5.3"
 
     implementation "com.google.accompanist:accompanist-navigation-animation:0.25.0"
 
@@ -98,7 +98,7 @@ dependencies {
 
     // When using Kotlin.
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
     //Login with Facebook
     implementation 'com.facebook.android:facebook-login:latest.release'
 
