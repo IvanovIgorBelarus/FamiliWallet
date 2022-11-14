@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.fragment.app.FragmentActivity
 import com.example.expenseobserver.navigation.AppNavigation
 import com.example.expenseobserver.ui.theme.FamiliWalletTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ import java.security.NoSuchAlgorithmException
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

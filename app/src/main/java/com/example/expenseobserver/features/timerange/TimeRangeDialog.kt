@@ -35,16 +35,20 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
+import com.example.expenseobserver.components.CustomDatePicker
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.SwitchWithText
+import com.example.expenseobserver.components.rememberFragmentManager
 import com.example.expenseobserver.core.common.TimeRangeType
-import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.core.common.noRippleClickable
 import com.example.expenseobserver.core.utils.toCountryDateFormat
-import com.example.expenseobserver.core.utils.toStringDayFormat
+import com.example.expenseobserver.core.utils.toEndOfDay
+import com.example.expenseobserver.core.utils.toStartOfDay
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
 import com.example.expenseobserver.ui.theme.mainColor
 import com.example.expenseobserver.ui.theme.textColor
+import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -57,6 +61,20 @@ fun TimeRangeDialog(
     val dialogWidth = LocalConfiguration.current.screenWidthDp.dp * 9 / 10
     val timeRange = remember { mutableStateOf(TimeRangeType.UNKNOWN) }
     var enableEditText = timeRange.value == TimeRangeType.RANGE
+
+    val showTimeRangeDialog = remember { mutableStateOf(false) }
+
+    val datePicker = CustomDatePicker(
+        title = R.string.pets,
+    ) {
+        TimeRangeType.RANGE.startDate = Date(it.first).toStartOfDay.time
+        TimeRangeType.RANGE.endDate = Date(it.second).toEndOfDay.time
+        showTimeRangeDialog.value = false
+    }
+
+    if (showTimeRangeDialog.value) {
+        datePicker.show(rememberFragmentManager(), "Date")
+    }
 
     Dialog(
         onDismissRequest = { dismissDialog.invoke() },
@@ -117,9 +135,15 @@ fun TimeRangeDialog(
                     textAlign = TextAlign.Start
                 )
                 Spacer(modifier = Modifier.size(8.dp))
+
                 AmountTextField(
-                    stringValue = mutableStateOf(dateFilterType.startDate.toCountryDateFormat),
-                    modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
+                    stringValue = mutableStateOf(TimeRangeType.RANGE.startDate.toCountryDateFormat),
+                    modifier = Modifier
+                        .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp))
+//                        .noRippleClickable {
+//                            showTimeRangeDialog.value = true
+//                        }
+                    ,
                     showError = mutableStateOf(false),
                     enabled = enableEditText,
                     readOnly = true,
@@ -142,7 +166,7 @@ fun TimeRangeDialog(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 AmountTextField(
-                    stringValue = mutableStateOf(dateFilterType.endDate.toCountryDateFormat),
+                    stringValue = mutableStateOf(TimeRangeType.RANGE.endDate.toCountryDateFormat),
                     modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
                     showError = mutableStateOf(false),
                     enabled = enableEditText,

@@ -4,7 +4,7 @@ import com.example.expenseobserver.core.utils.toEndOfDay
 import com.example.expenseobserver.core.utils.toStartOfDay
 import java.util.*
 
-enum class TimeRangeType(val text: String, val startDate: Long, val endDate: Long, val position: Int) {
+enum class TimeRangeType(val text: String, var startDate: Long, var endDate: Long, val position: Int) {
     DAY(
         "День",
         startDate = Calendar.getInstance().time.toStartOfDay.time,
