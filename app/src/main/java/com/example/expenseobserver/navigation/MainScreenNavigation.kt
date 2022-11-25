@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import com.example.expenseobserver.features.category.CategoryScreen
 import com.example.expenseobserver.features.historyscreen.HistoryScreen
 import com.example.expenseobserver.features.newcategory.NewCategoryScreen
+import com.example.expenseobserver.features.settingsscreen.SettingsScreen
 import com.example.expenseobserver.features.start_screen.StartScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -30,7 +31,7 @@ fun MainScreenNavigation(
         composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, forceLoad) }
         composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
         composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.SettingsScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
+        composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation, forceLoad) }
         composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation, forceLoad) }
     }
 }

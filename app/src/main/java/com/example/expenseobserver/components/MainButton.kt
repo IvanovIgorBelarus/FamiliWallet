@@ -37,7 +37,7 @@ fun MainButton(
         modifier = modifier
             .padding(4.dp)
             .rippleClickable { onClick.invoke() }
-            .requiredHeight(36.dp)
+            .requiredHeight(44.dp)
             .border(BorderStroke(if (isSelected.value) 0.dp else 1.dp, buttonColor), RoundedCornerShape(10.dp))
             .background(if (isSelected.value) buttonColor else backgroundColor, RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.Center

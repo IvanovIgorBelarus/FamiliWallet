@@ -63,8 +63,7 @@ fun StartScreen(
                 showTimeRangeDialog.value = false
             },
             onButtonClick = {
-                startViewModel.uiState.value = UiState.Loading
-                startViewModel.getData()
+                startViewModel.changeTimeRange()
                 showTimeRangeDialog.value = false
             }
         )

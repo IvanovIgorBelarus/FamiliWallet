@@ -25,7 +25,7 @@ enum class TimeRangeType(val text: String, var startDate: Long, var endDate: Lon
     ),
     RANGE(
         "Период",
-        startDate = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH) - 31) }.time.toStartOfDay.time,
+        startDate = Calendar.getInstance().apply { set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH)) }.time.toStartOfDay.time,
         endDate = Calendar.getInstance().time.toEndOfDay.time,
         3
     ),

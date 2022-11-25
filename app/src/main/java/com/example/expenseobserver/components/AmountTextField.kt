@@ -39,7 +39,7 @@ fun AmountTextField(
         },
         modifier = modifier
             .fillMaxWidth()
-            .height(36.dp),
+            .height(44.dp),
         placeholder = { AmountFieldPlaceHolder(placeHolderText = placeHolderText) },
         shape = RoundedCornerShape(10.dp),
         singleLine = true,

@@ -1,5 +1,6 @@
 package com.example.expenseobserver.core.repository
 
+import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.common.BANK_MINUS
 import com.example.expenseobserver.core.common.CATEGORIES
 import com.example.expenseobserver.core.common.CATEGORY
@@ -115,8 +116,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
 
         db.collection(TRANSACTIONS)
             .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-            .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.startDate)
-            .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.endDate)
+            .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
+            .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
             .get()
             .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
             .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }

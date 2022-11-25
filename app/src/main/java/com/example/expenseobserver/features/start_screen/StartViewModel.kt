@@ -95,9 +95,8 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun changeTimeRange(timeRange: TimeRangeType){
+    fun changeTimeRange(){
         uiState.value = UiState.Loading
-        dateFilterType = timeRange
         getData()
     }
 
