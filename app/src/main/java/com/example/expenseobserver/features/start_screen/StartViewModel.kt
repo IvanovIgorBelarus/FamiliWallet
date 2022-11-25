@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.common.BaseViewModel
-import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
@@ -95,9 +94,26 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun changeTimeRange(){
+    fun changeTimeRange() {
         uiState.value = UiState.Loading
-        getData()
+        viewModelScope.launch {
+            try {
+                val transactionsList = mutableListOf<UIModel.TransactionModel>()
+                when (val userData = getPersonData(false)) {
+                    is DataResponse.Success -> {
+                        transactionsList.addAll(userData.data.second.sortedByDescending { it.date })
+                        val startDate = transactionsList.last().date?: dateFilterType.startDate
+                        val endDate = transactionsList.first().date?: dateFilterType.endDate
+                        getData(dateFilterType.startDate < startDate || dateFilterType.endDate > endDate)
+                    }
+                    is DataResponse.Error -> {
+                        uiState.value = UiState.Error(userData.exception)
+                    }
+                }
+            } catch (e: Exception) {
+                uiState.value = UiState.Error(e)
+            }
+        }
     }
 
 }

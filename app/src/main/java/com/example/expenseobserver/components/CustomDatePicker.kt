@@ -2,6 +2,7 @@ package com.example.expenseobserver.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.util.Pair
@@ -15,6 +16,7 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 @Composable
 fun CustomDatePicker(
     title: Int,
+    showTimeRangeDialog: MutableState<Boolean>,
     onDateSelected: (Pair<Long,Long>) -> Unit = {}
 ): MaterialDatePicker<Pair<Long,Long>> {
     val datePicker = MaterialDatePicker.Builder.dateRangePicker()
@@ -34,6 +36,7 @@ fun CustomDatePicker(
         datePicker.addOnPositiveButtonClickListener(listener)
         onDispose {
             datePicker.removeOnPositiveButtonClickListener(listener)
+            showTimeRangeDialog.value = false
         }
     }
     return datePicker

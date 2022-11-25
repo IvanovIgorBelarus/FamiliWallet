@@ -16,6 +16,7 @@
         <item name="materialCalendarHeaderLayout">@style/CalendarHeaderLayout</item>
         <item name="materialCalendarHeaderTitle">@style/CalendarHeaderTitle</item>
         <item name="materialCalendarHeaderSelection">@style/CalendarHeaderSelection</item>
+        <item name="materialCalendarHeaderToggleButton">@style/CalendarHeaderToggleButton</item>
         <item name="colorAccent">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
         <item name="colorSurface">@color/white</item>
@@ -24,7 +25,13 @@
 
     <style name="CalendarStyle" parent="Widget.MaterialComponents.MaterialCalendar">
         <item name="android:windowFullscreen">false</item>
-        <item name="rangeFillColor">@color/bottomBarContentColor</item>
+        <item name="rangeFillColor">@color/rangeFillColor</item>
+        <item name="daySelectedStyle">@style/CalendarDaySelectedStyle</item>
+    </style>
+
+    <style name="CalendarDaySelectedStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+        <item name="itemFillColor">@color/bottomBarContentColor</item>
+        <item name="itemTextColor">@color/white</item>
     </style>
 
     <style name="CalendarHeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
@@ -35,19 +42,17 @@
         <item name="android:textAppearance">?attr/textAppearanceOverline</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMaxTextSize">6sp</item>
-        <item name="autoSizeMinTextSize">2sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="CalendarHeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
         <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
-        <item name="android:ellipsize">end</item>
-        <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMaxTextSize">16sp</item>
-        <item name="autoSizeMinTextSize">2sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="CalendarHeaderToggleButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+        <item name="tint">@color/white</item>
     </style>
 </resources>

@@ -66,6 +66,7 @@ fun TimeRangeDialog(
 
     val datePicker = CustomDatePicker(
         title = R.string.pets,
+        showTimeRangeDialog = showTimeRangeDialog
     ) {
         TimeRangeType.RANGE.startDate = Date(it.first).toStartOfDay.time
         TimeRangeType.RANGE.endDate = Date(it.second).toEndOfDay.time
@@ -128,59 +129,62 @@ fun TimeRangeDialog(
                 )
                 Spacer(modifier = Modifier.size(20.dp))
 
-                Text(
-                    text = resources.getString(R.string.time_range_start),
-                    color = textColor,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Start
-                )
-                Spacer(modifier = Modifier.size(8.dp))
+                Column(modifier = Modifier.noRippleClickable {
+                    showTimeRangeDialog.value = true
+                }) {
+                    Text(
+                        text = resources.getString(R.string.time_range_start),
+                        color = textColor,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Start
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                AmountTextField(
-                    stringValue = mutableStateOf(TimeRangeType.RANGE.startDate.toCountryDateFormat),
-                    modifier = Modifier
-                        .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp))
-                        .noRippleClickable {
-                            showTimeRangeDialog.value = true
+                    AmountTextField(
+                        stringValue = mutableStateOf(TimeRangeType.RANGE.startDate.toCountryDateFormat),
+                        modifier = Modifier
+                            .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp))
+                            .noRippleClickable {
+                                showTimeRangeDialog.value = dateFilterType == TimeRangeType.RANGE
+                            },
+                        showError = mutableStateOf(false),
+                        enabled = enableEditText,
+                        readOnly = true,
+                        trailingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_time_range),
+                                contentDescription = "",
+                                tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
+                                modifier = Modifier.size(20.dp)
+                            )
                         }
-                    ,
-                    showError = mutableStateOf(false),
-                    enabled = enableEditText,
-                    readOnly = true,
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_time_range),
-                            contentDescription = "",
-                            tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.size(20.dp))
+                    )
+                    Spacer(modifier = Modifier.size(20.dp))
 
-                Text(
-                    text = resources.getString(R.string.time_range_end),
-                    color = textColor,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Start
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                AmountTextField(
-                    stringValue = mutableStateOf(TimeRangeType.RANGE.endDate.toCountryDateFormat),
-                    modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
-                    showError = mutableStateOf(false),
-                    enabled = enableEditText,
-                    readOnly = true,
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_time_range),
-                            contentDescription = "",
-                            tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.size(48.dp))
+                    Text(
+                        text = resources.getString(R.string.time_range_end),
+                        color = textColor,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Start
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    AmountTextField(
+                        stringValue = mutableStateOf(TimeRangeType.RANGE.endDate.toCountryDateFormat),
+                        modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
+                        showError = mutableStateOf(false),
+                        enabled = enableEditText,
+                        readOnly = true,
+                        trailingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_time_range),
+                                contentDescription = "",
+                                tint = mainColor.copy(alpha = if (enableEditText) 1f else 0.38f),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.size(48.dp))
+                }
 
                 MainButton(
                     modifier = Modifier.fillMaxWidth(),
