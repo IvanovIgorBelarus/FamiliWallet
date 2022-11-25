@@ -60,20 +60,21 @@ fun TimeRangeDialog(
     val resources = LocalContext.current.resources
     val dialogWidth = LocalConfiguration.current.screenWidthDp.dp * 9 / 10
     val timeRange = remember { mutableStateOf(TimeRangeType.UNKNOWN) }
-    var enableEditText = timeRange.value == TimeRangeType.RANGE
+    val enableEditText = timeRange.value == TimeRangeType.RANGE
 
-    val showTimeRangeDialog = remember { mutableStateOf(false) }
+    val showDatePicker = remember { mutableStateOf(false) }
 
     val datePicker = CustomDatePicker(
-        title = R.string.pets,
-        showTimeRangeDialog = showTimeRangeDialog
+        title = R.string.pets
     ) {
-        TimeRangeType.RANGE.startDate = Date(it.first).toStartOfDay.time
-        TimeRangeType.RANGE.endDate = Date(it.second).toEndOfDay.time
-        showTimeRangeDialog.value = false
+        timeRange.value = TimeRangeType.RANGE.apply {
+            startDate = Date(it.first).toStartOfDay.time
+            endDate = Date(it.second).toEndOfDay.time
+        }
+        showDatePicker.value = false
     }
 
-    if (showTimeRangeDialog.value) {
+    if (showDatePicker.value) {
         datePicker.show(rememberFragmentManager(), "Date")
     }
 
@@ -130,7 +131,7 @@ fun TimeRangeDialog(
                 Spacer(modifier = Modifier.size(20.dp))
 
                 Column(modifier = Modifier.noRippleClickable {
-                    showTimeRangeDialog.value = true
+                    showDatePicker.value = true
                 }) {
                     Text(
                         text = resources.getString(R.string.time_range_start),
@@ -141,12 +142,9 @@ fun TimeRangeDialog(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     AmountTextField(
-                        stringValue = mutableStateOf(TimeRangeType.RANGE.startDate.toCountryDateFormat),
+                        stringValue = mutableStateOf(timeRange.value.startDate.toCountryDateFormat),
                         modifier = Modifier
-                            .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp))
-                            .noRippleClickable {
-                                showTimeRangeDialog.value = dateFilterType == TimeRangeType.RANGE
-                            },
+                            .border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
                         showError = mutableStateOf(false),
                         enabled = enableEditText,
                         readOnly = true,
@@ -169,7 +167,7 @@ fun TimeRangeDialog(
                     )
                     Spacer(modifier = Modifier.size(8.dp))
                     AmountTextField(
-                        stringValue = mutableStateOf(TimeRangeType.RANGE.endDate.toCountryDateFormat),
+                        stringValue = mutableStateOf(timeRange.value.endDate.toCountryDateFormat),
                         modifier = Modifier.border(BorderStroke(1.dp, buttonColor), RoundedCornerShape(10.dp)),
                         showError = mutableStateOf(false),
                         enabled = enableEditText,
