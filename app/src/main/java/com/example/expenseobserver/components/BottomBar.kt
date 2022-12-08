@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
@@ -105,7 +106,7 @@ tailrec fun findStartDestination(graph: NavDestination): NavDestination {
 @Composable
 private fun setLabel(title: String?, isSelected: Boolean) {
     val textColor = if (isSelected) bottomBarSelectedContentColor else bottomBarUnselectedContentColor
-    Text(text = title.orEmpty(), color = textColor, fontSize = 10.sp)
+    Text(text = title.orEmpty(), color = textColor, fontSize = 10.sp, fontWeight = FontWeight.Medium)
 }
 
 private val listOfNavItems = listOf(

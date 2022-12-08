@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.INCOMES
+import com.example.expenseobserver.core.common.formatAmount
 import com.example.expenseobserver.core.common.longRippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
@@ -32,6 +33,7 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.toStringFormat
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.textColor
+import com.example.expenseobserver.ui.theme.textColorGrey
 
 @Composable
 fun TransactionsList(
@@ -80,21 +82,23 @@ fun TransactionRow(
                 text = transaction.category.toString(),
                 color = textColor,
                 fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.size(16.dp))
             Text(
                 text = transaction.date?.toStringFormat.orEmpty(),
-                color = textColor,
+                color = textColorGrey,
                 fontSize = 8.sp,
+                fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = transaction.value.toString(),
+            text = transaction.value.formatAmount(),
             color = textColor,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )

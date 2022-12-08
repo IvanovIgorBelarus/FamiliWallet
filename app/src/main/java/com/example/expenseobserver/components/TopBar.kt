@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -80,8 +81,9 @@ private fun MainTopBar(
         Text(
             text = titleText,
             color = textColor,
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium,
             modifier = Modifier.weight(1f)
         )
         //hide settings
@@ -108,8 +110,9 @@ private fun TransactionTopBar(
         Text(
             text = titleText,
             color = textColor,
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium,
             modifier = Modifier.weight(1f)
         )
 

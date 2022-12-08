@@ -37,6 +37,7 @@ import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
 import com.example.expenseobserver.features.diagram.data.OverviewItem
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
+import com.example.expenseobserver.ui.theme.textColor
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
@@ -60,8 +61,8 @@ fun DiagramScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "+$incomesSum BYN", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
-                Text(text = "-$expensesSum BYN", fontSize = 20.sp, fontWeight = FontWeight.Medium, color = Color.DarkGray)
+                Text(text = "+$incomesSum BYN", fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
+                Text(text = "-$expensesSum BYN", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = textColor)
             }
         }
     } else {

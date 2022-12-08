@@ -37,7 +37,7 @@ import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
 import com.example.expenseobserver.navigation.Screen
-import com.example.expenseobserver.ui.theme.enterTextColor
+import com.example.expenseobserver.ui.theme.textColor
 
 @Composable
 fun EnterScreen(
@@ -51,14 +51,14 @@ fun EnterScreen(
         modifier = modifier.fillMaxSize()
     ) {
         val resources = LocalContext.current.resources
-        val topHeaderHeight = LocalConfiguration.current.screenHeightDp.dp/3
-        val imageWidth = LocalConfiguration.current.screenWidthDp.dp-LocalConfiguration.current.screenWidthDp.dp/4
+        val topHeaderHeight = LocalConfiguration.current.screenHeightDp.dp / 3
+        val imageWidth = LocalConfiguration.current.screenWidthDp.dp - LocalConfiguration.current.screenWidthDp.dp / 4
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
             val (topHeader, image, text, button) = createRefs()
 
             TopScreenBlueHeader(
                 text = resources.getString(R.string.money),
-                modifier =  modifier
+                modifier = modifier
                     .constrainAs(topHeader) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
@@ -95,7 +95,7 @@ fun EnterScreen(
                 modifier = modifier
                     .width(imageWidth)
                     .constrainAs(image) {
-                        top.linkTo(topHeader.top, topHeaderHeight/3)
+                        top.linkTo(topHeader.top, topHeaderHeight / 3)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
@@ -112,8 +112,8 @@ fun EnterScreen(
                         bottom.linkTo(button.top)
                     },
                 fontSize = 30.sp,
-                color = enterTextColor,
-                fontWeight = FontWeight.Medium
+                color = textColor,
+                fontWeight = FontWeight.SemiBold
             )
             EnterButton(Modifier
                 .constrainAs(button) {
@@ -143,7 +143,7 @@ fun EnterScreen(
             if (currentVersionCode < (updateModel.versionCode ?: 0)) {
                 showUpdateDialog.value = true
                 ShowUpdateDialog(
-                    text = updateModel.description?: LocalContext.current.resources.getString(R.string.update_title_description),
+                    text = updateModel.description ?: LocalContext.current.resources.getString(R.string.update_title_description),
                     openDialog = showUpdateDialog
                 ) {
                     Log.e("MYNAME", LocalContext.current.applicationContext.packageName + ".provider")

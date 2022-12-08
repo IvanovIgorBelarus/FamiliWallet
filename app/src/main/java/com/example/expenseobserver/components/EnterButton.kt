@@ -59,7 +59,7 @@ fun EnterButton(
                 text = resources.getString(text),
                 fontSize = 22.sp,
                 color = Color.White,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.weight(1f))
             Box(

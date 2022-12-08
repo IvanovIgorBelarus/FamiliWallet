@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.ui.theme.backgroundColor
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 fun List<UIModel.TransactionModel>.typeFilter(type: String): List<UIModel.TransactionModel> =
@@ -32,6 +33,8 @@ fun List<UIModel.CategoryModel>.categoryTypeFilter(type: String): List<UIModel.C
 
 val Double.round: Double
     get() = (this * 100).roundToInt().toDouble() / 100
+
+fun Double?.formatAmount(): String = String.format("%.2f", this ?: 0.0)
 
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(
