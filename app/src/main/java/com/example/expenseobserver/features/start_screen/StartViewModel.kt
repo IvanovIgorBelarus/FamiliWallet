@@ -94,25 +94,12 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun changeTimeRange() {
+    fun changeTimeRange(transactionsList: List<UIModel.TransactionModel>) {
         uiState.value = UiState.Loading
         viewModelScope.launch {
-            try {
-                val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                when (val userData = getPersonData(false)) {
-                    is DataResponse.Success -> {
-                        transactionsList.addAll(userData.data.second.sortedByDescending { it.date })
-                        val startDate = transactionsList.last().date?: dateFilterType.startDate
-                        val endDate = transactionsList.first().date?: dateFilterType.endDate
-                        getData(dateFilterType.startDate < startDate || dateFilterType.endDate > endDate)
-                    }
-                    is DataResponse.Error -> {
-                        uiState.value = UiState.Error(userData.exception)
-                    }
-                }
-            } catch (e: Exception) {
-                uiState.value = UiState.Error(e)
-            }
+            val startDate = transactionsList.last().date ?: dateFilterType.startDate
+            val endDate = transactionsList.first().date ?: dateFilterType.endDate
+            getData(dateFilterType.startDate < startDate || dateFilterType.endDate > endDate)
         }
     }
 

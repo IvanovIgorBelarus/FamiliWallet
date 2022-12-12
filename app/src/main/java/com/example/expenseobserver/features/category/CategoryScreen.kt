@@ -79,6 +79,10 @@ fun CategoryScreen(
             viewState = it as CategoryScreenViewState
         }
     )
+
+    LaunchedEffect(Unit) {
+        categoryViewModel.getData()
+    }
 }
 
 private val tabList = listOf(

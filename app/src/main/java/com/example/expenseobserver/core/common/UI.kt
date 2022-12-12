@@ -29,9 +29,4 @@ fun ShowScreen(
         }
         is UiState.Loading -> LoadingScreen()
     }
-
-    DisposableEffect(viewModel) {
-        viewModel.getData(forceLoad.value)
-        onDispose { viewModel.clearData() }
-    }
 }

@@ -1,6 +1,5 @@
 package com.example.expenseobserver.core.repository.domain
 
-import android.util.Log
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 
@@ -14,7 +13,6 @@ object CategoriesCache : CacheRepository<DataResponse<List<UIModel.CategoryModel
     }
 
     override suspend fun get(): DataResponse<List<UIModel.CategoryModel>> {
-        Log.d("MYNAME", "CategoriesCache")
         return DataResponse.Success(categoriesList.toList())
     }
 

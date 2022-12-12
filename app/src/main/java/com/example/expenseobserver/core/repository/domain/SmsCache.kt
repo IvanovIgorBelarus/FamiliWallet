@@ -8,7 +8,7 @@ object SmsCache : CacheRepository<DataResponse<List<UIModel.SmsModel>>> {
     private var smsList: DataResponse<List<UIModel.SmsModel>>? = null
 
     override suspend fun put(cache: DataResponse<List<UIModel.SmsModel>>) {
-            smsList = cache
+        smsList = cache
     }
 
     override suspend fun get(): DataResponse<List<UIModel.SmsModel>>? = smsList

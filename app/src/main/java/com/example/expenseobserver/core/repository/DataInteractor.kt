@@ -30,23 +30,23 @@ class DataInteractor @Inject constructor(
 
 
     override suspend fun getSmsList(forceLoad: Boolean): DataResponse<List<UIModel.SmsModel>>? {
-        return get(SmsCache, firebaseRepository.getSmsList(), forceLoad)
+        return get(SmsCache, firebaseRepository.getSmsList(), forceLoad, "getSmsList")
     }
 
 
     override suspend fun getPartner(forceLoad: Boolean): DataResponse<UIModel.AccountModel>? {
-        return get(PartnerCache, firebaseRepository.getPartner(), forceLoad)
+        return get(PartnerCache, firebaseRepository.getPartner(), forceLoad, "getPartner")
     }
 
     override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? {
-        return get(TransactionsCache, firebaseRepository.getPersonTransactionList(getPartner()), forceLoad)
+        return get(TransactionsCache, firebaseRepository.getPersonTransactionList(getPartner()), forceLoad, "getTransactionsList")
     }
 
     override suspend fun getCategoriesList(forceLoad: Boolean): DataResponse<List<UIModel.CategoryModel>>? {
-        return get(CategoriesCache, firebaseRepository.getPersonCategoriesList(getPartner()), forceLoad)
+        return get(CategoriesCache, firebaseRepository.getPersonCategoriesList(getPartner()), forceLoad, "getCategoriesList")
     }
 
-    override suspend fun deleteItem(item: Any?) : DataResponse<Unit> =
+    override suspend fun deleteItem(item: Any?): DataResponse<Unit> =
         firebaseRepository.deleteItem(item)
 
     override suspend fun updateItem(item: Any?): DataResponse<Unit> =
@@ -55,28 +55,17 @@ class DataInteractor @Inject constructor(
     override suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel> =
         firebaseRepository.checkUpdates()
 
-    private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean): T? {
+    private suspend fun <T> get(cache: CacheRepository<T>, request: T, forceLoad: Boolean, requestName: String): T? {
         return if (cache.isEmpty() || forceLoad) {
-            Log.e("MYNAME", "request firebase")
+            Log.e("MYNAME", "$requestName request")
             if (request is DataResponse.Success<*>) {
                 cache.clear()
                 cache.put(request)
             }
             cache.get()
         } else {
-            Log.e("MYNAME", "Cash")
+            Log.d("MYNAME", "$requestName cash")
             cache.get()
         }
-    }
-
-
-    suspend fun update(item: Any?) {
-        when (item) {
-//            is UIModel.CategoryModel -> getCategoriesList(forceLoad = true)
-            is UIModel.AccountModel -> getPartner(forceLoad = true)
-//            is UIModel.TransactionModel -> getTransactionsList(forceLoad = true)
-            is UIModel.SmsModel -> getSmsList(forceLoad = true)
-        }
-//        EventBus.getDefault().post(UpdateWrapper())
     }
 }

@@ -63,7 +63,7 @@ fun StartScreen(
                 showTimeRangeDialog.value = false
             },
             onButtonClick = {
-                startViewModel.changeTimeRange()
+                startViewModel.changeTimeRange(viewState.transactionsList)
                 showTimeRangeDialog.value = false
             }
         )
@@ -131,4 +131,8 @@ fun StartScreen(
             viewState = it as StartScreenViewState
         }
     )
+
+    LaunchedEffect(Unit) {
+        startViewModel.getData()
+    }
 }

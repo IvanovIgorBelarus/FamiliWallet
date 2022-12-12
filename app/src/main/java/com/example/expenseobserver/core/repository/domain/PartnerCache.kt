@@ -1,6 +1,5 @@
 package com.example.expenseobserver.core.repository.domain
 
-import android.util.Log
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 
@@ -13,7 +12,6 @@ object PartnerCache : CacheRepository<DataResponse<UIModel.AccountModel>> {
     }
 
     override suspend fun get(): DataResponse<UIModel.AccountModel>? {
-        Log.d("MYNAME", "PartnerCache")
         return partner
     }
 
