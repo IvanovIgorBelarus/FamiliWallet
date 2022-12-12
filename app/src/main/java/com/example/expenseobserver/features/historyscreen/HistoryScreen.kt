@@ -97,10 +97,6 @@ fun HistoryScreen(
             viewState = it as HistoryViewState
         }
     )
-
-    LaunchedEffect(Unit) {
-        historyViewModel.getData()
-    }
 }
 
 val tabList = listOf(

@@ -1,6 +1,7 @@
 package com.example.expenseobserver.core.common
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.example.expenseobserver.core.data.UiState
@@ -27,5 +28,10 @@ fun ShowScreen(
             ShowErrorDialog(text = errorText)
         }
         is UiState.Loading -> LoadingScreen()
+    }
+
+    DisposableEffect(viewModel) {
+        viewModel.getData(forceLoad.value)
+        onDispose { viewModel.clearData() }
     }
 }

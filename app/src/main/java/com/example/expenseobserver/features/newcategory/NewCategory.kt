@@ -161,8 +161,4 @@ fun NewCategoryScreen(
             }
         }
     }
-
-    LaunchedEffect(Unit) {
-        newCategoryViewModel.getData()
-    }
 }

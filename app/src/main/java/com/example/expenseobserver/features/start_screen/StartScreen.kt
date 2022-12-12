@@ -131,8 +131,4 @@ fun StartScreen(
             viewState = it as StartScreenViewState
         }
     )
-
-    LaunchedEffect(Unit) {
-        startViewModel.getData()
-    }
 }
