@@ -35,7 +35,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
-import com.example.expenseobserver.components.CustomDatePicker
+import com.example.expenseobserver.components.CustomDateRangePicker
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.SwitchWithText
 import com.example.expenseobserver.components.rememberFragmentManager
@@ -64,7 +64,7 @@ fun TimeRangeDialog(
 
     val showDatePicker = remember { mutableStateOf(false) }
 
-    val datePicker = CustomDatePicker(
+    val datePicker = CustomDateRangePicker(
         title = R.string.pets
     ) {
         timeRange.value = TimeRangeType.RANGE.apply {

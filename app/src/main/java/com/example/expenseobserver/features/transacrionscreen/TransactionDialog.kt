@@ -3,6 +3,7 @@ package com.example.expenseobserver.features.transacrionscreen
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,15 +33,22 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryRowList
-import com.example.expenseobserver.components.ThreeTabsLay
+import com.example.expenseobserver.components.CustomDatePickerDialog
+import com.example.expenseobserver.components.CustomDateRangePicker
 import com.example.expenseobserver.components.MainButton
+import com.example.expenseobserver.components.ThreeTabsLay
+import com.example.expenseobserver.components.rememberFragmentManager
 import com.example.expenseobserver.core.common.CashType
 import com.example.expenseobserver.core.common.CategoryType
+import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.UserUtils
+import com.example.expenseobserver.core.utils.toCountryDateFormat
+import com.example.expenseobserver.features.timerange.TimeRangeDialog
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
+import com.example.expenseobserver.ui.theme.textColor
 import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -59,6 +67,17 @@ fun TransactionDialog(
     val cashType = remember { mutableStateOf(CashType.CARDS) }
     val amount = remember { mutableStateOf("") }
     val showError = remember { mutableStateOf(false) }
+    val operationDate = remember { mutableStateOf(Date().time) }
+    val showDatePickerDialog = remember { mutableStateOf(false) }
+
+    val datePicker = CustomDatePickerDialog(selectedDate = operationDate.value){ selectedDate ->
+        operationDate.value = selectedDate
+        showDatePickerDialog.value = false
+    }
+
+    if (showDatePickerDialog.value) {
+        datePicker.show(rememberFragmentManager(), "DatePicker")
+    }
 
     Dialog(
         onDismissRequest = { dismissDialog.invoke() },
@@ -71,6 +90,18 @@ fun TransactionDialog(
                 .background(backgroundColor, RoundedCornerShape(10.dp))
                 .padding(16.dp)
         ) {
+            Row(horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = "Дата операции:\n${operationDate.value.toCountryDateFormat}",
+                    fontSize = 14.sp,
+                    color = textColor,
+                    modifier = Modifier.rippleClickable {
+                        showDatePickerDialog.value = true
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.size(12.dp))
+
             ThreeTabsLay(tabList = tabList, currentState = currentState)
 
             CategoryRowList(
@@ -126,7 +157,7 @@ fun TransactionDialog(
                             category = selectedCategory.value,
                             currency = "BYN",
                             moneyType = cashType.value.type,
-                            date = Calendar.getInstance().timeInMillis,
+                            date = operationDate.value,
                             value = amount.value.toDouble()
                         )
                     )
