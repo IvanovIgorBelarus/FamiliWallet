@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
@@ -47,7 +47,7 @@ fun AuthScreen(
     navigation: NavHostController? = null,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
-    Scaffold {
+    Surface {
         val onGoogleClick = remember { mutableStateOf(EnterType.UNKNOWN) }
         val isLoading = remember { mutableStateOf(false) }
         val errorMessage = remember { mutableStateOf("") }

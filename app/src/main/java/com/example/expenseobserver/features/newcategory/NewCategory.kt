@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.newcategory
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,6 +51,7 @@ import com.example.expenseobserver.features.newcategory.data.NewCategoryViewStat
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NewCategoryScreen(
     modifier: Modifier = Modifier,
@@ -66,7 +68,7 @@ fun NewCategoryScreen(
 
     ShowScreen(
         viewModel = newCategoryViewModel,
-        forceLoad = mutableStateOf(true),
+        forceLoad = forceLoad,
         onSuccess = {
             viewState = it as NewCategoryViewState
             categoryColor.value = CategoryColor.getColor(viewState.category.color.orEmpty())

@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import com.example.expenseobserver.features.transacrionscreen.TransactionViewMod
 import com.example.expenseobserver.navigation.MainScreenNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
 @Composable
 fun MainScreen(

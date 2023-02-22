@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.start_screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,7 @@ import com.example.expenseobserver.features.timerange.TimeRangeDialog
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.mainColor
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StartScreen(
     modifier: Modifier = Modifier,
