@@ -16,6 +16,7 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 @Composable
 fun CustomDateRangePicker(
     title: Int,
+    dismiss: () -> Unit,
     onDateSelected: (Pair<Long, Long>) -> Unit = {}
 ): MaterialDatePicker<Pair<Long, Long>> {
     val datePicker = MaterialDatePicker.Builder.dateRangePicker()
@@ -36,6 +37,7 @@ fun CustomDateRangePicker(
         datePicker.addOnPositiveButtonClickListener(listener)
         onDispose {
             datePicker.removeOnPositiveButtonClickListener(listener)
+            dismiss.invoke()
         }
     }
     return datePicker

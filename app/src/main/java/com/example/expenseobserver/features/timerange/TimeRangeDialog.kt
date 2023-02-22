@@ -65,14 +65,15 @@ fun TimeRangeDialog(
     val showDatePicker = remember { mutableStateOf(false) }
 
     val datePicker = CustomDateRangePicker(
-        title = R.string.pets
-    ) {
-        timeRange.value = TimeRangeType.RANGE.apply {
-            startDate = Date(it.first).toStartOfDay.time
-            endDate = Date(it.second).toEndOfDay.time
-        }
-        showDatePicker.value = false
-    }
+        title = R.string.pets ,
+        dismiss = {  showDatePicker.value = false },
+        onDateSelected = {
+            timeRange.value = TimeRangeType.RANGE.apply {
+                startDate = Date(it.first).toStartOfDay.time
+                endDate = Date(it.second).toEndOfDay.time
+            }
+            showDatePicker.value = false
+        })
 
     if (showDatePicker.value) {
         datePicker.show(rememberFragmentManager(), "Date")
