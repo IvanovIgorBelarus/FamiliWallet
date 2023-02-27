@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.historyscreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -32,10 +33,11 @@ import com.example.expenseobserver.components.ThreeTabsLay
 import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.TimeRangeType
-import com.example.expenseobserver.core.utils.toStringDayFormat
+import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.ui.theme.textColor
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen(
@@ -65,7 +67,7 @@ fun HistoryScreen(
                 viewState.transactionsGroupList.forEach { (date, transactionList) ->
                     stickyHeader {
                         Text(
-                            text = date?.toStringDayFormat.orEmpty(),
+                            text = date?.toStringDateFormatWithToday.orEmpty(),
                             color = textColor,
                             fontSize = 18.sp,
                             textAlign = TextAlign.Start,

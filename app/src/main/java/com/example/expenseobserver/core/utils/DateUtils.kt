@@ -96,16 +96,27 @@ fun Date.formatDate(pattern: String): String {
 val String.formatToDate: Date?
     get() {
         if (this.contains("-")) {
-            return SimpleDateFormat("yyyy-MM-dd").parse(this)?.toStartOfDay
+            return SimpleDateFormat("yyyy-MM-dd", Locale("ru")).parse(this)?.toStartOfDay
         }
-        return SimpleDateFormat("dd.MM.yyyy").parse(this)?.toStartOfDay
+        return SimpleDateFormat("dd.MM.yyyy", Locale("ru")).parse(this)?.toStartOfDay
     }
 
 val Long.toStringFormat: String
-    get() = SimpleDateFormat("dd.MM.yy kk:mm").format(this)
+    get() = SimpleDateFormat("dd.MM.yy kk:mm", Locale("ru")).format(this)
 
 val Long.toStringDayFormat: String
-    get() = SimpleDateFormat("dd.MM.yyyy").format(this)
+    get() = SimpleDateFormat("dd.MM.yyyy", Locale("ru")).format(this)
 
 val Long.toCountryDateFormat: String
     get() = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault()).format(this)
+
+val Long.toStringDateFormatWithToday: String
+    get() {
+        val today = Date().toStartOfDay.time
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -1) }.time.toStartOfDay.time
+        return when (Date(this).toStartOfDay.time) {
+            today -> String.format("Сегодня, %s", SimpleDateFormat("dd.MM.yyyy", Locale("ru")).format(this))
+            yesterday -> String.format("Вчера, %s", SimpleDateFormat("dd.MM.yyyy", Locale("ru")).format(this))
+            else -> SimpleDateFormat("dd.MM.yyyy", Locale("ru")).format(this)
+        }
+    }

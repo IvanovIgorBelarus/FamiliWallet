@@ -3,7 +3,6 @@ package com.example.expenseobserver.features.transacrionscreen
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,6 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryRowList
 import com.example.expenseobserver.components.CustomDatePickerDialog
-import com.example.expenseobserver.components.CustomDateRangePicker
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.ThreeTabsLay
 import com.example.expenseobserver.components.rememberFragmentManager
@@ -43,11 +43,11 @@ import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.UserUtils
-import com.example.expenseobserver.core.utils.toCountryDateFormat
-import com.example.expenseobserver.features.timerange.TimeRangeDialog
+import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
 import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.buttonColor
+import com.example.expenseobserver.ui.theme.mainColor
 import com.example.expenseobserver.ui.theme.textColor
 import java.util.*
 
@@ -60,7 +60,7 @@ fun TransactionDialog(
 ) {
     val resources = LocalContext.current.resources
 
-    val dialogWidth = LocalConfiguration.current.screenWidthDp.dp*9/10
+    val dialogWidth = LocalConfiguration.current.screenWidthDp.dp * 9 / 10
 
     val currentState = remember { mutableStateOf(0) }
     val selectedCategory = remember { mutableStateOf("") }
@@ -70,7 +70,7 @@ fun TransactionDialog(
     val operationDate = remember { mutableStateOf(Date().time) }
     val showDatePickerDialog = remember { mutableStateOf(false) }
 
-    val datePicker = CustomDatePickerDialog(selectedDate = operationDate.value){ selectedDate ->
+    val datePicker = CustomDatePickerDialog(selectedDate = operationDate.value) { selectedDate ->
         operationDate.value = selectedDate
         showDatePickerDialog.value = false
     }
@@ -90,14 +90,24 @@ fun TransactionDialog(
                 .background(backgroundColor, RoundedCornerShape(10.dp))
                 .padding(16.dp)
         ) {
-            Row(horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier
+                    .rippleClickable { showDatePickerDialog.value = true }
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = "Дата операции:\n${operationDate.value.toCountryDateFormat}",
-                    fontSize = 14.sp,
+                    text = operationDate.value.toStringDateFormatWithToday,
+                    fontSize = 18.sp,
                     color = textColor,
-                    modifier = Modifier.rippleClickable {
-                        showDatePickerDialog.value = true
-                    }
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_time_range),
+                    contentDescription = "",
+                    tint = mainColor,
+                    modifier = Modifier.size(28.dp)
                 )
             }
             Spacer(modifier = Modifier.size(12.dp))
