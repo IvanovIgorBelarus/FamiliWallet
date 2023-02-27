@@ -70,10 +70,14 @@ fun TransactionDialog(
     val operationDate = remember { mutableStateOf(Date().time) }
     val showDatePickerDialog = remember { mutableStateOf(false) }
 
-    val datePicker = CustomDatePickerDialog(selectedDate = operationDate.value) { selectedDate ->
-        operationDate.value = selectedDate
-        showDatePickerDialog.value = false
-    }
+    val datePicker = CustomDatePickerDialog(
+        selectedDate = operationDate.value,
+        dismiss = { showDatePickerDialog.value = false },
+        onDateSelected = { selectedDate ->
+            operationDate.value = selectedDate
+            showDatePickerDialog.value = false
+        }
+    )
 
     if (showDatePickerDialog.value) {
         datePicker.show(rememberFragmentManager(), "DatePicker")

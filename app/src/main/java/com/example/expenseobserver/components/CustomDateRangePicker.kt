@@ -47,6 +47,7 @@ fun CustomDateRangePicker(
 fun CustomDatePickerDialog(
     title: String? = null,
     selectedDate: Long,
+    dismiss: () -> Unit,
     onDateSelected: (Long) -> Unit = {}
 ): MaterialDatePicker<Long> {
     val constraints =
@@ -67,6 +68,7 @@ fun CustomDatePickerDialog(
         datePiker.addOnPositiveButtonClickListener(listener)
         onDispose {
             datePiker.removeOnPositiveButtonClickListener(listener)
+            dismiss.invoke()
         }
     }
 
