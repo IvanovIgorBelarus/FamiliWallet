@@ -1,5 +1,6 @@
 package com.example.expenseobserver.components
 
+import android.content.DialogInterface
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -19,6 +20,11 @@ fun CustomDateRangePicker(
     dismiss: () -> Unit,
     onDateSelected: (Pair<Long, Long>) -> Unit = {}
 ): MaterialDatePicker<Pair<Long, Long>> {
+    val constraints =
+        CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
+
     val datePicker = MaterialDatePicker.Builder.dateRangePicker()
         .setTitleText("")
         .setSelection(
@@ -27,17 +33,23 @@ fun CustomDateRangePicker(
                 MaterialDatePicker.todayInUtcMilliseconds()
             )
         )
+        .setCalendarConstraints(constraints)
         .build()
 
     DisposableEffect(datePicker) {
-        val listener = MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>> {
-            if (it != null) onDateSelected(it)
-            Log.e("MYNAME", "MaterialPickerOnPositiveButtonClickListener")
+        val positiveListener = MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>> {
+           onDateSelected.invoke(it)
         }
-        datePicker.addOnPositiveButtonClickListener(listener)
-        onDispose {
-            datePicker.removeOnPositiveButtonClickListener(listener)
+        val dismissListener = DialogInterface.OnDismissListener {
             dismiss.invoke()
+        }
+        with(datePicker) {
+            addOnPositiveButtonClickListener(positiveListener)
+            addOnDismissListener(dismissListener)
+            onDispose {
+                removeOnPositiveButtonClickListener(positiveListener)
+                removeOnDismissListener(dismissListener)
+            }
         }
     }
     return datePicker
@@ -55,24 +67,30 @@ fun CustomDatePickerDialog(
             .setValidator(DateValidatorPointBackward.now())
             .build()
 
-    val datePiker = MaterialDatePicker.Builder.datePicker()
+    val datePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText("")
         .setSelection(selectedDate)
         .setCalendarConstraints(constraints)
         .build()
 
-    DisposableEffect(datePiker) {
-        val listener = MaterialPickerOnPositiveButtonClickListener<Long> {
-            it?.let { onDateSelected(it) }
+    DisposableEffect(datePicker) {
+        val positiveListener = MaterialPickerOnPositiveButtonClickListener<Long> {
+            onDateSelected.invoke(it)
         }
-        datePiker.addOnPositiveButtonClickListener(listener)
-        onDispose {
-            datePiker.removeOnPositiveButtonClickListener(listener)
+        val dismissListener = DialogInterface.OnDismissListener {
             dismiss.invoke()
+        }
+        with(datePicker) {
+            addOnPositiveButtonClickListener(positiveListener)
+            addOnDismissListener(dismissListener)
+            onDispose {
+                removeOnPositiveButtonClickListener(positiveListener)
+                removeOnDismissListener(dismissListener)
+            }
         }
     }
 
-    return datePiker
+    return datePicker
 }
 
 @Composable

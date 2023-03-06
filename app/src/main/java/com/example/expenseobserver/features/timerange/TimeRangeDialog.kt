@@ -132,7 +132,7 @@ fun TimeRangeDialog(
                 Spacer(modifier = Modifier.size(20.dp))
 
                 Column(modifier = Modifier.noRippleClickable {
-                    showDatePicker.value = true
+                    if (timeRange.value == TimeRangeType.RANGE) showDatePicker.value = true
                 }) {
                     Text(
                         text = resources.getString(R.string.time_range_start),
