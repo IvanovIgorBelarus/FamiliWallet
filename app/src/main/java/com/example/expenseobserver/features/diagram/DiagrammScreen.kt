@@ -46,8 +46,7 @@ import kotlin.math.sin
 fun DiagramScreen(
     modifier: Modifier = Modifier,
     transactionsList: List<UIModel.TransactionModel>,
-    categoriesList: List<UIModel.CategoryModel>,
-    uiState: MutableState<UiState<StartScreenViewState>>
+    categoriesList: List<UIModel.CategoryModel>
 ) {
     if (transactionsList.isNotEmpty() && categoriesList.isNotEmpty()) {
         val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList, categoriesList)
@@ -66,10 +65,8 @@ fun DiagramScreen(
             }
         }
     } else {
-        if (uiState.value != UiState.Loading) {
-            Box(contentAlignment = Alignment.Center, modifier = modifier) {
-                Text(text = "у вас нет данных", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
-            }
+        Box(contentAlignment = Alignment.Center, modifier = modifier) {
+            Text(text = "у вас нет данных", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.expenseobserver.features.start_screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -49,11 +50,31 @@ fun StartScreen(
     forceLoad: MutableState<Boolean>,
     startViewModel: StartViewModel = hiltViewModel()
 ) {
-    var viewState by remember { mutableStateOf(StartScreenViewState(emptyList(), emptyList())) }
+    startViewModel.start = forceLoad.value
+
+    ShowScreen(
+        viewModel = startViewModel,
+        forceLoad = forceLoad,
+        onSuccess = {
+            UI(modifier = modifier, viewState = it as StartScreenViewState, startViewModel = startViewModel)
+        }
+    )
+
+    LaunchedEffect(forceLoad) {
+        startViewModel.getData()
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun UI (
+    modifier: Modifier,
+    viewState: StartScreenViewState,
+    startViewModel: StartViewModel
+){
     val showDeleteDialog = remember { mutableStateOf(false) }
     val showTimeRangeDialog = remember { mutableStateOf(false) }
     var deleteItem = UIModel.TransactionModel()
-    startViewModel.start = forceLoad.value
 
     ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
         startViewModel.deleteItem(deleteItem)
@@ -91,7 +112,7 @@ fun StartScreen(
                             .defaultMinSize(minHeight = 400.dp),
                         transactionsList = viewState.transactionsList,
                         categoriesList = viewState.categoriesList,
-                        uiState = startViewModel.uiState
+//                        uiState = viewState
                     )
 
                     Box(
@@ -124,17 +145,5 @@ fun StartScreen(
                 }
             }
         }
-    }
-
-    ShowScreen(
-        viewModel = startViewModel,
-        forceLoad = forceLoad,
-        onSuccess = {
-            viewState = it as StartScreenViewState
-        }
-    )
-
-    LaunchedEffect(Unit) {
-        startViewModel.getData()
     }
 }
