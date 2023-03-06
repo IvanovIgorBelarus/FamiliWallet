@@ -19,7 +19,7 @@ enum class TimeRangeType(val text: String, var startDate: Long, var endDate: Lon
     ),
     MONTH(
         "Месяц",
-        startDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -30) }.time.toStartOfDay.time,
+        startDate = Calendar.getInstance().apply { add(Calendar.MONTH, -1) }.time.toStartOfDay.time,
         endDate = Calendar.getInstance().time.toEndOfDay.time,
         2
     ),
