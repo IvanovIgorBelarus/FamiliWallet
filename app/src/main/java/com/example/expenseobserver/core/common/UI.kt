@@ -11,7 +11,6 @@ import com.example.expenseobserver.features.loading.LoadingScreen
 @Composable
 fun ShowScreen(
     viewModel: BaseViewModel<*>,
-    forceLoad: MutableState<Boolean>,
     onSuccess: @Composable (Any?) -> Unit = {},
     onError: @Composable () -> Unit = {},
     onLoading: @Composable () -> Unit = {},
@@ -21,7 +20,6 @@ fun ShowScreen(
     when (uiState) {
         is UiState.Success<*> -> {
             onSuccess.invoke((uiState as UiState.Success<*>).data)
-            forceLoad.value = false
         }
         is UiState.Error -> {
             val errorText = (uiState as UiState.Error).exception.message

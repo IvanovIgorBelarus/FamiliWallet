@@ -31,10 +31,10 @@ fun MainScreen(
     navController: NavHostController = rememberAnimatedNavController(),
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
-    val forceLoad = remember { mutableStateOf(true) }
     val showDialog = remember { mutableStateOf(false) }
     val transactionData = remember { mutableStateOf(emptyList<UIModel.CategoryModel>()) }
     val uiState by transactionViewModel.getUiState()
+    val update = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
         TransactionDialog(
@@ -44,7 +44,7 @@ fun MainScreen(
             onButtonClick = { model ->
                 showDialog.value = false
                 transactionViewModel.addTransaction(model) {
-                    forceLoad.value = true
+                    update.value = !update.value
                 }
             }
         )
@@ -65,9 +65,9 @@ fun MainScreen(
         floatingActionButtonPosition = FabPosition.Center
     ) {
         MainScreenNavigation(
-            forceLoad = forceLoad,
+            update = update,
             navigation = navController,
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(0.dp, 0.dp, 0.dp, 65.dp)
         )

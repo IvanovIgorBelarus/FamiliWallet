@@ -16,12 +16,4 @@ abstract class BaseViewModel<T> : ViewModel() {
     open fun clearData(){
 
     }
-
-    var start: Boolean = false
-        set(value) {
-            if (field != value) {
-                field = value
-                getData(field)
-            }
-        }
 }

@@ -32,7 +32,6 @@ import com.example.expenseobserver.navigation.Screen
 fun CategoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
-    forceLoad: MutableState<Boolean>,
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
     var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
@@ -74,7 +73,6 @@ fun CategoryScreen(
 
     ShowScreen(
         viewModel = categoryViewModel,
-        forceLoad = forceLoad,
         onSuccess = {
             viewState = it as CategoryScreenViewState
         }

@@ -56,7 +56,7 @@ import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 fun NewCategoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
-    forceLoad: MutableState<Boolean>,
+    update: MutableState<Boolean>,
     newCategoryViewModel: NewCategoryViewModel = hiltViewModel()
 ) {
     val resources = LocalContext.current.resources
@@ -68,7 +68,6 @@ fun NewCategoryScreen(
 
     ShowScreen(
         viewModel = newCategoryViewModel,
-        forceLoad = forceLoad,
         onSuccess = {
             viewState = it as NewCategoryViewState
             categoryColor.value = CategoryColor.getColor(viewState.category.color.orEmpty())
@@ -122,7 +121,7 @@ fun NewCategoryScreen(
                         icon = icon.value,
                         color = categoryColor.value
                     ) {
-                        forceLoad.value = !forceLoad.value
+                        update.value = !update.value
                         navigation.popBackStack()
                     }
                 }

@@ -19,20 +19,20 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalAnimationApi
 @Composable
 fun MainScreenNavigation(
-    forceLoad: MutableState<Boolean>,
     navigation: NavHostController,
     modifier: Modifier = Modifier,
+    update: MutableState<Boolean>
 ) {
     AnimatedNavHost(
         navController = navigation,
         startDestination = Screen.StartScreen.route,
         enterTransition = { slideIntoContainer(getSlideDirection(initialState, targetState), animationSpec = tween(500)) }
     ) {
-        composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation, forceLoad) }
-        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation, forceLoad) }
+        composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, update) }
+        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation) }
+        composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation) }
+        composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation) }
+        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation, update) }
     }
 }
 

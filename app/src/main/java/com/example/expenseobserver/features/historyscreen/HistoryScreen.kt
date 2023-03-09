@@ -43,7 +43,6 @@ import com.example.expenseobserver.ui.theme.textColor
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController? = null,
-    forceLoad: MutableState<Boolean>,
     historyViewModel: HistoryViewModel = hiltViewModel()
 ) {
     var viewState by remember { mutableStateOf(HistoryViewState(emptyList(), emptyMap())) }
@@ -94,7 +93,6 @@ fun HistoryScreen(
 
     ShowScreen(
         viewModel = historyViewModel,
-        forceLoad = forceLoad,
         onSuccess = {
             viewState = it as HistoryViewState
         }

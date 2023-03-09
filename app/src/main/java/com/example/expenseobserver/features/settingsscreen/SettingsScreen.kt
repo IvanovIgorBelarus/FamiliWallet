@@ -16,7 +16,6 @@ import androidx.navigation.NavHostController
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController? = null,
-    forceLoad: MutableState<Boolean>,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     Scaffold(

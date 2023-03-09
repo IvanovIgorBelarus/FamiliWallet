@@ -47,20 +47,18 @@ import com.example.expenseobserver.ui.theme.mainColor
 fun StartScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
-    forceLoad: MutableState<Boolean>,
+    update: MutableState<Boolean>,
     startViewModel: StartViewModel = hiltViewModel()
 ) {
-    startViewModel.start = forceLoad.value
 
     ShowScreen(
         viewModel = startViewModel,
-        forceLoad = forceLoad,
         onSuccess = {
             UI(modifier = modifier, viewState = it as StartScreenViewState, startViewModel = startViewModel)
         }
     )
 
-    LaunchedEffect(forceLoad) {
+    LaunchedEffect(update.value) {
         startViewModel.getData()
     }
 }
