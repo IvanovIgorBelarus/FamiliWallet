@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.category
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -32,10 +33,37 @@ import com.example.expenseobserver.navigation.Screen
 fun CategoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
+    currentState: MutableState<Int>,
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
-    var viewState by remember { mutableStateOf(CategoryScreenViewState(emptyList())) }
-    val currentState = remember { mutableStateOf(0) }
+    ShowScreen(
+        viewModel = categoryViewModel,
+        onSuccess = {
+            UI(
+                modifier = modifier,
+                viewState = it as CategoryScreenViewState,
+                categoryViewModel = categoryViewModel,
+                navigation = navigation,
+                currentState = currentState
+            )
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        categoryViewModel.getData()
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun UI(
+    modifier: Modifier,
+    viewState: CategoryScreenViewState,
+    categoryViewModel: CategoryViewModel,
+    navigation: NavHostController,
+    currentState: MutableState<Int>
+) {
+//    val currentState = remember { mutableStateOf(0) }
     val showDeleteDialog = remember { mutableStateOf(false) }
     var deleteItem = UIModel.CategoryModel()
 
@@ -69,17 +97,6 @@ fun CategoryScreen(
                     }
                 })
         }
-    }
-
-    ShowScreen(
-        viewModel = categoryViewModel,
-        onSuccess = {
-            viewState = it as CategoryScreenViewState
-        }
-    )
-
-    LaunchedEffect(Unit) {
-        categoryViewModel.getData()
     }
 }
 

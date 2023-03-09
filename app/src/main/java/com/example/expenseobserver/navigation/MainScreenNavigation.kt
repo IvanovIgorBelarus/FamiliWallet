@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -21,7 +22,8 @@ import com.google.accompanist.navigation.animation.composable
 fun MainScreenNavigation(
     navigation: NavHostController,
     modifier: Modifier = Modifier,
-    update: MutableState<Boolean>
+    update: MutableState<Boolean>,
+    currentState: MutableState<Int> = mutableStateOf(0)
 ) {
     AnimatedNavHost(
         navController = navigation,
@@ -29,10 +31,10 @@ fun MainScreenNavigation(
         enterTransition = { slideIntoContainer(getSlideDirection(initialState, targetState), animationSpec = tween(500)) }
     ) {
         composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, update) }
-        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation) }
+        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, currentState ) }
         composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation) }
         composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation) }
-        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation, update) }
+        composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
     }
 }
 

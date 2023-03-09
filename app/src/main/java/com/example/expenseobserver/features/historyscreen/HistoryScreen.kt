@@ -14,7 +14,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +36,35 @@ import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.ui.theme.textColor
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController? = null,
     historyViewModel: HistoryViewModel = hiltViewModel()
+) {
+    ShowScreen(
+        viewModel = historyViewModel,
+        onSuccess = {
+            UI(
+                modifier = modifier,
+                viewState = it as HistoryViewState,
+                historyViewModel = historyViewModel
+            )
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        historyViewModel.getData()
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun UI(
+    modifier: Modifier,
+    viewState: HistoryViewState,
+    historyViewModel: HistoryViewModel
 ) {
     var viewState by remember { mutableStateOf(HistoryViewState(emptyList(), emptyMap())) }
     val currentState = remember { mutableStateOf(dateFilterType.position) }
@@ -89,17 +110,6 @@ fun HistoryScreen(
                 }
             }
         }
-    }
-
-    ShowScreen(
-        viewModel = historyViewModel,
-        onSuccess = {
-            viewState = it as HistoryViewState
-        }
-    )
-
-    LaunchedEffect(Unit) {
-        historyViewModel.getData()
     }
 }
 

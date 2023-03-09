@@ -47,6 +47,8 @@ import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.UIModel
+import com.example.expenseobserver.features.historyscreen.HistoryViewModel
+import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
@@ -56,25 +58,40 @@ import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 fun NewCategoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController,
-    update: MutableState<Boolean>,
     newCategoryViewModel: NewCategoryViewModel = hiltViewModel()
 ) {
-    val resources = LocalContext.current.resources
-    var viewState by remember { mutableStateOf(NewCategoryViewState(UIModel.CategoryModel())) }
-    val categoryColor = remember { mutableStateOf(CategoryColor.UNKNOWN) }
-    val icon = remember { mutableStateOf(AppIcons.UNKNOWN) }
-    val categoryName = remember { mutableStateOf(viewState.category.category.orEmpty()) }
-    val showError = remember { mutableStateOf(false) }
 
     ShowScreen(
         viewModel = newCategoryViewModel,
         onSuccess = {
-            viewState = it as NewCategoryViewState
-            categoryColor.value = CategoryColor.getColor(viewState.category.color.orEmpty())
-            icon.value = AppIcons.getImageRes(viewState.category.icon.orEmpty())
-            categoryName.value = viewState.category.category.orEmpty()
+            UI(
+                modifier = modifier,
+                viewState = it as NewCategoryViewState,
+                navigation = navigation,
+//                update = update,
+                newCategoryViewModel = newCategoryViewModel
+            )
         }
     )
+
+    LaunchedEffect(Unit) {
+        newCategoryViewModel.getData()
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun UI(
+    modifier: Modifier,
+    viewState: NewCategoryViewState,
+    navigation: NavHostController,
+    newCategoryViewModel: NewCategoryViewModel
+) {
+    val resources = LocalContext.current.resources
+    val categoryColor = remember { mutableStateOf(CategoryColor.getColor(viewState.category.color.orEmpty())) }
+    val icon = remember { mutableStateOf(AppIcons.getImageRes(viewState.category.icon.orEmpty())) }
+    val categoryName = remember { mutableStateOf(viewState.category.category.orEmpty()) }
+    val showError = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 8.dp),
@@ -121,7 +138,6 @@ fun NewCategoryScreen(
                         icon = icon.value,
                         color = categoryColor.value
                     ) {
-                        update.value = !update.value
                         navigation.popBackStack()
                     }
                 }
@@ -161,9 +177,5 @@ fun NewCategoryScreen(
                 }
             }
         }
-    }
-
-    LaunchedEffect(Unit) {
-        newCategoryViewModel.getData()
     }
 }
