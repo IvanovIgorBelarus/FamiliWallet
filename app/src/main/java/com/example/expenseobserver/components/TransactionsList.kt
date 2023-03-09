@@ -85,14 +85,16 @@ fun TransactionRow(
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.size(16.dp))
-            Text(
-                text = transaction.date?.toStringFormat.orEmpty(),
-                color = textColorGrey,
-                fontSize = 8.sp,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center
-            )
+            if (transaction.date != null) {
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(
+                    text = transaction.date?.toStringFormat.orEmpty(),
+                    color = textColorGrey,
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(

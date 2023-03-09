@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App
 import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
@@ -16,7 +17,7 @@ import com.example.expenseobserver.features.transacrionscreen.domain.Transaction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,7 +37,9 @@ class HistoryViewModel @Inject constructor(
                         uiState.value = UiState.Success(
                             HistoryViewState(
                                 categoriesList = categoriesList,
-                                transactionsGroupList = transactionsList.groupBy { Date(it.date ?: 0).toStartOfDay.time })
+                                transactionsGroupList = transactionsList.groupBy { Date(it.date ?: 0).toStartOfDay.time },
+                                summaryTransactionList = mapSummaryTransactionList(categoriesList, transactionsList)
+                            )
                         )
                     }
                     is DataResponse.Error -> {
@@ -86,9 +89,31 @@ class HistoryViewModel @Inject constructor(
         }
     }.await()
 
-    fun changeTimeRange(timeRange: TimeRangeType){
+    fun changeTimeRange(timeRange: TimeRangeType) {
         uiState.value = UiState.Loading
         App.dateFilterType = timeRange
         getData()
+    }
+
+    private fun mapSummaryTransactionList(
+        categoriesList: List<UIModel.CategoryModel>,
+        transactionsList: List<UIModel.TransactionModel>
+    ): List<UIModel.TransactionModel> {
+        var resultList = mutableListOf<UIModel.TransactionModel>()
+        categoriesList.forEach { categoryItem ->
+            var sum = 0.00
+            transactionsList.forEach { transaction ->
+                if (transaction.category == categoryItem.category && transaction.type == categoryItem.type) {
+                    sum += transaction.value ?: 0.0
+                }
+            }
+            resultList.add(UIModel.TransactionModel(
+                type = categoryItem.type,
+                category = categoryItem.category,
+                value = sum
+            ))
+        }
+        resultList = resultList.filter { (it.value ?: 0.0) > 0.0 && it.type == EXPENSES }.sortedByDescending { it.value }.toMutableList()
+        return resultList
     }
 }

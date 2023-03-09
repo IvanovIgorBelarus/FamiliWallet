@@ -66,7 +66,6 @@ fun UI(
     viewState: HistoryViewState,
     historyViewModel: HistoryViewModel
 ) {
-    var viewState by remember { mutableStateOf(HistoryViewState(emptyList(), emptyMap())) }
     val currentState = remember { mutableStateOf(dateFilterType.position) }
     val timeRange = TimeRangeType.getTimeRangeType(currentState.value)
     if (timeRange != dateFilterType) {
@@ -84,21 +83,21 @@ fun UI(
             ThreeTabsLay(tabList = tabList, currentState = currentState)
 
             LazyColumn {
-                viewState.transactionsGroupList.forEach { (date, transactionList) ->
-                    stickyHeader {
-                        Text(
-                            text = date?.toStringDateFormatWithToday.orEmpty(),
-                            color = textColor,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White)
-                                .padding(12.dp, 24.dp, 12.dp, 12.dp)
-                        )
-                    }
-                    items(items = transactionList,
+//                viewState.transactionsGroupList.forEach { (date, transactionList) ->
+//                    stickyHeader {
+//                        Text(
+//                            text = date?.toStringDateFormatWithToday.orEmpty(),
+//                            color = textColor,
+//                            fontSize = 18.sp,
+//                            textAlign = TextAlign.Start,
+//                            fontWeight = FontWeight.Medium,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .background(Color.White)
+//                                .padding(12.dp, 24.dp, 12.dp, 12.dp)
+//                        )
+//                    }
+                    items(items = viewState.summaryTransactionList,
                         itemContent = { transaction ->
                             TransactionRow(
                                 transaction = transaction,
@@ -107,7 +106,7 @@ fun UI(
                                 //onItemClick
                             }
                         })
-                }
+//                }
             }
         }
     }
