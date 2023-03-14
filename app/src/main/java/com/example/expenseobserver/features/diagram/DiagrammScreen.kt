@@ -1,7 +1,8 @@
 package com.example.expenseobserver.features.diagram
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.Paint
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,11 +32,9 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
 import com.example.expenseobserver.features.diagram.data.OverviewItem
-import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.ui.theme.textColor
 import kotlin.math.cos
 import kotlin.math.floor
@@ -55,7 +53,7 @@ fun DiagramScreen(
         val incomesList = transactionsList.filter { it.type == CategoryType.INCOME.type }
         val incomesSum = floor(incomesList.sumOf { it.value ?: 0.0 } * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
-            DrawDiagram(modifier, expansesList = expensesSumList, summary = expensesSum)
+            DrawDiagram(expansesList = expensesSumList, summary = expensesSum)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -73,13 +71,11 @@ fun DiagramScreen(
 
 @Composable
 private fun DrawDiagram(
-    modifier: Modifier = Modifier,
     expansesList: List<CategorySumItem>,
     summary: Double
 ) {
     //for diagram get only 7 values!!!
     DrawArc(
-        modifier = modifier,
         drawItems = DiagramMapper.mapDrawItems(expansesList, summary),
         sum = summary
     )
@@ -87,11 +83,10 @@ private fun DrawDiagram(
 
 @Composable
 private fun DrawArc(
-    modifier: Modifier = Modifier,
     drawItems: List<DrawItem>,
     sum: Double
 ) {
-    val resources = LocalContext.current.resources
+    val context = LocalContext.current
     val offsetOverviewList = mutableListOf<OverviewItem>()
     Canvas(modifier = Modifier.fillMaxSize()) {
         //calculate center of diagram circle
@@ -151,15 +146,16 @@ private fun DrawArc(
                 )
             }
         }
-        drawOverviews(resources, offsetOverviewList, this)
+        drawOverviews(context, offsetOverviewList, this)
     }
 }
 
 private fun drawOverviews(
-    resources: Resources,
+    context: Context,
     list: List<OverviewItem>,
     scope: DrawScope
 ) {
+
     list.forEach { overview ->
         val colorX = android.graphics.Color.argb(
             overview.color.toArgb().alpha,
@@ -176,19 +172,21 @@ private fun drawOverviews(
         val imgPaint = androidx.compose.ui.graphics.Paint().apply {
             colorFilter = ColorFilter.tint(overview.color)
         }
-        val drawable = resources.getDrawable(overview.icon).toBitmap(72, 72)
-        scope.drawIntoCanvas {
-            it.nativeCanvas.drawText(
+        val drawable = AppCompatResources.getDrawable(context, overview.icon)?.toBitmap(72, 72)
+        scope.drawIntoCanvas { canvas ->
+            canvas.nativeCanvas.drawText(
                 overview.text,
                 overview.textOffset.x,
                 overview.textOffset.y,
                 paint
             )
-            it.drawImage(
-                drawable.asImageBitmap(),
-                overview.iconOffset,
-                imgPaint
-            )
+            drawable?.let {
+                canvas.drawImage(
+                    it.asImageBitmap(),
+                    overview.iconOffset,
+                    imgPaint
+                )
+            }
         }
     }
 }
