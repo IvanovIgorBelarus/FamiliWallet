@@ -14,10 +14,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -83,21 +81,21 @@ fun UI(
             ThreeTabsLay(tabList = tabList, currentState = currentState)
 
             LazyColumn {
-//                viewState.transactionsGroupList.forEach { (date, transactionList) ->
-//                    stickyHeader {
-//                        Text(
-//                            text = date?.toStringDateFormatWithToday.orEmpty(),
-//                            color = textColor,
-//                            fontSize = 18.sp,
-//                            textAlign = TextAlign.Start,
-//                            fontWeight = FontWeight.Medium,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .background(Color.White)
-//                                .padding(12.dp, 24.dp, 12.dp, 12.dp)
-//                        )
-//                    }
-                    items(items = viewState.summaryTransactionList,
+                viewState.transactionsGroupList.forEach { (date, transactionList) ->
+                    stickyHeader {
+                        Text(
+                            text = date.toStringDateFormatWithToday,
+                            color = textColor,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .padding(12.dp, 24.dp, 12.dp, 12.dp)
+                        )
+                    }
+                    items(items = transactionList,
                         itemContent = { transaction ->
                             TransactionRow(
                                 transaction = transaction,
@@ -106,7 +104,7 @@ fun UI(
                                 //onItemClick
                             }
                         })
-//                }
+                }
             }
         }
     }

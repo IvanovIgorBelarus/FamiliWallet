@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.common.TransactionMapper
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
@@ -34,7 +35,8 @@ class StartViewModel @Inject constructor(
                         uiState.value = UiState.Success(
                             StartScreenViewState(
                                 categoriesList = categoriesList,
-                                transactionsList = transactionsList.sortedByDescending { it.date }
+                                transactionsList = transactionsList.sortedByDescending { it.date },
+                                summaryTransactionMap = TransactionMapper.mapSummaryTransactionList(categoriesList, transactionsList).groupBy { it.type }
                             )
                         )
                     }
