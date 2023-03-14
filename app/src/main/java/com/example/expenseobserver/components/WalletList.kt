@@ -72,7 +72,7 @@ fun WalletView(
             )
             Spacer(modifier = Modifier.size(2.dp))
             Text(
-                text = "13 352.25 BYN",
+                text = wallet.amount + " " + wallet.currency,
                 color = Color.White,
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start,
@@ -80,7 +80,7 @@ fun WalletView(
             )
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                text = "Наличные",
+                text = wallet.name.orEmpty(),
                 color = Color.White,
                 fontSize = 8.sp,
                 textAlign = TextAlign.Center,

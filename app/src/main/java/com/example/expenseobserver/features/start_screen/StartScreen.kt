@@ -160,13 +160,8 @@ private fun LazyListScope.transactionsItems(
         stickyHeader {
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .background(
-                        color = if (header == EXPENSES) expensesBackgroundColor else incomesBackgroundColor,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .fillMaxWidth()
-                    .requiredHeight(80.dp),
+                    .padding( 8.dp)
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -178,8 +173,6 @@ private fun LazyListScope.transactionsItems(
                     modifier = Modifier
                         .padding(start = 12.dp)
                         .fillMaxWidth()
-                        .height(24.dp)
-
                 )
             }
         }
