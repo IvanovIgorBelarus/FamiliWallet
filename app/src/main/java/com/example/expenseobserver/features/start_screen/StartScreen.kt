@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -39,9 +40,7 @@ import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
-import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.diagram.DiagramScreen
-import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.features.timerange.TimeRangeDialog
 import com.example.expenseobserver.ui.theme.backgroundColor
@@ -77,7 +76,7 @@ fun StartScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun UI(
+private fun UI(
     modifier: Modifier,
     viewState: StartScreenViewState,
     startViewModel: StartViewModel
@@ -102,81 +101,94 @@ fun UI(
     ) {
         LazyColumn {
             item {
-                Spacer(modifier = Modifier.size(8.dp))
-                ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-                    val (diagram, timeRangeButton) = createRefs()
-                    DiagramScreen(
-                        modifier = Modifier
-                            .constrainAs(diagram) {
-                                top.linkTo(parent.top)
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                height = Dimension.fillToConstraints
-                            }
-                            .defaultMinSize(minHeight = 400.dp),
-                        transactionsList = viewState.transactionsList,
-                        categoriesList = viewState.categoriesList,
-//                        uiState = viewState
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .constrainAs(timeRangeButton) {
-                                top.linkTo(parent.top)
-                                end.linkTo(parent.end, margin = 16.dp)
-                            }
-                            .size(48.dp)
-                            .background(backgroundColor, RoundedCornerShape(10.dp))
-                            .rippleClickable { showTimeRangeDialog.value = true },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_time_range),
-                            contentDescription = "",
-                            tint = mainColor,
-                            modifier = Modifier.size(28.dp)
-                        )
-                    }
-                }
+                DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog)
             }
+            transactionsItems(viewState = viewState)
+        }
+    }
+}
 
-            viewState.summaryTransactionMap.forEach { (header, transactionList) ->
-                stickyHeader {
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .background(
-                                color = if (header == EXPENSES) expensesBackgroundColor else incomesBackgroundColor,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .requiredHeight(80.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = if (header == EXPENSES) "Расходы" else "Доходы",
-                            color = textColor,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.W500,
-                            modifier = Modifier
-                                .padding(start = 12.dp)
-                                .fillMaxWidth()
-                                .height(24.dp)
-
-                        )
-                    }
+@Composable
+private fun DiagramView(
+    viewState: StartScreenViewState,
+    showTimeRangeDialog: MutableState<Boolean>
+) {
+    Spacer(modifier = Modifier.size(8.dp))
+    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+        val (diagram, timeRangeButton) = createRefs()
+        DiagramScreen(
+            modifier = Modifier
+                .constrainAs(diagram) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    height = Dimension.fillToConstraints
                 }
-                items(items = transactionList,
-                    itemContent = { transaction ->
-                        TransactionRow(
-                            transaction = transaction,
-                            categoriesList = viewState.categoriesList
-                        ) { item ->
-                            //onItemClick
-                        }
-                    })
+                .defaultMinSize(minHeight = 400.dp),
+            transactionsList = viewState.transactionsList,
+            categoriesList = viewState.categoriesList
+        )
+
+        Box(
+            modifier = Modifier
+                .constrainAs(timeRangeButton) {
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end, margin = 16.dp)
+                }
+                .size(48.dp)
+                .background(backgroundColor, RoundedCornerShape(10.dp))
+                .rippleClickable { showTimeRangeDialog.value = true },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_time_range),
+                contentDescription = "",
+                tint = mainColor,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+private fun LazyListScope.transactionsItems(
+    viewState: StartScreenViewState
+) {
+    viewState.summaryTransactionMap.forEach { (header, transactionList) ->
+        stickyHeader {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .background(
+                        color = if (header == EXPENSES) expensesBackgroundColor else incomesBackgroundColor,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .fillMaxWidth()
+                    .requiredHeight(80.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = if (header == EXPENSES) "Расходы" else "Доходы",
+                    color = textColor,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.W500,
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .fillMaxWidth()
+                        .height(24.dp)
+
+                )
             }
         }
+        items(items = transactionList,
+            itemContent = { transaction ->
+                TransactionRow(
+                    transaction = transaction,
+                    categoriesList = viewState.categoriesList
+                ) { item ->
+                    //onItemClick
+                }
+            })
     }
 }
