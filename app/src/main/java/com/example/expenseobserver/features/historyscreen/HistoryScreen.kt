@@ -26,11 +26,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.App.Companion.dateFilterType
+import com.example.expenseobserver.R
 import com.example.expenseobserver.components.ThreeTabsLay
 import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.TimeRangeType
+import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
+import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.ui.theme.textColor
 
@@ -66,9 +69,18 @@ fun UI(
 ) {
     val currentState = remember { mutableStateOf(dateFilterType.position) }
     val timeRange = TimeRangeType.getTimeRangeType(currentState.value)
+
     if (timeRange != dateFilterType) {
         historyViewModel.changeTimeRange(timeRange)
     }
+
+    val showDeleteDialog = remember { mutableStateOf(false) }
+    var deleteItem = UIModel.TransactionModel()
+
+    ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
+        historyViewModel.deleteItem(deleteItem)
+    }
+
     Scaffold(
         modifier = modifier,
         backgroundColor = Color.White
@@ -100,8 +112,9 @@ fun UI(
                             TransactionRow(
                                 transaction = transaction,
                                 categoriesList = viewState.categoriesList
-                            ) { item ->
-                                //onItemClick
+                            )  { item ->
+                                deleteItem = item
+                                showDeleteDialog.value = true
                             }
                         })
                 }

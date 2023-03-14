@@ -82,13 +82,7 @@ fun UI(
     viewState: StartScreenViewState,
     startViewModel: StartViewModel
 ) {
-    val showDeleteDialog = remember { mutableStateOf(false) }
     val showTimeRangeDialog = remember { mutableStateOf(false) }
-    var deleteItem = UIModel.TransactionModel()
-
-    ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
-        startViewModel.deleteItem(deleteItem)
-    }
 
     if (showTimeRangeDialog.value) {
         TimeRangeDialog(
