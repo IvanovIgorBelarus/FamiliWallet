@@ -54,6 +54,14 @@ sealed class UIModel {
         var description: String? = null
     )
 
+    data class WalletModel(
+        var id: String? = null,
+        var uid: String? = null,
+        var name: String? = null,
+        var currency: String? = null,
+        var amount: String? = null,
+    )
+
     open class BaseModel(
         var itemId: String? = null
     )

@@ -12,6 +12,7 @@ val backgroundColor = Color(0xFFF9FBFC)
 val textColor = Color(0xFF2A3650)
 val textColorGrey = Color(0xB32A3650)
 val buttonColor = Color(0xFF517EFF)
+val walletColor = Color(0xFF00BF1F)
 
 //gradient for enter button
 val gradColor1 = Color(0xFF394A6F)

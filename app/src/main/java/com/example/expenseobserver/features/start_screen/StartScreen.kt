@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -37,6 +38,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.TransactionRow
+import com.example.expenseobserver.components.WalletItems
+import com.example.expenseobserver.components.WalletView
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
@@ -73,7 +76,6 @@ fun StartScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 private fun UI(
@@ -100,13 +102,13 @@ private fun UI(
         backgroundColor = Color.White
     ) {
         LazyColumn {
-            item {
-                DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog)
-            }
+            item { WalletItems(viewState = viewState) }
+            item { DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog) }
             transactionsItems(viewState = viewState)
         }
     }
 }
+
 
 @Composable
 private fun DiagramView(
