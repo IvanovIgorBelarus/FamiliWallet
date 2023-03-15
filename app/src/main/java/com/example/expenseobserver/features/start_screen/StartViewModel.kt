@@ -11,6 +11,7 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.start_screen.domain.usecase.WalletUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -20,29 +21,25 @@ import javax.inject.Inject
 @HiltViewModel
 class StartViewModel @Inject constructor(
     private val categoriesUseCase: CategoriesUseCase,
-    private val transactionUseCase: TransactionUseCase
+    private val transactionUseCase: TransactionUseCase,
+    private val walletUseCase: WalletUseCase
 ) : BaseViewModel<StartScreenViewState>() {
 
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
             try {
-                val categoriesList = mutableListOf<UIModel.CategoryModel>()
-                val transactionsList = mutableListOf<UIModel.TransactionModel>()
-                when (val userData = getPersonData(forceLoad)) {
-                    is DataResponse.Success -> {
-                        categoriesList.addAll(userData.data.first)
-                        transactionsList.addAll(userData.data.second)
-                        uiState.value = UiState.Success(
-                            StartScreenViewState(
-                                categoriesList = categoriesList,
-                                transactionsList = transactionsList.sortedByDescending { it.date },
-                                summaryTransactionMap = TransactionMapper.mapSummaryTransactionList(categoriesList, transactionsList).groupBy { it.type }
-                            )
+                val categoriesList = getCategories(forceLoad)
+                val transactionsList = getTransactions(forceLoad)
+                val walletsList = getWallets(forceLoad)
+                if (uiState.value !is UiState.Error) {
+                    uiState.value = UiState.Success(
+                        StartScreenViewState(
+                            categoriesList = categoriesList,
+                            transactionsList = transactionsList.sortedByDescending { it.date },
+                            summaryTransactionMap = TransactionMapper.mapSummaryTransactionList(categoriesList, transactionsList).groupBy { it.type },
+                            walletList = walletsList
                         )
-                    }
-                    is DataResponse.Error -> {
-                        uiState.value = UiState.Error(userData.exception)
-                    }
+                    )
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
@@ -50,36 +47,71 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPersonData(forceLoad: Boolean) = viewModelScope.async {
+    private suspend fun getCategories(forceLoad: Boolean) = viewModelScope.async {
         try {
             val categoryListResponse = categoriesUseCase.getCategoriesList(forceLoad)
             val categoriesList = mutableListOf<UIModel.CategoryModel>()
+
             when (categoryListResponse) {
                 is DataResponse.Success -> {
                     categoriesList.addAll(categoryListResponse.data)
                 }
                 is DataResponse.Error -> {
                     Log.w("ERROR", "categoryListResponse failed", categoryListResponse.exception)
-                    return@async DataResponse.Error(categoryListResponse.exception)
+                    uiState.value = UiState.Error(categoryListResponse.exception)
+                    return@async emptyList()
                 }
                 else -> {}
             }
+            return@async categoriesList
+        } catch (e: Exception) {
+            uiState.value = UiState.Error(e)
+            return@async emptyList()
+        }
+    }.await()
 
+    private suspend fun getTransactions(forceLoad: Boolean) = viewModelScope.async {
+        try {
             val transactionsListResponse = transactionUseCase.getTransactionsList(forceLoad)
             val transactionsList = mutableListOf<UIModel.TransactionModel>()
+
             when (transactionsListResponse) {
                 is DataResponse.Success -> {
                     transactionsList.addAll(transactionsListResponse.data.currentDateFilter())
                 }
                 is DataResponse.Error -> {
                     Log.w("ERROR", "transactionsListResponse failed", transactionsListResponse.exception)
-                    return@async DataResponse.Error(transactionsListResponse.exception)
+                    uiState.value = UiState.Error(transactionsListResponse.exception)
+                    return@async emptyList()
                 }
                 else -> {}
             }
-            return@async DataResponse.Success(Pair(categoriesList, transactionsList))
+            return@async transactionsList
         } catch (e: Exception) {
-            return@async DataResponse.Error(e)
+            uiState.value = UiState.Error(e)
+            return@async emptyList()
+        }
+    }.await()
+
+    private suspend fun getWallets(forceLoad: Boolean) = viewModelScope.async {
+        try {
+            val walletsListResponse = walletUseCase.getWalletsList(forceLoad)
+            val walletList = mutableListOf<UIModel.WalletModel>()
+            when (walletsListResponse) {
+                is DataResponse.Success -> {
+                    walletList.addAll(walletsListResponse.data)
+                }
+                is DataResponse.Error -> {
+                    Log.w("ERROR", "walletsListResponse failed", walletsListResponse.exception)
+                    uiState.value = UiState.Error(walletsListResponse.exception)
+                    return@async emptyList()
+                }
+                else -> {}
+            }
+            return@async walletList
+        } catch (e: Exception) {
+            uiState.value = UiState.Error(e)
+            return@async emptyList()
         }
     }.await()
 

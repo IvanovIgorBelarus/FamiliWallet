@@ -69,8 +69,10 @@ class DataInteractor @Inject constructor(
             if (request is DataResponse.Success<*>) {
                 cache.clear()
                 cache.put(request)
+                cache.get()
+            } else {
+                request
             }
-            cache.get()
         } else {
             Log.d("MYNAME", "$requestName cash")
             cache.get()
