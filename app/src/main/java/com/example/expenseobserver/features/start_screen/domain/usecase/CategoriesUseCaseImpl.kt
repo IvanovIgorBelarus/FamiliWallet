@@ -15,7 +15,7 @@ class CategoriesUseCaseImpl @Inject constructor(
         repo.updateItem(category)
 
     override suspend fun addNewCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
-        repo.addNewCategory(category)
+        repo.addItem(category)
 
     override suspend fun deleteCategory(category: UIModel.CategoryModel): DataResponse<Unit> =
         repo.deleteItem(category)

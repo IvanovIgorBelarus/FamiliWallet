@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -39,7 +36,6 @@ import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.components.WalletItems
-import com.example.expenseobserver.components.WalletView
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
@@ -47,8 +43,6 @@ import com.example.expenseobserver.features.diagram.DiagramScreen
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.features.timerange.TimeRangeDialog
 import com.example.expenseobserver.ui.theme.backgroundColor
-import com.example.expenseobserver.ui.theme.expensesBackgroundColor
-import com.example.expenseobserver.ui.theme.incomesBackgroundColor
 import com.example.expenseobserver.ui.theme.mainColor
 import com.example.expenseobserver.ui.theme.textColor
 

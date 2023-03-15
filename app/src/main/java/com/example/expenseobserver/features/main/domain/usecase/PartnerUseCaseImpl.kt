@@ -9,7 +9,7 @@ class PartnerUseCaseImpl @Inject constructor(
     private val repo: DataRepository
 ) : PartnerUseCase {
     override suspend fun addPartner(accountModel: UIModel.AccountModel): DataResponse<Unit> =
-        repo.addPartner(accountModel)
+        repo.addItem(accountModel)
 
     override suspend fun getPartner(forceLoad: Boolean): DataResponse<UIModel.AccountModel>? =
         repo.getPartner(forceLoad)

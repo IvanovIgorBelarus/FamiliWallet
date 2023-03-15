@@ -31,11 +31,6 @@ const val USD = "USD"
 const val EUR = "EUR"
 const val RUB = "RUB"
 
-const val MONTH_FILTER = "month"
-const val WEEK_FILTER = "week"
-const val DAY_FILTER = "filter"
-const val RANGE_FILTER = "range filter"
-const val NO_DATE_FILTER = "no_filter"
 const val NEW_SMS = "sms"
 
 const val FULL_DATE = "dd.MM.yyyy"
@@ -45,3 +40,6 @@ const val BASE_CURRENCY_URL = "https://www.nbrb.by/api/exrates/"
 const val VERSION = "Version"
 const val URL = "url"
 const val DESCRIPTION = "description"
+
+const val WALLETS = "Wallets"
+const val NAME = "name"

@@ -6,6 +6,8 @@ import com.example.expenseobserver.features.main.domain.usecase.PartnerUseCase
 import com.example.expenseobserver.features.main.domain.usecase.PartnerUseCaseImpl
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
 import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCaseImpl
+import com.example.expenseobserver.features.start_screen.domain.usecase.WalletUseCase
+import com.example.expenseobserver.features.start_screen.domain.usecase.WalletUseCaseImpl
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCaseImpl
 import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCase
@@ -42,4 +44,9 @@ abstract class AppModule {
     abstract fun provideUpdateAppUseCase(
         updateAppUseCase: UpdateAppUseCaseImpl
     ): UpdateAppUseCase
+
+    @Binds
+    abstract fun provideWalletsUseCase(
+       walletUseCaseImpl: WalletUseCaseImpl
+    ): WalletUseCase
 }

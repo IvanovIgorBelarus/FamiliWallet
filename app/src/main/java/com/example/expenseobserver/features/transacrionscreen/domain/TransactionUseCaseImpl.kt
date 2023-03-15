@@ -9,7 +9,7 @@ class TransactionUseCaseImpl @Inject constructor(
     private val repo: DataRepository
 ) : TransactionUseCase {
     override suspend fun doTransaction(request: UIModel.TransactionModel): DataResponse<Unit> =
-        repo.doTransaction(request)
+        repo.addItem(request)
 
     override suspend fun getTransactionsList(forceLoad: Boolean): DataResponse<List<UIModel.TransactionModel>>? =
         repo.getTransactionsList(forceLoad)

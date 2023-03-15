@@ -52,17 +52,17 @@ sealed class UIModel {
         var url: String? = null,
         var versionCode: Long? = null,
         var description: String? = null
-    )
+    ): BaseModel(url)
 
     data class WalletModel(
         var id: String? = null,
         var uid: String? = null,
         var name: String? = null,
         var currency: String? = null,
-        var amount: String? = null,
-    )
+        var value: Double? = null,
+    ): BaseModel(id)
 
     open class BaseModel(
         var itemId: String? = null
-    )
+    ): UIModel()
 }
