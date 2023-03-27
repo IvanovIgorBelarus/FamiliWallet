@@ -14,6 +14,7 @@ import com.example.expenseobserver.features.historyscreen.HistoryScreen
 import com.example.expenseobserver.features.newcategory.NewCategoryScreen
 import com.example.expenseobserver.features.settingsscreen.SettingsScreen
 import com.example.expenseobserver.features.start_screen.StartScreen
+import com.example.expenseobserver.features.walletscreen.WalletScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -31,10 +32,11 @@ fun MainScreenNavigation(
         enterTransition = { slideIntoContainer(getSlideDirection(initialState, targetState), animationSpec = tween(500)) }
     ) {
         composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, update) }
-        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, currentState ) }
+        composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, currentState) }
         composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation) }
         composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation) }
         composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
+        composable(route = Screen.WalletScreen.route) { WalletScreen(modifier, navigation) }
     }
 }
 

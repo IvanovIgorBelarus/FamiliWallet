@@ -1,9 +1,13 @@
 package com.example.expenseobserver.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,14 +19,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.rippleClickable
+import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.ui.theme.backgroundColor
@@ -43,10 +51,10 @@ fun WalletItems(
         Spacer(modifier = Modifier.size(8.dp))
         LazyRow(verticalAlignment = Alignment.CenterVertically) {
             item {
-                WalletSettings()
+                WalletSettings(onClick = { onSettingsClick.invoke() })
             }
             items(items = viewState.walletList) {
-                WalletView(it) { wallet ->
+                WalletView(wallet = it) { wallet ->
                     onItemClick.invoke(wallet)
                 }
             }
@@ -57,14 +65,60 @@ fun WalletItems(
 
 @Preview(showBackground = true)
 @Composable
+fun WalletSettingsView(
+    wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
+    onClick: (UIModel.WalletModel) -> Unit = {}
+) {
+    val width = LocalConfiguration.current.screenWidthDp.dp - 64.dp
+    val height = width*0.6f
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.size(12.dp))
+        WalletView(
+            modifier = Modifier.size(width = width, height = height),
+            wallet = wallet,
+            onClick = onClick,
+        )
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            WalletSettings(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(4.dp),
+                id = AppIcons.BUILD.imageRes,
+                iconSize = 24.dp,
+                onClick = {},
+            )
+
+            WalletSettings(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(4.dp),
+                id = AppIcons.DELETE.imageRes,
+                iconSize = 24.dp,
+                onClick = {},
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun WalletView(
+    modifier: Modifier = Modifier
+        .size(width = 202.dp, height = 120.dp)
+        .padding(2.dp),
     wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
     onClick: (UIModel.WalletModel) -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
-            .size(width = 202.dp, height = 120.dp)
-            .padding(2.dp)
+        modifier = modifier
             .background(color = Color.Black, RoundedCornerShape(8.dp))
             .rippleClickable { onClick.invoke(wallet) }
     ) {
@@ -107,21 +161,24 @@ private fun WalletView(
 @Preview(showBackground = true)
 @Composable
 private fun WalletSettings(
+    modifier: Modifier = Modifier
+        .size(96.dp)
+        .padding(16.dp),
+    id: Int = AppIcons.SETTINGS.imageRes,
+    iconSize: Dp = 48.dp,
     onClick: () -> Unit = {}
-){
+) {
     Box(
-        modifier = Modifier
-            .size(96.dp)
-            .padding(16.dp)
+        modifier = modifier
             .background(backgroundColor, RoundedCornerShape(10.dp))
             .rippleClickable { onClick.invoke() },
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_account_balance_wallet),
+            painter = painterResource(id = id),
             contentDescription = "",
             tint = mainColor,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(iconSize)
         )
     }
 }

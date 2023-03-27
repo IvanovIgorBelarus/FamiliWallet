@@ -23,6 +23,7 @@
     <string name="home">Дом</string>
     <string name="people">Люди</string>
     <string name="transport">Транспорт</string>
+    <string name="settings">Настройки</string>
 
     <string name="done">Готово</string>
     <string name="cancel">Отмена</string>

@@ -149,6 +149,11 @@ enum class AppIcons(val imageRes: Int, val actionType: IconActionType) {
     TRAM(R.drawable.ic_tram, IconActionType.TRANSPORT),
 
     PLUS(R.drawable.ic_add_category, IconActionType.UNKNOWN),
+
+    DELETE(R.drawable.ic_delete, IconActionType.SETTINGS),
+    BUILD(R.drawable.ic_build, IconActionType.SETTINGS),
+    SETTINGS(R.drawable.ic_settings, IconActionType.SETTINGS),
+
     UNKNOWN(R.drawable.ic_baseline_insert_photo, IconActionType.UNKNOWN);
 
     companion object {
@@ -166,6 +171,7 @@ enum class IconActionType(val titleRes: Int) {
     OTHER(R.string.other),
     PEOPLE(R.string.people),
     TRANSPORT(R.string.transport),
+    SETTINGS(R.string.settings),
     UNKNOWN(-1);
 }
 

@@ -42,6 +42,7 @@ import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.features.diagram.DiagramScreen
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.features.timerange.TimeRangeDialog
+import com.example.expenseobserver.navigation.Screen
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.mainColor
 import com.example.expenseobserver.ui.theme.textColor
@@ -60,7 +61,8 @@ fun StartScreen(
             UI(
                 modifier = modifier,
                 viewState = it as StartScreenViewState,
-                startViewModel = startViewModel
+                startViewModel = startViewModel,
+                navigation = navigation
             )
         }
     )
@@ -75,7 +77,8 @@ fun StartScreen(
 private fun UI(
     modifier: Modifier,
     viewState: StartScreenViewState,
-    startViewModel: StartViewModel
+    startViewModel: StartViewModel,
+    navigation: NavHostController,
 ) {
     val showTimeRangeDialog = remember { mutableStateOf(false) }
 
@@ -96,7 +99,7 @@ private fun UI(
         backgroundColor = Color.White
     ) {
         LazyColumn {
-            item { WalletItems(viewState = viewState) }
+            item { WalletItems(viewState = viewState, onSettingsClick = { navigation.navigate(Screen.WalletScreen.route) }) }
             item { DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog) }
             transactionsItems(viewState = viewState)
         }
@@ -154,7 +157,7 @@ private fun LazyListScope.transactionsItems(
         stickyHeader {
             Box(
                 modifier = Modifier
-                    .padding( 8.dp)
+                    .padding(8.dp)
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {

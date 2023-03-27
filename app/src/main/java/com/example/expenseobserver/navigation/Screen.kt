@@ -16,6 +16,8 @@ sealed class Screen(val route: String, var title: String? = null, var icon: Int,
     object TransactionScreen : Screen("transaction", "Ввести операцию", AppIcons.UNKNOWN.imageRes, stack = Stack.UNKNOWN)
     object NewCategoryScreen : Screen("new category", "Новая категория", AppIcons.UNKNOWN.imageRes, stack = Stack.CATEGORY)
 
+    object WalletScreen : Screen("walletScreen", "Список кошельков", AppIcons.UNKNOWN.imageRes, 1,Stack.UNKNOWN)
+
     companion object {
         fun getScreen(route: String?): Screen = Screen::class.sealedSubclasses.firstOrNull { it.objectInstance?.route == route }?.objectInstance ?: LoadingScreen
     }
