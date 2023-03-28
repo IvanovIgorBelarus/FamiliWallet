@@ -11,14 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EnterViewModel @Inject constructor(
-    private val updateAppUseCase: UpdateAppUseCase
-) : BaseViewModel<UIModel.UpdateModel>() {
+class EnterViewModel @Inject constructor() : BaseViewModel<UIModel.UpdateModel, UpdateAppUseCase>() {
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             try {
-                when (val updateModel = updateAppUseCase.checkUpdates()) {
+                when (val updateModel = useCase.checkUpdates()) {
                     is DataResponse.Success -> uiState.value = UiState.Success(updateModel.data)
                     is DataResponse.Error -> UiState.Success(UIModel.UpdateModel())
                 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.core.common.ShowScreen
+import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
 
 @Composable
 fun WalletSettingsScreen(

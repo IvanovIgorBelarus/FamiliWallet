@@ -11,7 +11,7 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.toStartOfDay
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
-import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -21,9 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val categoriesUseCase: CategoriesUseCase,
     private val transactionUseCase: TransactionUseCase
-) : BaseViewModel<HistoryViewState>() {
+) : BaseViewModel<HistoryViewState, CategoriesUseCase>() {
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
             try {
@@ -52,7 +51,7 @@ class HistoryViewModel @Inject constructor(
 
     private suspend fun getPersonData(forceLoad: Boolean) = viewModelScope.async {
         try {
-            val categoryListResponse = categoriesUseCase.getCategoriesList(forceLoad)
+            val categoryListResponse = useCase.getCategoriesList(forceLoad)
             val categoriesList = mutableListOf<UIModel.CategoryModel>()
             when (categoryListResponse) {
                 is DataResponse.Success -> {
@@ -94,15 +93,9 @@ class HistoryViewModel @Inject constructor(
     }
 
     fun deleteItem(item: UIModel.TransactionModel) {
-        viewModelScope.launch {
-            uiState.value = UiState.Loading
-            when (val response = transactionUseCase.deleteTransaction(item)) {
-                is DataResponse.Success -> {
-                    transactionUseCase.getTransactionsList(true)
-                    getData(false)
-                }
-                is DataResponse.Error -> UiState.Error(response.exception)
-            }
+        deleteItem(item) {
+            transactionUseCase.getTransactionsList(true)
+            getData(false)
         }
     }
 }

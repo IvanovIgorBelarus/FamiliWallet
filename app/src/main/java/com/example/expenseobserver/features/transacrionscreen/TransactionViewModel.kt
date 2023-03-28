@@ -7,7 +7,7 @@ import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -17,10 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
     private val categoriesUseCase: CategoriesUseCase,
-    private val transactionUseCase: TransactionUseCase
-) : BaseViewModel<Unit>() {
-
-//    private val uiState = mutableStateOf<UiState<List<UIModel.CategoryModel>>>(UiState.Loading)
+) : BaseViewModel<Unit, TransactionUseCase>() {
 
     fun getCategories(onSuccess: (List<UIModel.CategoryModel>) -> Unit) {
         viewModelScope.launch {
@@ -43,26 +40,16 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    fun addTransaction(transactionModel: UIModel.TransactionModel, onSuccess: () -> Unit= {}) {
-        viewModelScope.launch {
-            uiState.value = UiState.Loading
-            try {
-                when (val response = transactionUseCase.doTransaction(transactionModel)) {
-                    is DataResponse.Success -> {
-                        transactionUseCase.getTransactionsList(true)
-                        onSuccess.invoke()
-                        uiState.value = UiState.Success(Unit)
-                    }
-                    is DataResponse.Error -> uiState.value = UiState.Error(response.exception)
-                }
-            } catch (e: Exception) {
-                uiState.value = UiState.Error(e)
-            }
+    fun addTransaction(transactionModel: UIModel.TransactionModel, onSuccess: () -> Unit = {}) {
+        addItem(transactionModel) {
+            useCase.getTransactionsList(true)
+            onSuccess.invoke()
+            uiState.value = UiState.Success(Unit)
         }
     }
 
     private suspend fun getTransactions() = viewModelScope.async {
-        val transactionsListResponse = transactionUseCase.getTransactionsList()
+        val transactionsListResponse = useCase.getTransactionsList()
         val transactionsList = mutableListOf<UIModel.TransactionModel>()
         when (transactionsListResponse) {
             is DataResponse.Success -> {

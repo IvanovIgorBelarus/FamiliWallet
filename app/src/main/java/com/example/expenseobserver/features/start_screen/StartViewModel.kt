@@ -10,8 +10,8 @@ import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
-import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
-import com.example.expenseobserver.features.start_screen.domain.usecase.WalletUseCase
+import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.walletscreen.domain.usecase.WalletUseCase
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -20,10 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val categoriesUseCase: CategoriesUseCase,
     private val transactionUseCase: TransactionUseCase,
     private val walletUseCase: WalletUseCase
-) : BaseViewModel<StartScreenViewState>() {
+) : BaseViewModel<StartScreenViewState, CategoriesUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
@@ -49,7 +48,7 @@ class StartViewModel @Inject constructor(
 
     private suspend fun getCategories(forceLoad: Boolean) = viewModelScope.async {
         try {
-            val categoryListResponse = categoriesUseCase.getCategoriesList(forceLoad)
+            val categoryListResponse = useCase.getCategoriesList(forceLoad)
             val categoriesList = mutableListOf<UIModel.CategoryModel>()
 
             when (categoryListResponse) {
@@ -114,19 +113,6 @@ class StartViewModel @Inject constructor(
             return@async emptyList()
         }
     }.await()
-
-    fun deleteItem(item: UIModel.TransactionModel) {
-        viewModelScope.launch {
-            uiState.value = UiState.Loading
-            when (val response = transactionUseCase.deleteTransaction(item)) {
-                is DataResponse.Success -> {
-                    transactionUseCase.getTransactionsList(true)
-                    getData(false)
-                }
-                is DataResponse.Error -> UiState.Error(response.exception)
-            }
-        }
-    }
 
     fun changeTimeRange(transactionsList: List<UIModel.TransactionModel>) {
         uiState.value = UiState.Loading

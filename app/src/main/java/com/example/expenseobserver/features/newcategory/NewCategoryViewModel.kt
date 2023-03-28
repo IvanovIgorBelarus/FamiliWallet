@@ -4,23 +4,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.IconActionType
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
-import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewCategoryViewModel @Inject constructor(
-    private val categoriesUseCase: CategoriesUseCase
-) : BaseViewModel<NewCategoryViewState>() {
+class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryViewState, CategoriesUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
         uiState.value = UiState.Success(NewCategoryViewState(NewCategoryModel.getCategoryModel()))
@@ -46,7 +42,7 @@ class NewCategoryViewModel @Inject constructor(
         uiState.value = UiState.Loading
         val error = when {
             category.isEmpty() -> "Введите имя категории"
-            icon == AppIcons.UNKNOWN||icon == AppIcons.PLUS -> "Выберите иконку для категории"
+            icon == AppIcons.UNKNOWN || icon == AppIcons.PLUS -> "Выберите иконку для категории"
             else -> null
         }
         if (!error.isNullOrEmpty()) {
@@ -63,20 +59,10 @@ class NewCategoryViewModel @Inject constructor(
                 color = color.name
             )
             try {
-                val response = if (NewCategoryModel.isNewCategory()) {
-                    addNewCategory(request)
+                if (NewCategoryModel.isNewCategory()) {
+                    addNewCategory(request, onSuccess = onSuccess)
                 } else {
-                    updateCategory(request.apply { id = NewCategoryModel.getCategoryModel().itemId })
-                }
-
-                when (response) {
-                    is DataResponse.Success -> {
-                        categoriesUseCase.getCategoriesList(true)
-                        onSuccess.invoke()
-                    }
-                    is DataResponse.Error -> {
-                        uiState.value = UiState.Error(response.exception)
-                    }
+                    updateCategory(request.apply { id = NewCategoryModel.getCategoryModel().itemId }, onSuccess = onSuccess)
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
@@ -84,11 +70,25 @@ class NewCategoryViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateCategory(item: UIModel.CategoryModel) =
-        withContext(viewModelScope.coroutineContext) { categoriesUseCase.updateCategory(item) }
+    private suspend fun updateCategory(
+        item: UIModel.CategoryModel,
+        onSuccess: () -> Unit = {}
+    ) {
+        updateItem(item) {
+            useCase.getCategoriesList(true)
+            onSuccess.invoke()
+        }
+    }
 
-    private suspend fun addNewCategory(item: UIModel.CategoryModel) =
-        withContext(viewModelScope.coroutineContext) { categoriesUseCase.addNewCategory(item) }
+    private suspend fun addNewCategory(
+        item: UIModel.CategoryModel,
+        onSuccess: () -> Unit = {}
+    ) {
+        addItem(item) {
+            useCase.getCategoriesList(true)
+            onSuccess.invoke()
+        }
+    }
 
     fun getCategoriesColors() = listOf(
         CategoryColor.COLOR0,

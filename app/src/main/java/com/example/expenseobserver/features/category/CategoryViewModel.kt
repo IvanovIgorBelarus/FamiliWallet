@@ -6,21 +6,19 @@ import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.features.start_screen.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryViewModel @Inject constructor(
-    private val categoriesUseCase: CategoriesUseCase
-) : BaseViewModel<CategoryScreenViewState>() {
+class CategoryViewModel @Inject constructor() : BaseViewModel<CategoryScreenViewState, CategoriesUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
         uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                when (val categoryListResponse = categoriesUseCase.getCategoriesList(forceLoad)) {
+                when (val categoryListResponse = useCase.getCategoriesList(forceLoad)) {
                     is DataResponse.Success -> {
                         uiState.value = UiState.Success(CategoryScreenViewState(categoryListResponse.data))
                     }
@@ -37,15 +35,9 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun deleteItem(item: UIModel.CategoryModel) {
-        viewModelScope.launch {
-            uiState.value = UiState.Loading
-            when (val response = categoriesUseCase.deleteCategory(item)) {
-                is DataResponse.Success -> {
-                    categoriesUseCase.getCategoriesList(true)
-                    getData(false)
-                }
-                is DataResponse.Error -> UiState.Error(response.exception)
-            }
+        deleteItem(item) {
+            useCase.getCategoriesList(true)
+            getData(false)
         }
     }
 }

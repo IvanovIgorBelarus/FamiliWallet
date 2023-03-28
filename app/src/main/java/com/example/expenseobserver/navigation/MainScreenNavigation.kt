@@ -34,7 +34,7 @@ fun MainScreenNavigation(
     ) {
         composable(route = Screen.StartScreen.route) { StartScreen(modifier, navigation, update) }
         composable(route = Screen.CategoryScreen.route) { CategoryScreen(modifier, navigation, currentState) }
-        composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation) }
+        composable(route = Screen.HistoryScreen.route) { HistoryScreen(modifier, navigation, update) }
         composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation) }
         composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
         composable(route = Screen.WalletScreen.route) { WalletScreen(modifier, navigation) }

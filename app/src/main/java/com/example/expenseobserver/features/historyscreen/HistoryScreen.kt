@@ -14,6 +14,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ import com.example.expenseobserver.ui.theme.textColor
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     navigation: NavHostController? = null,
+    update: MutableState<Boolean>,
     historyViewModel: HistoryViewModel = hiltViewModel()
 ) {
     ShowScreen(
@@ -54,7 +56,7 @@ fun HistoryScreen(
         }
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(update.value) {
         historyViewModel.getData()
     }
 }
