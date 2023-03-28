@@ -38,7 +38,9 @@ class WalletViewModel @Inject constructor() : BaseViewModel<WalletScreenViewStat
 
     fun openWalletSettings(item: UIModel.WalletModel? = null, openScreen: () -> Unit) {
         if (item != null) {
-            NewWalletModel.setNewWalletModel(item, false)
+            NewWalletModel.setNewWalletModel(item)
+        } else {
+            NewWalletModel.clearModel()
         }
         openScreen.invoke()
     }

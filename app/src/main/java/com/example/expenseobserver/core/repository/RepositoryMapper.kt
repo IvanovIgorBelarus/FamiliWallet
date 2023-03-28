@@ -2,6 +2,7 @@ package com.example.expenseobserver.core.repository
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import com.example.expenseobserver.core.common.BACKGROUND_COLOR
 import com.example.expenseobserver.core.common.CATEGORIES
 import com.example.expenseobserver.core.common.CATEGORY
 import com.example.expenseobserver.core.common.COLOR
@@ -11,6 +12,7 @@ import com.example.expenseobserver.core.common.DESCRIPTION
 import com.example.expenseobserver.core.common.ICON
 import com.example.expenseobserver.core.common.MONEY_TYPE
 import com.example.expenseobserver.core.common.NAME
+import com.example.expenseobserver.core.common.NAME_BACKGROUND_COLOR
 import com.example.expenseobserver.core.common.PARTNER_UID
 import com.example.expenseobserver.core.common.TRANSACTIONS
 import com.example.expenseobserver.core.common.TRANSACTION_TYPE
@@ -26,7 +28,6 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UpdateOrAddRequestModel
 import com.example.expenseobserver.core.utils.UserUtils
 import com.google.firebase.firestore.QuerySnapshot
-import kotlin.coroutines.resume
 
 object RepositoryMapper {
 
@@ -114,7 +115,9 @@ object RepositoryMapper {
                     uid = doc.getString(UID),
                     name = doc.getString(NAME),
                     currency = doc.getString(CURRENCY),
-                    value = doc.getDouble(VALUE)
+                    value = doc.getDouble(VALUE),
+                    backgroundColor = doc.getString(BACKGROUND_COLOR),
+                    nameBackgroundColor = doc.getString(NAME_BACKGROUND_COLOR)
                 )
             )
         }
@@ -163,7 +166,9 @@ object RepositoryMapper {
                     UID to item.uid,
                     NAME to item.name,
                     CURRENCY to item.currency,
-                    VALUE to item.value
+                    VALUE to item.value,
+                    BACKGROUND_COLOR to item.backgroundColor,
+                    NAME_BACKGROUND_COLOR to item.nameBackgroundColor
                 )
             }
             else -> return DataResponse.Error(Throwable("не удалось обновить запись"))

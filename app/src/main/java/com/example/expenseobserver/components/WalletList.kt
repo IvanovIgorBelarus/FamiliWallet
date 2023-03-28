@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
+import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.mainColor
-import com.example.expenseobserver.ui.theme.walletColor
 
 @Preview(showBackground = true)
 @Composable
@@ -130,7 +129,10 @@ private fun WalletView(
 ) {
     Box(
         modifier = modifier
-            .background(color = Color.Black, RoundedCornerShape(8.dp))
+            .background(
+                color = CategoryColor.getColor(wallet.backgroundColor.orEmpty()).color,
+                RoundedCornerShape(8.dp)
+            )
             .rippleClickable { onClick.invoke(wallet) }
     ) {
         Column(
@@ -162,7 +164,10 @@ private fun WalletView(
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier
-                    .background(color = walletColor, RoundedCornerShape(4.dp))
+                    .background(
+                        color = CategoryColor.getColor(wallet.nameBackgroundColor.orEmpty()).color,
+                        RoundedCornerShape(4.dp)
+                    )
                     .padding(horizontal = 8.dp, vertical = 2.dp)
             )
             Spacer(modifier = Modifier.size(16.dp))
@@ -193,4 +198,21 @@ fun WalletSettings(
             modifier = Modifier.size(iconSize)
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WalletTemplate(
+    wallet: UIModel.WalletModel = UIModel.WalletModel(value = 100000.00, currency = "USD", name = "Банк"),
+) {
+    val width = LocalConfiguration.current.screenWidthDp.dp - 64.dp
+    val height = width * 0.6f
+
+    Spacer(modifier = Modifier.size(12.dp))
+    WalletView(
+        modifier = Modifier.size(width = width, height = height),
+        wallet = wallet,
+        fontSize = 24
+    )
+    Spacer(modifier = Modifier.size(12.dp))
 }

@@ -25,6 +25,8 @@ const val VALUE = "value"
 const val UID = "uid"
 const val ICON = "icon"
 const val COLOR = "color"
+const val BACKGROUND_COLOR = "backgroundColor"
+const val NAME_BACKGROUND_COLOR = "nameBackgroundColor"
 
 const val BYN = "BYN"
 const val USD = "USD"
