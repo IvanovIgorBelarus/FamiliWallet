@@ -7,6 +7,7 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
 import com.example.expenseobserver.features.walletscreen.domain.usecase.WalletUseCase
+import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,5 +34,12 @@ class WalletViewModel @Inject constructor() : BaseViewModel<WalletScreenViewStat
             useCase.getWalletsList(true)
             getData(false)
         }
+    }
+
+    fun openWalletSettings(item: UIModel.WalletModel? = null, openScreen: () -> Unit) {
+        if (item != null) {
+            NewWalletModel.setNewWalletModel(item, false)
+        }
+        openScreen.invoke()
     }
 }

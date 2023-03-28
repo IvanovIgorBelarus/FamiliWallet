@@ -77,14 +77,18 @@ private fun UI(
         ) {
             item {
                 WalletSettings(iconId = AppIcons.PLUS.imageRes) {
-                    navigation.navigate(Screen.WalletSettingsScreen.route)
+                    walletViewModel.openWalletSettings() {
+                        navigation.navigate(Screen.WalletSettingsScreen.route)
+                    }
                 }
             }
             items(viewState.walletList) { walletModel ->
                 WalletSettingsView(
                     wallet = walletModel,
-                    onSettingsClick = {
-                        navigation.navigate(Screen.WalletSettingsScreen.route)
+                    onSettingsClick = { item ->
+                        walletViewModel.openWalletSettings(item) {
+                            navigation.navigate(Screen.WalletSettingsScreen.route)
+                        }
                     },
                     onDeleteClick = { walletItem ->
                         deleteItem = walletItem

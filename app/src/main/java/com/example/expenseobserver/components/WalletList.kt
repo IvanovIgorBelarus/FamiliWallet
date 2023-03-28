@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -50,9 +51,17 @@ fun WalletItems(
             item {
                 WalletSettings(onClick = { onSettingsClick.invoke() })
             }
-            items(items = viewState.walletList) {
-                WalletView(wallet = it) { wallet ->
-                    onItemClick.invoke(wallet)
+            if (viewState.walletList.isEmpty()) {
+                item {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text(text = "<--- Откройте кошелёк", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+                    }
+                }
+            } else {
+                items(items = viewState.walletList) {
+                    WalletView(wallet = it) { wallet ->
+                        onItemClick.invoke(wallet)
+                    }
                 }
             }
         }
@@ -65,13 +74,14 @@ fun WalletItems(
 fun WalletSettingsView(
     wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
     onClick: (UIModel.WalletModel) -> Unit = {},
-    onSettingsClick:(UIModel.WalletModel)->Unit = {},
-    onDeleteClick:(UIModel.WalletModel)->Unit = {},
+    onSettingsClick: (UIModel.WalletModel) -> Unit = {},
+    onDeleteClick: (UIModel.WalletModel) -> Unit = {},
 ) {
     val width = LocalConfiguration.current.screenWidthDp.dp - 64.dp
-    val height = width*0.6f
+    val height = width * 0.6f
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
