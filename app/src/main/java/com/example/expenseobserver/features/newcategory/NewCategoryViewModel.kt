@@ -1,7 +1,7 @@
 package com.example.expenseobserver.features.newcategory
 
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.DataResponse

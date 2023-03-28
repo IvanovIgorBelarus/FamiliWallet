@@ -1,8 +1,9 @@
 package com.example.expenseobserver.features.walletscreen
 
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.DataResponse
+import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.start_screen.domain.usecase.WalletUseCase
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
@@ -25,6 +26,19 @@ class WalletViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 uiState.value = UiState.Error(e)
+            }
+        }
+    }
+
+    fun deleteItem(item: UIModel.WalletModel) {
+        viewModelScope.launch {
+            uiState.value = UiState.Loading
+            when (val response = walletUseCase.deleteWallet(item)) {
+                is DataResponse.Success -> {
+                    walletUseCase.getWalletsList(true)
+                    getData(false)
+                }
+                is DataResponse.Error -> UiState.Error(response.exception)
             }
         }
     }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.UIModel
@@ -67,7 +64,9 @@ fun WalletItems(
 @Composable
 fun WalletSettingsView(
     wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
-    onClick: (UIModel.WalletModel) -> Unit = {}
+    onClick: (UIModel.WalletModel) -> Unit = {},
+    onSettingsClick:(UIModel.WalletModel)->Unit = {},
+    onDeleteClick:(UIModel.WalletModel)->Unit = {},
 ) {
     val width = LocalConfiguration.current.screenWidthDp.dp - 64.dp
     val height = width*0.6f
@@ -91,18 +90,18 @@ fun WalletSettingsView(
                 modifier = Modifier
                     .size(48.dp)
                     .padding(4.dp),
-                id = AppIcons.BUILD.imageRes,
+                iconId = AppIcons.BUILD.imageRes,
                 iconSize = 24.dp,
-                onClick = {},
+                onClick = { onSettingsClick(wallet) },
             )
 
             WalletSettings(
                 modifier = Modifier
                     .size(48.dp)
                     .padding(4.dp),
-                id = AppIcons.DELETE.imageRes,
+                iconId = AppIcons.DELETE.imageRes,
                 iconSize = 24.dp,
-                onClick = {},
+                onClick = { onDeleteClick(wallet) },
             )
         }
     }
@@ -160,11 +159,11 @@ private fun WalletView(
 
 @Preview(showBackground = true)
 @Composable
-private fun WalletSettings(
+fun WalletSettings(
     modifier: Modifier = Modifier
         .size(96.dp)
         .padding(16.dp),
-    id: Int = AppIcons.SETTINGS.imageRes,
+    iconId: Int = AppIcons.SETTINGS.imageRes,
     iconSize: Dp = 48.dp,
     onClick: () -> Unit = {}
 ) {
@@ -175,7 +174,7 @@ private fun WalletSettings(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(id = id),
+            painter = painterResource(id = iconId),
             contentDescription = "",
             tint = mainColor,
             modifier = Modifier.size(iconSize)

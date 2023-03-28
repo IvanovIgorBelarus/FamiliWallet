@@ -15,6 +15,7 @@ import com.example.expenseobserver.features.newcategory.NewCategoryScreen
 import com.example.expenseobserver.features.settingsscreen.SettingsScreen
 import com.example.expenseobserver.features.start_screen.StartScreen
 import com.example.expenseobserver.features.walletscreen.WalletScreen
+import com.example.expenseobserver.features.walletsettings.WalletSettingsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -37,6 +38,7 @@ fun MainScreenNavigation(
         composable(route = Screen.SettingsScreen.route) { SettingsScreen(modifier, navigation) }
         composable(route = Screen.NewCategoryScreen.route) { NewCategoryScreen(modifier, navigation) }
         composable(route = Screen.WalletScreen.route) { WalletScreen(modifier, navigation) }
+        composable(route = Screen.WalletSettingsScreen.route) { WalletSettingsScreen(modifier, navigation) }
     }
 }
 

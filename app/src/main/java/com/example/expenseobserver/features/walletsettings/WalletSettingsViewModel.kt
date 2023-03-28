@@ -1,12 +1,13 @@
-package com.example.expenseobserver.features.settingsscreen
+package com.example.expenseobserver.features.walletsettings
 
 import com.example.expenseobserver.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor() : BaseViewModel<Unit>(){
+class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettingsViewState>() {
+
     override fun getData(forceLoad: Boolean) {
-        TODO("Not yet implemented")
+
     }
 }

@@ -67,7 +67,10 @@ fun UI(
     val showDeleteDialog = remember { mutableStateOf(false) }
     var deleteItem = UIModel.CategoryModel()
 
-    ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
+    ShowDeleteDialog(
+        titleResId = R.string.delete_category_title,
+        textResId = R.string.delete_description,
+        openDialog = showDeleteDialog) {
         categoryViewModel.deleteItem(deleteItem)
     }
 

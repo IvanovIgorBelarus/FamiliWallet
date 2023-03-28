@@ -53,12 +53,20 @@ fun ShowErrorDialog(text: String?) {
 
 @Composable
 fun ShowDeleteDialog(
+    title: String? = null,
+    titleResId: Int? = null,
     text: String? = null,
     textResId: Int? = null,
     openDialog: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
     val resources = LocalContext.current.resources
+
+    val titleString = if (textResId != null) {
+        resources.getString(textResId)
+    } else {
+        title.orEmpty()
+    }
 
     val description = if (textResId != null) {
         resources.getString(textResId)
@@ -72,7 +80,7 @@ fun ShowDeleteDialog(
                 openDialog.value = false
             },
             title = {
-                Text(text = resources.getString(R.string.delete_title))
+                Text(text = titleString)
             },
             text = {
                 Text(text = description)

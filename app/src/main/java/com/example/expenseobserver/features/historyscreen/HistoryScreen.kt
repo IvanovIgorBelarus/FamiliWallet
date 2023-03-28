@@ -77,7 +77,11 @@ fun UI(
     val showDeleteDialog = remember { mutableStateOf(false) }
     var deleteItem = UIModel.TransactionModel()
 
-    ShowDeleteDialog(textResId = R.string.delete_description, openDialog = showDeleteDialog) {
+    ShowDeleteDialog(
+        titleResId = R.string.delete_transaction_title,
+        textResId = R.string.delete_description,
+        openDialog = showDeleteDialog
+    ) {
         historyViewModel.deleteItem(deleteItem)
     }
 
@@ -112,7 +116,7 @@ fun UI(
                             TransactionRow(
                                 transaction = transaction,
                                 categoriesList = viewState.categoriesList
-                            )  { item ->
+                            ) { item ->
                                 deleteItem = item
                                 showDeleteDialog.value = true
                             }

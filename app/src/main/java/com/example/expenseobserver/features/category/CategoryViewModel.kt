@@ -2,7 +2,7 @@ package com.example.expenseobserver.features.category
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.common.BaseViewModel
+import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState

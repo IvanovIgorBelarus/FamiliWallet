@@ -3,8 +3,7 @@ package com.example.expenseobserver.features.historyscreen
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App
-import com.example.expenseobserver.core.common.BaseViewModel
-import com.example.expenseobserver.core.common.EXPENSES
+import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse

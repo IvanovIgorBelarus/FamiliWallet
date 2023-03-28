@@ -33,8 +33,11 @@
     <string name="category_name_hint">Введите имя категории</string>
     <string name="ok">Ok</string>
 
-    <string name="delete_title">Удаление операции</string>
+    <string name="delete_transaction_title">Удаление операции</string>
+    <string name="delete_wallet_title">Удаление кошелька</string>
+    <string name="delete_category_title">Удаление категории</string>
     <string name="delete_description">Вы уверены, что хотите удалить данную операцию?</string>
+    <string name="delete_wallet_description">Вы уверены, что хотите удалить этот кошелёк?</string>
 
     <string name="update_title">Новая версия!</string>
     <string name="update_title_description">Вышла новая версия приложения, хотите установить?</string>
