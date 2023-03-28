@@ -90,6 +90,7 @@ fun WalletSettingsView(
         WalletView(
             modifier = Modifier.size(width = width, height = height),
             wallet = wallet,
+            fontSize = 24,
             onClick = onClick,
         )
         Column(
@@ -123,7 +124,8 @@ private fun WalletView(
     modifier: Modifier = Modifier
         .size(width = 202.dp, height = 120.dp)
         .padding(2.dp),
-    wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
+    wallet: UIModel.WalletModel = UIModel.WalletModel(value = 100000.00, currency = "USD", name = "Банк"),
+    fontSize: Int = 14,
     onClick: (UIModel.WalletModel) -> Unit = {}
 ) {
     Box(
@@ -139,15 +141,16 @@ private fun WalletView(
             Text(
                 text = "Баланс",
                 color = Color.White,
-                fontSize = 10.sp,
+                fontSize = fontSize.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.size(2.dp))
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = wallet.value.toString() + " " + wallet.currency,
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = fontSize.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal
             )
@@ -155,12 +158,12 @@ private fun WalletView(
             Text(
                 text = wallet.name.orEmpty(),
                 color = Color.White,
-                fontSize = 14.sp,
+                fontSize = fontSize.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier
                     .background(color = walletColor, RoundedCornerShape(4.dp))
-                    .padding(2.dp)
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
             )
             Spacer(modifier = Modifier.size(16.dp))
         }
