@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expenseobserver.core.common.formatAmount
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
@@ -199,7 +200,7 @@ private fun WalletView(
             Spacer(modifier = Modifier.size(2.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = (wallet.value ?: 0.0).toString() + " " + (wallet.currency ?: Currency.BYN.name),
+                text = (wallet.value ?: 0.0).formatAmount() + " " + (wallet.currency ?: Currency.BYN.name),
                 color = Color.White,
                 fontSize = fontSize.sp * 1.2,
                 textAlign = TextAlign.Start,

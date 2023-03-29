@@ -2,28 +2,18 @@ package com.example.expenseobserver.features.walletsettings
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -33,27 +23,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.ColorsView
+import com.example.expenseobserver.components.CurrenciesView
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.Currency
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
 import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
-import com.example.expenseobserver.ui.theme.mainColor
 
 @Composable
 fun WalletSettingsScreen(
@@ -94,6 +80,7 @@ private fun UI(
     walletSettingsViewModel: WalletSettingsViewModel? = null,
     navigation: NavHostController? = null
 ) {
+    val isNewWallet = viewState.walletModel.id == null
     val walletName = remember { mutableStateOf(viewState.walletModel.name.orEmpty()) }
     val currency = remember { mutableStateOf(viewState.walletModel.currency ?: Currency.BYN.name) }
     val value = remember { mutableStateOf(viewState.walletModel.value?.toString().orEmpty()) }
@@ -128,6 +115,7 @@ private fun UI(
                 nameBackgroundColor = nameBackgroundColor,
                 showError = showError,
                 colorList = walletSettingsViewModel?.getColors().orEmpty(),
+                isNewWallet = isNewWallet,
                 onConfirmClick = {
                     walletSettingsViewModel?.createWallet(
                         UIModel.WalletModel(
@@ -156,6 +144,7 @@ private fun SettingsViews(
     nameBackgroundColor: MutableState<String>,
     showError: MutableState<Boolean>,
     colorList: List<CategoryColor>,
+    isNewWallet: Boolean,
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
@@ -163,7 +152,8 @@ private fun SettingsViews(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         item {
             AmountTextField(
@@ -175,16 +165,18 @@ private fun SettingsViews(
                 textBackgroundColor = Color.White
             )
         }
-        item {
-            Spacer(modifier = Modifier.size(12.dp))
-            AmountTextField(
-                stringValue = value,
-                placeHolderText = resources.getString(R.string.wallet_value_hit),
-                modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
-                showError = showError,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                textBackgroundColor = Color.White
-            )
+        if (isNewWallet) {
+            item {
+                Spacer(modifier = Modifier.size(12.dp))
+                AmountTextField(
+                    stringValue = value,
+                    placeHolderText = resources.getString(R.string.wallet_value_hit),
+                    modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
+                    showError = showError,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    textBackgroundColor = Color.White
+                )
+            }
         }
         item {
             ColorsView(
@@ -201,6 +193,15 @@ private fun SettingsViews(
                 textResId = R.string.wallet_name_background
             )
             Spacer(modifier = Modifier.size(6.dp))
+        }
+        if (isNewWallet) {
+            item {
+                CurrenciesView(
+                    currencyName = currency,
+                    textResId = R.string.wallet_currency_title
+                )
+                Spacer(modifier = Modifier.size(6.dp))
+            }
         }
         item {
             ButtonsLay(
