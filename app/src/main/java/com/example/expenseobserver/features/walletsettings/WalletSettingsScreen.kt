@@ -78,7 +78,7 @@ fun WalletSettingsScreen(
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 private fun UI(
@@ -94,8 +94,8 @@ private fun UI(
     navigation: NavHostController? = null
 ) {
     val walletName = remember { mutableStateOf(viewState.walletModel.name.orEmpty()) }
-    val currency = remember { mutableStateOf(viewState.walletModel.currency.orEmpty()) }
-    val value = remember { mutableStateOf(viewState.walletModel.value ?: 0.0) }
+    val currency = remember { mutableStateOf(viewState.walletModel.currency ?: Currency.BYN.name) }
+    val value = remember { mutableStateOf(viewState.walletModel.value?.toString().orEmpty()) }
     val backgroundColor = remember { mutableStateOf(viewState.walletModel.backgroundColor ?: CategoryColor.COLOR13.name) }
     val nameBackgroundColor = remember { mutableStateOf(viewState.walletModel.nameBackgroundColor ?: CategoryColor.COLOR10.name) }
 
@@ -113,7 +113,7 @@ private fun UI(
                 UIModel.WalletModel(
                     name = walletName.value,
                     currency = currency.value,
-                    value = value.value,
+                    value = value.value.toDoubleOrNull(),
                     backgroundColor = backgroundColor.value,
                     nameBackgroundColor = nameBackgroundColor.value
                 )
@@ -132,7 +132,7 @@ private fun UI(
                         UIModel.WalletModel(
                             name = walletName.value,
                             currency = currency.value,
-                            value = value.value,
+                            value = value.value.toDouble(),
                             backgroundColor = backgroundColor.value,
                             nameBackgroundColor = nameBackgroundColor.value
                         )
@@ -150,7 +150,7 @@ private fun UI(
 private fun SettingsViews(
     walletName: MutableState<String>,
     currency: MutableState<String>,
-    value: MutableState<Double>,
+    value: MutableState<String>,
     backgroundColor: MutableState<String>,
     nameBackgroundColor: MutableState<String>,
     showError: MutableState<Boolean>,
@@ -177,7 +177,7 @@ private fun SettingsViews(
         item {
             Spacer(modifier = Modifier.size(12.dp))
             AmountTextField(
-                stringValue = mutableStateOf(value.value.toString()),
+                stringValue = value,
                 placeHolderText = resources.getString(R.string.wallet_value_hit),
                 modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
                 showError = showError,
@@ -253,6 +253,7 @@ private fun ColorsView(
     Spacer(modifier = Modifier.size(6.dp))
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun ButtonsLay(
     onCancelClick: () -> Unit,

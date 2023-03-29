@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
+import com.example.expenseobserver.core.data.Currency
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.ui.theme.backgroundColor
@@ -141,18 +142,18 @@ private fun WalletView(
         ) {
             Spacer(modifier = Modifier.size(8.dp))
             Text(
-                text = "Баланс",
+                text = "Баланс:",
                 color = Color.White,
-                fontSize = fontSize.sp,
+                fontSize = fontSize.sp * 0.8,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.size(2.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = wallet.value.toString() + " " + wallet.currency,
+                text = (wallet.value ?: 0.0).toString() + " " + (wallet.currency ?: Currency.BYN.name),
                 color = Color.White,
-                fontSize = fontSize.sp,
+                fontSize = fontSize.sp * 1.2,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal
             )
