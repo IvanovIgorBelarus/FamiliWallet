@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,11 +35,12 @@ import com.example.expenseobserver.core.data.Currency
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
 import com.example.expenseobserver.ui.theme.backgroundColor
+import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 import com.example.expenseobserver.ui.theme.mainColor
 
 @Preview(showBackground = true)
 @Composable
-fun WalletItems(
+fun StartScreenWalletItems(
     viewState: StartScreenViewState = StartScreenViewState(emptyList(), emptyList(), emptyMap()),
     onSettingsClick: () -> Unit = {},
     onItemClick: (UIModel.WalletModel) -> Unit = {}
@@ -62,6 +65,47 @@ fun WalletItems(
                     WalletView(wallet = it) { wallet ->
                         onItemClick.invoke(wallet)
                     }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+@Composable
+fun TransactionsDialogWalletItems(
+    walletsList: List<UIModel.WalletModel>,
+    selectedWallet: MutableState<UIModel.WalletModel?>,
+    onItemClick: (UIModel.WalletModel) -> Unit = {}
+) {
+    Column(
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = "Кошельки:",
+            color = mainColor,
+            textAlign = TextAlign.Start,
+            fontSize = 14.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        LazyRow(verticalAlignment = Alignment.CenterVertically) {
+            if (walletsList.isEmpty()) {
+                item {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text(text = "Откройте кошелёк", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
+                    }
+                }
+            } else {
+                items(items = walletsList) {
+                    WalletView(
+                        modifier = Modifier
+                            .size(width = 160.dp, height = 96.dp)
+                            .padding(2.dp),
+                        wallet = it,
+                        fontSize = 10,
+                        selectedWallet = selectedWallet,
+                        onClick = { wallet -> onItemClick.invoke(wallet) })
                 }
             }
         }
@@ -126,10 +170,14 @@ private fun WalletView(
         .padding(2.dp),
     wallet: UIModel.WalletModel = UIModel.WalletModel(value = 100000.00, currency = "USD", name = "Банк"),
     fontSize: Int = 14,
+    selectedWallet: MutableState<UIModel.WalletModel?> = mutableStateOf(UIModel.WalletModel()),
     onClick: (UIModel.WalletModel) -> Unit = {}
 ) {
+    val backgroundColor = if (wallet == selectedWallet.value) bottomBarUnselectedContentColor else backgroundColor
     Box(
         modifier = modifier
+            .background(backgroundColor, RoundedCornerShape(4.dp))
+            .padding(4.dp)
             .background(
                 color = CategoryColor.getColor(wallet.backgroundColor.orEmpty()).color,
                 RoundedCornerShape(8.dp)

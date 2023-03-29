@@ -4,15 +4,17 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App
 import com.example.expenseobserver.core.BaseViewModel
+import com.example.expenseobserver.core.common.INCOMES
 import com.example.expenseobserver.core.common.TimeRangeType
 import com.example.expenseobserver.core.common.currentDateFilter
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.toStartOfDay
-import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
+import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.expenseobserver.features.transacrionscreen.domain.TransactionUseCase
+import com.example.expenseobserver.features.walletscreen.domain.usecase.WalletUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val transactionUseCase: TransactionUseCase
+    private val transactionUseCase: TransactionUseCase,
+    private val walletUseCase: WalletUseCase
 ) : BaseViewModel<HistoryViewState, CategoriesUseCase>() {
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
@@ -95,7 +98,53 @@ class HistoryViewModel @Inject constructor(
     fun deleteItem(item: UIModel.TransactionModel) {
         deleteItem(item) {
             transactionUseCase.getTransactionsList(true)
-            getData(false)
+            updateWalletValue(
+                walletId = item.moneyType,
+                amount = item.value,
+                needMinus = item.type == INCOMES
+            ) {
+                getData(false)
+            }
+        }
+    }
+
+    private suspend fun getWallets(forceLoad: Boolean = false) = viewModelScope.async {
+        try {
+            val walletResponse = walletUseCase.getWalletsList(forceLoad)
+            val walletsList = mutableListOf<UIModel.WalletModel>()
+
+            when (walletResponse) {
+                is DataResponse.Success -> {
+                    walletsList.addAll(walletResponse.data)
+                }
+                is DataResponse.Error -> {
+                    Log.w("ERROR", "categoryListResponse failed", walletResponse.exception)
+                    uiState.value = UiState.Error(walletResponse.exception)
+                    return@async emptyList()
+                }
+                else -> {}
+            }
+            return@async walletsList
+        } catch (e: Exception) {
+            uiState.value = UiState.Error(e)
+            return@async emptyList()
+        }
+    }.await()
+
+    private suspend fun updateWalletValue(
+        walletId: String?,
+        amount: Double?,
+        needMinus: Boolean,
+        onSuccess: suspend () -> Unit
+    ) {
+        val walletsList = getWallets()
+        val wallet = walletsList.firstOrNull { it.id == walletId }
+        wallet?.let {
+            updateItem(
+                wallet.apply {
+                    value = if (needMinus) value?.minus(amount ?: 0.0) else value?.plus(amount ?: 0.0)
+                },
+                onSuccess = { onSuccess.invoke() })
         }
     }
 }

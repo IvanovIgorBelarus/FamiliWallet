@@ -93,7 +93,7 @@ fun CategoryRowList(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        Spacer(modifier = Modifier.size(24.dp))
+        Spacer(modifier = Modifier.size(12.dp))
     }
 }
 

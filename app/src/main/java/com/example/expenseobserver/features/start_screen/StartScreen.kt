@@ -35,7 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.TransactionRow
-import com.example.expenseobserver.components.WalletItems
+import com.example.expenseobserver.components.StartScreenWalletItems
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
@@ -99,7 +99,7 @@ private fun UI(
         backgroundColor = Color.White
     ) {
         LazyColumn {
-            item { WalletItems(viewState = viewState, onSettingsClick = { navigation.navigate(Screen.WalletScreen.route) }) }
+            item { StartScreenWalletItems(viewState = viewState, onSettingsClick = { navigation.navigate(Screen.WalletScreen.route) }) }
             item { DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog) }
             transactionsItems(viewState = viewState)
         }

@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.transacrionscreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,8 +39,8 @@ import com.example.expenseobserver.components.CategoryRowList
 import com.example.expenseobserver.components.CustomDatePickerDialog
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.ThreeTabsLay
+import com.example.expenseobserver.components.TransactionsDialogWalletItems
 import com.example.expenseobserver.components.rememberFragmentManager
-import com.example.expenseobserver.core.common.CashType
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.UIModel
@@ -51,10 +53,12 @@ import com.example.expenseobserver.ui.theme.mainColor
 import com.example.expenseobserver.ui.theme.textColor
 import java.util.*
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TransactionDialog(
-    data: List<UIModel.CategoryModel>,
+    categoryData: List<UIModel.CategoryModel>,
+    walletData: List<UIModel.WalletModel>,
     dismissDialog: () -> Unit,
     onButtonClick: (transactionModel: UIModel.TransactionModel) -> Unit
 ) {
@@ -64,7 +68,7 @@ fun TransactionDialog(
 
     val currentState = remember { mutableStateOf(0) }
     val selectedCategory = remember { mutableStateOf("") }
-    val cashType = remember { mutableStateOf(CashType.CARDS) }
+    val selectedWallet = remember { mutableStateOf(walletData.getOrNull(0)) }
     val amount = remember { mutableStateOf("") }
     val showError = remember { mutableStateOf(false) }
     val operationDate = remember { mutableStateOf(Date().time) }
@@ -94,51 +98,23 @@ fun TransactionDialog(
                 .background(backgroundColor, RoundedCornerShape(10.dp))
                 .padding(16.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .rippleClickable { showDatePickerDialog.value = true }
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = operationDate.value.toStringDateFormatWithToday,
-                    fontSize = 18.sp,
-                    color = textColor,
-                    modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_time_range),
-                    contentDescription = "",
-                    tint = mainColor,
-                    modifier = Modifier.size(28.dp)
-                )
+            DateView(showDatePickerDialog = showDatePickerDialog, operationDate = operationDate)
+
+            TransactionsDialogWalletItems(
+                walletsList = walletData,
+                selectedWallet = selectedWallet
+            ) { wallet ->
+                selectedWallet.value = wallet
             }
-            Spacer(modifier = Modifier.size(12.dp))
 
             ThreeTabsLay(tabList = tabList, currentState = currentState)
 
             CategoryRowList(
-                list = data,
+                list = categoryData,
                 currentState,
                 selectedCategory,
                 showError
             )
-
-            Row(horizontalArrangement = Arrangement.Center) {
-                MainButton(
-                    modifier = Modifier.weight(1f),
-                    text = R.string.card,
-                    isSelected = mutableStateOf(cashType.value == CashType.CARDS)
-                ) { cashType.value = CashType.CARDS }
-                Spacer(modifier = Modifier.size(8.dp))
-                MainButton(
-                    modifier = Modifier.weight(1f),
-                    text = R.string.cash,
-                    isSelected = mutableStateOf(cashType.value == CashType.CASHES)
-                ) { cashType.value = CashType.CASHES }
-            }
-            Spacer(modifier = Modifier.size(24.dp))
 
             AmountTextField(
                 stringValue = amount,
@@ -169,8 +145,8 @@ fun TransactionDialog(
                             uid = UserUtils.getUsersUid(),
                             type = CategoryType.getCategory(currentState.value).type,
                             category = selectedCategory.value,
-                            currency = "BYN",
-                            moneyType = cashType.value.type,
+                            currency = selectedWallet.value?.currency ?: com.example.expenseobserver.core.data.Currency.BYN.name,
+                            moneyType = selectedWallet.value?.id,
                             date = operationDate.value,
                             value = amount.value.toDouble()
                         )
@@ -183,8 +159,36 @@ fun TransactionDialog(
     }
 }
 
+@Composable
+private fun DateView(
+    showDatePickerDialog: MutableState<Boolean>,
+    operationDate: MutableState<Long>
+) {
+    Row(
+        modifier = Modifier
+            .rippleClickable { showDatePickerDialog.value = true }
+            .padding(4.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = operationDate.value.toStringDateFormatWithToday,
+            fontSize = 18.sp,
+            color = textColor,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_time_range),
+            contentDescription = "",
+            tint = mainColor,
+            modifier = Modifier.size(28.dp)
+        )
+    }
+    Spacer(modifier = Modifier.size(12.dp))
+}
+
 private val tabList = listOf(
     TransactionTabItem.Income,
     TransactionTabItem.Expense,
-    TransactionTabItem.Bank
+//    TransactionTabItem.Bank
 )

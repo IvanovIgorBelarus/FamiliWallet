@@ -32,15 +32,17 @@ fun MainScreen(
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    val transactionData = remember { mutableStateOf(emptyList<UIModel.CategoryModel>()) }
+    val categoriesList = remember { mutableStateOf(emptyList<UIModel.CategoryModel>()) }
+    val walletsList = remember { mutableStateOf(emptyList<UIModel.WalletModel>()) }
     val uiState by transactionViewModel.getUiState()
     val update = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
         TransactionDialog(
-            data = transactionData.value, dismissDialog = {
+            categoryData = categoriesList.value, dismissDialog = {
                 showDialog.value = false
             },
+            walletData = walletsList.value,
             onButtonClick = { model ->
                 showDialog.value = false
                 transactionViewModel.addTransaction(model) {
@@ -55,8 +57,9 @@ fun MainScreen(
         bottomBar = { BottomBar(navigation = navController) },
         floatingActionButton = {
             ActionButton(navigation = navController) {
-                transactionViewModel.getCategories { data ->
-                    transactionData.value = data
+                transactionViewModel.getTransactionDialogData { categoriesData, walletsData ->
+                    categoriesList.value = categoriesData
+                    walletsList.value = walletsData
                     showDialog.value = true
                 }
             }
