@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
+import com.example.expenseobserver.components.ColorsView
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
@@ -191,6 +192,7 @@ private fun SettingsViews(
                 colorList = colorList,
                 textResId = R.string.wallet_background
             )
+            Spacer(modifier = Modifier.size(6.dp))
         }
         item {
             ColorsView(
@@ -198,6 +200,7 @@ private fun SettingsViews(
                 colorList = colorList,
                 textResId = R.string.wallet_name_background
             )
+            Spacer(modifier = Modifier.size(6.dp))
         }
         item {
             ButtonsLay(
@@ -206,51 +209,6 @@ private fun SettingsViews(
             )
         }
     }
-}
-
-@Composable
-private fun ColorsView(
-    colorList: List<CategoryColor>,
-    colorName: MutableState<String>,
-    textResId: Int
-) {
-    val resources = LocalContext.current.resources
-
-    Spacer(modifier = Modifier.size(6.dp))
-    Text(
-        text = resources.getString(textResId),
-        color = mainColor,
-        textAlign = TextAlign.Start,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp)
-    )
-    Spacer(modifier = Modifier.size(6.dp))
-
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.Center,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeight(96.dp)
-            .padding(4.dp)
-
-    ) {
-        items(colorList) { item ->
-            Box(modifier = Modifier
-                .padding(4.dp)
-                .size(36.dp)
-                .background(item.color, CircleShape)
-                .aspectRatio(1f)
-                .rippleClickable {
-                    colorName.value = item.name
-                })
-        }
-    }
-    Spacer(modifier = Modifier.size(6.dp))
 }
 
 @SuppressLint("UnrememberedMutableState")

@@ -41,6 +41,7 @@ import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.CategoryIconGrid
 import com.example.expenseobserver.components.CategoryRowWithoutText
+import com.example.expenseobserver.components.ColorsView
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
@@ -79,7 +80,7 @@ fun NewCategoryScreen(
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
 fun UI(
     modifier: Modifier,
@@ -88,7 +89,7 @@ fun UI(
     newCategoryViewModel: NewCategoryViewModel
 ) {
     val resources = LocalContext.current.resources
-    val categoryColor = remember { mutableStateOf(CategoryColor.getColor(viewState.category.color.orEmpty())) }
+    val categoryColor = remember { mutableStateOf( viewState.category.color?: CategoryColor.COLOR0.name) }
     val icon = remember { mutableStateOf(AppIcons.getImageRes(viewState.category.icon.orEmpty())) }
     val categoryName = remember { mutableStateOf(viewState.category.category.orEmpty()) }
     val showError = remember { mutableStateOf(false) }
@@ -105,7 +106,7 @@ fun UI(
                     .size(150.dp),
                 contentAlignment = Alignment.Center
             ) {
-                CategoryRowWithoutText(categoryColor, icon)
+                CategoryRowWithoutText(mutableStateOf(CategoryColor.getColor(categoryColor.value)), icon)
             }
             Spacer(modifier = Modifier.size(24.dp))
 
@@ -146,27 +147,10 @@ fun UI(
 
             LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
                 item {
-                    LazyHorizontalGrid(
-                        rows = GridCells.Fixed(2),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(96.dp)
-                            .padding(4.dp)
-
-                    ) {
-                        items(newCategoryViewModel.getCategoriesColors()) { item ->
-                            Box(modifier = Modifier
-                                .padding(4.dp)
-                                .size(36.dp)
-                                .background(item.color, CircleShape)
-                                .aspectRatio(1f)
-                                .rippleClickable {
-                                    categoryColor.value = CategoryColor.getColor(item.name)
-                                })
-                        }
-                    }
+                    ColorsView(
+                        colorName = categoryColor,
+                        colorList = newCategoryViewModel.getCategoriesColors()
+                    )
                     Spacer(modifier = Modifier.size(24.dp))
                 }
 

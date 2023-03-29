@@ -36,7 +36,7 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
     fun sendCategoryRequest(
         category: String,
         icon: AppIcons,
-        color: CategoryColor,
+        color: String,
         onSuccess: () -> Unit = {}
     ) {
         uiState.value = UiState.Loading
@@ -56,7 +56,7 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
                 category = category,
                 type = NewCategoryModel.getCategoryType().type,
                 icon = icon.name,
-                color = color.name
+                color = color
             )
             try {
                 if (NewCategoryModel.isNewCategory()) {
