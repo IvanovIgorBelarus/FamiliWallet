@@ -66,7 +66,7 @@ fun StartScreenWalletItems(
                 }
             } else {
                 items(items = viewState.walletList) {
-                    WalletView(wallet = it) { wallet ->
+                    WalletView(wallet = it, dotSize = 26) { wallet ->
                         onItemClick.invoke(wallet)
                     }
                 }
@@ -139,6 +139,7 @@ fun WalletSettingsView(
             modifier = Modifier.size(width = width, height = height),
             wallet = wallet,
             fontSize = 24,
+            dotSize = 36,
             onClick = onClick,
         )
         Column(
@@ -174,6 +175,7 @@ private fun WalletView(
         .padding(2.dp),
     wallet: UIModel.WalletModel = UIModel.WalletModel(value = 100000.00, currency = "USD", name = "Банк"),
     fontSize: Int = 14,
+    dotSize: Int = 24,
     selectedWallet: MutableState<UIModel.WalletModel?> = mutableStateOf(UIModel.WalletModel()),
     onClick: (UIModel.WalletModel) -> Unit = {}
 ) {
@@ -184,10 +186,19 @@ private fun WalletView(
             .padding(4.dp)
             .background(
                 color = CategoryColor.getColor(wallet.backgroundColor.orEmpty()).color,
-                RoundedCornerShape(8.dp)
+                RoundedCornerShape(12.dp)
             )
-            .rippleClickable { onClick.invoke(wallet) }
+            .rippleClickable { onClick.invoke(wallet) },
+        contentAlignment = Alignment.TopEnd
     ) {
+        if (wallet.isMainSource) {
+            Box(
+                modifier = Modifier
+                    .size(dotSize.dp)
+                    .padding((dotSize / 4).dp)
+                    .background(Color.White, RoundedCornerShape(12.dp))
+            )
+        }
         Column(
             modifier = Modifier.padding(start = 12.dp),
             horizontalAlignment = Alignment.Start
@@ -265,7 +276,8 @@ fun WalletTemplate(
     WalletView(
         modifier = Modifier.size(width = width, height = height),
         wallet = wallet,
-        fontSize = 24
+        fontSize = 24,
+        dotSize = 40
     )
     Spacer(modifier = Modifier.size(12.dp))
 }

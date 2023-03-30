@@ -157,6 +157,7 @@ private fun LazyListScope.transactionsItems(
         stickyHeader {
             Box(
                 modifier = Modifier
+                    .background(backgroundColor)
                     .padding(8.dp)
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
