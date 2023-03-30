@@ -9,10 +9,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -63,14 +61,14 @@ fun UI(
     navigation: NavHostController,
     currentState: MutableState<Int>
 ) {
-//    val currentState = remember { mutableStateOf(0) }
     val showDeleteDialog = remember { mutableStateOf(false) }
     var deleteItem = UIModel.CategoryModel()
 
     ShowDeleteDialog(
         titleResId = R.string.delete_category_title,
         textResId = R.string.delete_description,
-        openDialog = showDeleteDialog) {
+        openDialog = showDeleteDialog
+    ) {
         categoryViewModel.deleteItem(deleteItem)
     }
 
@@ -105,6 +103,5 @@ fun UI(
 
 private val tabList = listOf(
     TransactionTabItem.Income,
-    TransactionTabItem.Expense,
-    TransactionTabItem.Bank
+    TransactionTabItem.Expense
 )

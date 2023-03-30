@@ -71,7 +71,7 @@ fun ThreeTabsLay(tabList: List<Any>, currentState: MutableState<Int>) {
 @Preview(showBackground = true, backgroundColor = 0xFFF19BF3)
 private fun TabsPreview() {
     ThreeTabsLay(
-        tabList = listOf(TransactionTabItem.Income, TransactionTabItem.Expense, TransactionTabItem.Bank),
+        tabList = listOf(TransactionTabItem.Income, TransactionTabItem.Expense),
         currentState = mutableStateOf(0)
     )
 }
