@@ -29,7 +29,7 @@ class StartViewModel @Inject constructor(
             try {
                 val categoriesList = getCategories(forceLoad)
                 val transactionsList = getTransactions(forceLoad)
-                val walletsList = getWallets(forceLoad)
+                val walletsList = getWallets(forceLoad).sortedByDescending { it.isMainSource }
                 if (uiState.value !is UiState.Error) {
                     uiState.value = UiState.Success(
                         StartScreenViewState(

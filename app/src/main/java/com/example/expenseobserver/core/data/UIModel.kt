@@ -62,6 +62,7 @@ sealed class UIModel {
         var value: Double? = null,
         var backgroundColor: String? = null,
         var nameBackgroundColor: String? = null,
+        var isMainSource: Boolean = false
     ): BaseModel(id)
 
     open class BaseModel(

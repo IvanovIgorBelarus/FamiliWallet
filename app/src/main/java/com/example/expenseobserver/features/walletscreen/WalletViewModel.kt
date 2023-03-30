@@ -19,7 +19,7 @@ class WalletViewModel @Inject constructor() : BaseViewModel<WalletScreenViewStat
         viewModelScope.launch {
             try {
                 when (val walletsListResponse = useCase.getWalletsList(forceLoad)) {
-                    is DataResponse.Success -> uiState.value = UiState.Success(WalletScreenViewState(walletsListResponse.data))
+                    is DataResponse.Success -> uiState.value = UiState.Success(WalletScreenViewState(walletsListResponse.data.sortedByDescending { it.isMainSource }))
                     is DataResponse.Error -> uiState.value = UiState.Error(walletsListResponse.exception)
                     else -> {}
                 }

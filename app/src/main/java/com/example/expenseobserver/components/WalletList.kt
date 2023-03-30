@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.formatAmount
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.data.AppIcons
@@ -38,6 +39,8 @@ import com.example.expenseobserver.features.start_screen.data.StartScreenViewSta
 import com.example.expenseobserver.ui.theme.backgroundColor
 import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
 import com.example.expenseobserver.ui.theme.mainColor
+import com.example.expenseobserver.ui.theme.openColor11
+import com.example.expenseobserver.ui.theme.openColor12
 
 @Preview(showBackground = true)
 @Composable
@@ -53,7 +56,7 @@ fun StartScreenWalletItems(
         Spacer(modifier = Modifier.size(8.dp))
         LazyRow(verticalAlignment = Alignment.CenterVertically) {
             item {
-                WalletSettings(onClick = { onSettingsClick.invoke() })
+                NewWalletView(onClick = { onSettingsClick.invoke() })
             }
             if (viewState.walletList.isEmpty()) {
                 item {
@@ -265,4 +268,28 @@ fun WalletTemplate(
         fontSize = 24
     )
     Spacer(modifier = Modifier.size(12.dp))
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NewWalletView(
+    modifier: Modifier = Modifier
+        .size(width = 202.dp, height = 120.dp)
+        .padding(2.dp),
+    onClick: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .padding(4.dp)
+            .background(color = openColor11, RoundedCornerShape(8.dp))
+            .rippleClickable { onClick.invoke() },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_add_wallet),
+            contentDescription = "",
+            tint = openColor12,
+            modifier = Modifier.size(64.dp)
+        )
+    }
 }

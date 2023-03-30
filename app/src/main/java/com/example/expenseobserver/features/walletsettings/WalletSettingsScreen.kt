@@ -33,6 +33,7 @@ import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.ColorsView
 import com.example.expenseobserver.components.CurrenciesView
 import com.example.expenseobserver.components.MainButton
+import com.example.expenseobserver.components.SwitchWithText
 import com.example.expenseobserver.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.data.CategoryColor
@@ -86,6 +87,7 @@ private fun UI(
     val value = remember { mutableStateOf(viewState.walletModel.value?.toString().orEmpty()) }
     val backgroundColor = remember { mutableStateOf(viewState.walletModel.backgroundColor ?: CategoryColor.COLOR13.name) }
     val nameBackgroundColor = remember { mutableStateOf(viewState.walletModel.nameBackgroundColor ?: CategoryColor.COLOR10.name) }
+    val isMainSource = remember { mutableStateOf(viewState.walletModel.isMainSource) }
 
     val showError = remember { mutableStateOf(false) }
 
@@ -116,14 +118,19 @@ private fun UI(
                 showError = showError,
                 colorList = walletSettingsViewModel?.getColors().orEmpty(),
                 isNewWallet = isNewWallet,
+                isMainSource = isMainSource,
                 onConfirmClick = {
-                    walletSettingsViewModel?.createWallet(
-                        UIModel.WalletModel(
+                    walletSettingsViewModel?.onButtonClick(
+                        isNewWallet = isNewWallet,
+                        requestModel = UIModel.WalletModel(
+                            id = viewState.walletModel.id,
+                            uid = viewState.walletModel.uid,
                             name = walletName.value,
                             currency = currency.value,
-                            value = value.value.toDouble(),
+                            value = (value.value).toDoubleOrNull(),
                             backgroundColor = backgroundColor.value,
-                            nameBackgroundColor = nameBackgroundColor.value
+                            nameBackgroundColor = nameBackgroundColor.value,
+                            isMainSource = isMainSource.value
                         )
                     ) {
                         navigation?.popBackStack()
@@ -145,6 +152,7 @@ private fun SettingsViews(
     showError: MutableState<Boolean>,
     colorList: List<CategoryColor>,
     isNewWallet: Boolean,
+    isMainSource: MutableState<Boolean>,
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
@@ -155,6 +163,13 @@ private fun SettingsViews(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        item {
+            SwitchWithText(
+                textResId = R.string.wallet_main_source,
+                isChecked = isMainSource.value,
+                onCheckedChange = { isMainSource.value = it }
+            )
+        }
         item {
             AmountTextField(
                 stringValue = walletName,
@@ -234,5 +249,6 @@ private fun ButtonsLay(
         ) {
             onConfirmClick.invoke()
         }
+        Spacer(modifier = Modifier.size(12.dp))
     }
 }

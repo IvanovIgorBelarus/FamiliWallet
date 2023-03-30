@@ -10,6 +10,7 @@ import com.example.expenseobserver.features.walletscreen.domain.usecase.WalletUs
 import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,18 +21,52 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
         uiState.value = UiState.Success(WalletSettingsViewState(NewWalletModel.getModel()))
     }
 
-    fun createWallet(
+    fun onButtonClick(
+        isNewWallet: Boolean,
         requestModel: UIModel.WalletModel,
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-            addItem(requestModel
-                .apply { uid = UserUtils.getUsersUid() }) {
-                useCase.getWalletsList(true)
-                onSuccess.invoke()
+            val mainSourceWallet = getMainSource()
+            if (requestModel.isMainSource && mainSourceWallet != null) {
+                updateItem(mainSourceWallet.apply { isMainSource = false })
+            }
+            if (isNewWallet) {
+                createWallet(requestModel, onSuccess)
+            } else {
+                updateWallet(requestModel, onSuccess)
             }
         }
     }
+
+    private fun createWallet(
+        requestModel: UIModel.WalletModel,
+        onSuccess: () -> Unit
+    ) {
+        addItem(requestModel
+            .apply { uid = UserUtils.getUsersUid() }) {
+            useCase.getWalletsList(true)
+            onSuccess.invoke()
+        }
+    }
+
+    private fun updateWallet(
+        requestModel: UIModel.WalletModel,
+        onSuccess: () -> Unit = {}
+    ) {
+        updateItem(requestModel) {
+            useCase.getWalletsList(true)
+            onSuccess.invoke()
+        }
+    }
+
+    private suspend fun getMainSource() = viewModelScope.async {
+        try {
+            return@async useCase.getWalletsList()?.getValueOrNull()?.firstOrNull { it.isMainSource == true }
+        } catch (e: Exception) {
+            return@async null
+        }
+    }.await()
 
     fun getColors() = listOf(
         CategoryColor.COLOR0,

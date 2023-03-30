@@ -10,6 +10,7 @@ import com.example.expenseobserver.core.common.CURRENCY
 import com.example.expenseobserver.core.common.DATE
 import com.example.expenseobserver.core.common.DESCRIPTION
 import com.example.expenseobserver.core.common.ICON
+import com.example.expenseobserver.core.common.IS_MAIN_SOURCE
 import com.example.expenseobserver.core.common.MONEY_TYPE
 import com.example.expenseobserver.core.common.NAME
 import com.example.expenseobserver.core.common.NAME_BACKGROUND_COLOR
@@ -117,7 +118,8 @@ object RepositoryMapper {
                     currency = doc.getString(CURRENCY),
                     value = doc.getDouble(VALUE),
                     backgroundColor = doc.getString(BACKGROUND_COLOR),
-                    nameBackgroundColor = doc.getString(NAME_BACKGROUND_COLOR)
+                    nameBackgroundColor = doc.getString(NAME_BACKGROUND_COLOR),
+                    isMainSource = doc.getBoolean(IS_MAIN_SOURCE) ?: false,
                 )
             )
         }
@@ -168,7 +170,8 @@ object RepositoryMapper {
                     CURRENCY to item.currency,
                     VALUE to item.value,
                     BACKGROUND_COLOR to item.backgroundColor,
-                    NAME_BACKGROUND_COLOR to item.nameBackgroundColor
+                    NAME_BACKGROUND_COLOR to item.nameBackgroundColor,
+                    IS_MAIN_SOURCE to item.isMainSource
                 )
             }
             else -> return DataResponse.Error(Throwable("не удалось обновить запись"))

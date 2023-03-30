@@ -28,7 +28,7 @@ class TransactionViewModel @Inject constructor(
             try {
                 val categoriesList = getCategories()
                 val transactionsList = getTransactions()
-                val walletsList = getWallets()
+                val walletsList = getWallets().sortedByDescending { it.isMainSource }
 
                 if (uiState.value !is UiState.Error) {
                     onSuccess.invoke(

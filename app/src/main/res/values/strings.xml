@@ -101,4 +101,5 @@
     <string name="wallet_name_hint">Введите название кошелька</string>
     <string name="wallet_value_hit">Введите начальную сумму</string>
     <string name="wallet_currency_title">Выберите валюту</string>
+    <string name="wallet_main_source">Основной источник</string>
 </resources>

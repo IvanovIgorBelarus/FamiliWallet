@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
+import com.example.expenseobserver.components.NewWalletView
 import com.example.expenseobserver.components.WalletSettings
 import com.example.expenseobserver.components.WalletSettingsView
 import com.example.expenseobserver.core.common.ShowScreen
@@ -76,8 +77,8 @@ private fun UI(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                WalletSettings(iconId = AppIcons.PLUS.imageRes) {
-                    walletViewModel.openWalletSettings() {
+                NewWalletView {
+                    walletViewModel.openWalletSettings {
                         navigation.navigate(Screen.WalletSettingsScreen.route)
                     }
                 }

@@ -1,5 +1,6 @@
 package com.example.expenseobserver.core.repository
 
+import android.util.Log
 import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.core.common.CATEGORIES
 import com.example.expenseobserver.core.common.DATE
@@ -82,7 +83,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
 
     suspend fun upDateItem(item: UIModel?): DataResponse<Unit> = suspendCoroutine { continuation ->
         val requestModel = RepositoryMapper.mapUpdateOrAddRequestInfo(item)
-
+        Log.e("MYNAME", "upDateItem request")
         if (requestModel is DataResponse.Success) {
             db.collection(requestModel.data.collectionPath)
                 .document(requestModel.data.itemId)
@@ -102,7 +103,7 @@ class FirebaseRepositoryImpl @Inject constructor() {
 
     suspend fun addItem(item: UIModel?): DataResponse<Unit> = suspendCoroutine { continuation ->
         val requestModel = RepositoryMapper.mapUpdateOrAddRequestInfo(item)
-
+        Log.e("MYNAME", "addItem request")
         if (requestModel is DataResponse.Success) {
             db.collection(requestModel.data.collectionPath).add(
                 requestModel.data.data
