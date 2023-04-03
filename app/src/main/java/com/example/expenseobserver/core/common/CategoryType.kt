@@ -1,8 +1,8 @@
 package com.example.expenseobserver.core.common
 
 enum class CategoryType (val position: Int, val type: String){
-    INCOME(0, INCOMES),
-    EXPENSE(1, EXPENSES),
+    INCOME(1, INCOMES),
+    EXPENSE(0, EXPENSES),
     BANKS(2, BANK),
     UNKNOWN(-1, "");
 

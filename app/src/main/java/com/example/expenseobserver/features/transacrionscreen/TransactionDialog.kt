@@ -188,7 +188,7 @@ private fun DateView(
 }
 
 private val tabList = listOf(
-    TransactionTabItem.Income,
     TransactionTabItem.Expense,
+    TransactionTabItem.Income
 //    TransactionTabItem.Bank
 )

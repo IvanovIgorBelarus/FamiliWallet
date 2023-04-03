@@ -9,6 +9,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.3.14'
