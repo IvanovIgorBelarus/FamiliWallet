@@ -43,6 +43,7 @@ import com.example.expenseobserver.components.TransactionsDialogWalletItems
 import com.example.expenseobserver.components.rememberFragmentManager
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.rippleClickable
+import com.example.expenseobserver.core.data.Currency
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
@@ -145,7 +146,7 @@ fun TransactionDialog(
                             uid = UserUtils.getUsersUid(),
                             type = CategoryType.getCategory(currentState.value).type,
                             category = selectedCategory.value,
-                            currency = selectedWallet.value?.currency ?: com.example.expenseobserver.core.data.Currency.BYN.name,
+                            currency = selectedWallet.value?.currency ?: Currency.BYN.name,
                             moneyType = selectedWallet.value?.id,
                             date = operationDate.value,
                             value = amount.value.toDouble()

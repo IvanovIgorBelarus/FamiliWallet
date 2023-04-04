@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import coil.compose.ImagePainter
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.rippleClickable
 import com.example.expenseobserver.core.utils.UserUtils
@@ -43,7 +43,7 @@ fun TopBar(
     val currentRoute = navBackStackEntry?.destination?.route
     val titleText = Screen.getScreen(currentRoute).title.orEmpty()
     val showSettings = Screen.getScreen(currentRoute).route != Screen.TransactionScreen.route
-    val painter = rememberImagePainter(data = UserUtils.getUserPhoto())
+    val painter = rememberAsyncImagePainter(model = UserUtils.getUserPhoto())
     TopAppBar(
         modifier = modifier
             .height(56.dp),
@@ -61,7 +61,7 @@ fun TopBar(
 
 @Composable
 private fun MainTopBar(
-    painter: ImagePainter,
+    painter: AsyncImagePainter,
     titleText: String
 ) {
     Row(

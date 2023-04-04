@@ -102,6 +102,6 @@ fun UI(
 }
 
 private val tabList = listOf(
-    TransactionTabItem.Income,
-    TransactionTabItem.Expense
+    TransactionTabItem.Expense,
+    TransactionTabItem.Income
 )
