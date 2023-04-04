@@ -15,8 +15,11 @@ import com.example.expenseobserver.core.common.MONEY_TYPE
 import com.example.expenseobserver.core.common.NAME
 import com.example.expenseobserver.core.common.NAME_BACKGROUND_COLOR
 import com.example.expenseobserver.core.common.PARTNER_UID
+import com.example.expenseobserver.core.common.SOURCE_ID
+import com.example.expenseobserver.core.common.TARGET_ID
 import com.example.expenseobserver.core.common.TRANSACTIONS
 import com.example.expenseobserver.core.common.TRANSACTION_TYPE
+import com.example.expenseobserver.core.common.TRANSFERS
 import com.example.expenseobserver.core.common.UID
 import com.example.expenseobserver.core.common.URL
 import com.example.expenseobserver.core.common.USERS
@@ -126,6 +129,23 @@ object RepositoryMapper {
         return list
     }
 
+    fun getPersonTransferList(response: QuerySnapshot): List<UIModel.TransferModel> {
+        val list = mutableListOf<UIModel.TransferModel>()
+        response.forEach { doc ->
+            list.add(
+                UIModel.TransferModel(
+                    id = doc.id,
+                    uid = doc.getString(UID),
+                    sourceId = doc.getString(SOURCE_ID),
+                    targetId = doc.getString(TARGET_ID),
+                    date = doc.getLong(DATE),
+                    value = doc.getDouble(VALUE)
+                )
+            )
+        }
+        return list
+    }
+
     fun mapUpdateOrAddRequestInfo(item: UIModel?): DataResponse<UpdateOrAddRequestModel> {
         var requestModel = UpdateOrAddRequestModel()
         when (item) {
@@ -172,6 +192,17 @@ object RepositoryMapper {
                     BACKGROUND_COLOR to item.backgroundColor,
                     NAME_BACKGROUND_COLOR to item.nameBackgroundColor,
                     IS_MAIN_SOURCE to item.isMainSource
+                )
+            }
+            is UIModel.TransferModel -> {
+                requestModel.collectionPath = TRANSFERS
+                requestModel.itemId = item.id.orEmpty()
+                requestModel.data = mapOf(
+                    UID to item.uid,
+                    SOURCE_ID to item.sourceId,
+                    TARGET_ID to item.targetId,
+                    DATE to item.date,
+                    VALUE to item.value
                 )
             }
             else -> return DataResponse.Error(Throwable("не удалось обновить запись"))

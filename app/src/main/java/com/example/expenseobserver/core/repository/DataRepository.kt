@@ -11,7 +11,8 @@ interface DataRepository {
     suspend fun addItem(item: UIModel?): DataResponse<Unit>
     suspend fun deleteItem(item: UIModel?): DataResponse<Unit>
     suspend fun updateItem(item: UIModel?): DataResponse<Unit>
+    suspend fun getItems(collectionName:String, forceLoad: Boolean = false)
     suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel>
-
     suspend fun getWalletsList(forceLoad: Boolean = false): DataResponse<List<UIModel.WalletModel>>?
+    suspend fun getTransfersList(forceLoad: Boolean = false): DataResponse<List<UIModel.WalletModel>>?
 }

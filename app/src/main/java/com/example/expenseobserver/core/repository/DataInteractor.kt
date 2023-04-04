@@ -56,6 +56,10 @@ class DataInteractor @Inject constructor(
     override suspend fun updateItem(item: UIModel?): DataResponse<Unit> =
         firebaseRepository.upDateItem(item)
 
+    override suspend fun getItems(collectionName: String, forceLoad: Boolean) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel> =
         firebaseRepository.checkUpdates()
 

@@ -6,6 +6,7 @@ import com.example.expenseobserver.core.common.CATEGORIES
 import com.example.expenseobserver.core.common.DATE
 import com.example.expenseobserver.core.common.NEW_SMS
 import com.example.expenseobserver.core.common.TRANSACTIONS
+import com.example.expenseobserver.core.common.TRANSFERS
 import com.example.expenseobserver.core.common.UID
 import com.example.expenseobserver.core.common.USERS
 import com.example.expenseobserver.core.common.VERSION
@@ -122,6 +123,16 @@ class FirebaseRepositoryImpl @Inject constructor() {
             .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
             .get()
             .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonWalletsList(response))) }
+            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
+    }
+
+    suspend fun getTransfersList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransferModel>> = suspendCoroutine { continuation ->
+        val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
+
+        db.collection(TRANSFERS)
+            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
+            .get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonTransferList(response))) }
             .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 }
