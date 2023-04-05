@@ -35,19 +35,29 @@ import com.google.firebase.firestore.QuerySnapshot
 
 object RepositoryMapper {
 
-    fun mapSmsList(response: QuerySnapshot): List<UIModel.SmsModel> {
-        val smsList = mutableListOf<UIModel.SmsModel>()
-        response.forEach { doc ->
-            smsList.add(
-                UIModel.SmsModel(
-                    id = doc.id,
-                    date = doc.getLong(DATE),
-                    value = doc.getDouble(VALUE),
-                    currency = doc.getString(CURRENCY),
-                )
-            )
+//    fun mapSmsList(response: QuerySnapshot): List<UIModel.SmsModel> {
+//        val smsList = mutableListOf<UIModel.SmsModel>()
+//        response.forEach { doc ->
+//            smsList.add(
+//                UIModel.SmsModel(
+//                    id = doc.id,
+//                    date = doc.getLong(DATE),
+//                    value = doc.getDouble(VALUE),
+//                    currency = doc.getString(CURRENCY),
+//                )
+//            )
+//        }
+//        return smsList
+//    }
+
+    fun mapItems(response: QuerySnapshot, collectionName: String): List<UIModel> {
+        return when (collectionName) {
+            TRANSACTIONS -> mapPersonTransactionList(response)
+            CATEGORIES -> getPersonCategoriesList(response)
+            WALLETS -> getPersonWalletsList(response)
+            TRANSFERS -> getPersonTransferList(response)
+            else -> emptyList()
         }
-        return smsList
     }
 
     fun mapPartner(response: QuerySnapshot): UIModel.AccountModel {
