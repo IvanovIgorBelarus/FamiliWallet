@@ -77,9 +77,10 @@ fun StartScreenWalletItems(
 }
 
 @Composable
-fun TransactionsDialogWalletItems(
+fun WalletItems(
     walletsList: List<UIModel.WalletModel>,
     selectedWallet: MutableState<UIModel.WalletModel?>,
+    walletModifier: Modifier,
     onItemClick: (UIModel.WalletModel) -> Unit = {}
 ) {
     Column(
@@ -103,9 +104,7 @@ fun TransactionsDialogWalletItems(
             } else {
                 items(items = walletsList) {
                     WalletView(
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 96.dp)
-                            .padding(2.dp),
+                        modifier = walletModifier,
                         wallet = it,
                         fontSize = 10,
                         selectedWallet = selectedWallet,

@@ -1,9 +1,10 @@
 package com.example.expenseobserver.navigation
 
+import android.os.Bundle
 import com.example.expenseobserver.R
 import com.example.expenseobserver.core.data.AppIcons
 
-sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null, val stack: Stack) {
+sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null, val stack: Stack, var args: Bundle? = null) {
     object MainScreen : Screen("main", "главная", AppIcons.FRAME45.imageRes, stack = Stack.UNKNOWN)
     object LoadingScreen : Screen("loading", "", AppIcons.FRAME45.imageRes, stack = Stack.UNKNOWN)
     object StartScreen : Screen("main1", "Главная", R.drawable.ic_start_screen, 1, Stack.START)
