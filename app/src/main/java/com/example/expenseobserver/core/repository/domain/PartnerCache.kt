@@ -7,17 +7,16 @@ object PartnerCache : CacheRepository<DataResponse<UIModel.AccountModel>> {
 
     private var partner: DataResponse<UIModel.AccountModel>? = null
 
-    override suspend fun put(cache: DataResponse<UIModel.AccountModel>) {
+    override suspend fun put(collectionName: String, cache: DataResponse<UIModel.AccountModel>) {
         partner = cache
     }
 
-    override suspend fun get(): DataResponse<UIModel.AccountModel>? {
-        return partner
-    }
+    override suspend fun get(collectionName: String): DataResponse<UIModel.AccountModel>? = partner
 
-    override suspend fun clear() {
+
+    override suspend fun clear(collectionName: String) {
         partner = null
     }
 
-    override suspend fun isEmpty(): Boolean = partner == null
+    override suspend fun isEmpty(collectionName: String): Boolean = partner == null
 }

@@ -1,12 +1,13 @@
 package com.example.expenseobserver.features.walletsettings
 
 import androidx.lifecycle.viewModelScope
+import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
+import com.example.expenseobserver.core.common.WALLETS
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
-import com.example.expenseobserver.features.walletscreen.domain.usecase.WalletUseCase
 import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettingsViewState, WalletUseCase>() {
+class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettingsViewState, BaseUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
         uiState.value = UiState.Success(WalletSettingsViewState(NewWalletModel.getModel()))
@@ -45,7 +46,7 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
     ) {
         addItem(requestModel
             .apply { uid = UserUtils.getUsersUid() }) {
-            useCase.getWalletsList(true)
+            getWallets(true)
             onSuccess.invoke()
         }
     }
@@ -55,14 +56,16 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
         onSuccess: () -> Unit = {}
     ) {
         updateItem(requestModel) {
-            useCase.getWalletsList(true)
+            getWallets(true)
             onSuccess.invoke()
         }
     }
 
+    private suspend fun getWallets(forceLoad: Boolean) = (getItems(WALLETS, forceLoad) as? List<UIModel.WalletModel>)
+
     private suspend fun getMainSource() = viewModelScope.async {
         try {
-            return@async useCase.getWalletsList()?.getValueOrNull()?.firstOrNull { it.isMainSource == true }
+            return@async getWallets(false)?.firstOrNull { it.isMainSource }
         } catch (e: Exception) {
             return@async null
         }

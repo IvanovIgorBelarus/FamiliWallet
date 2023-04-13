@@ -16,4 +16,7 @@ open class BaseUseCaseImpl @Inject constructor() : BaseUseCase {
 
     override suspend fun updateItem(item: UIModel): DataResponse<Unit> = repo.updateItem(item)
 
+    override suspend fun getItems(collectionName: String, forceLoad: Boolean): DataResponse<List<UIModel>>? =
+        repo.getItems(collectionName, forceLoad)
+
 }

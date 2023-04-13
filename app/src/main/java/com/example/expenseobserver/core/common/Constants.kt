@@ -45,4 +45,7 @@ const val URL = "url"
 const val DESCRIPTION = "description"
 
 const val WALLETS = "Wallets"
+const val TRANSFERS = "Transfers"
+const val SOURCE_ID = "sourceId"
+const val TARGET_ID = "targetId"
 const val NAME = "name"

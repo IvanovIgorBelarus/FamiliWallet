@@ -1,5 +1,6 @@
 package com.example.expenseobserver.core
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-abstract class BaseViewModel<StateView, UseCase: BaseUseCase> : ViewModel() {
+abstract class BaseViewModel<StateView, UseCase : BaseUseCase> : ViewModel() {
 
     val uiState: MutableState<UiState<StateView>> = mutableStateOf(UiState.Loading)
 
@@ -61,4 +63,21 @@ abstract class BaseViewModel<StateView, UseCase: BaseUseCase> : ViewModel() {
             }
         }
     }
+
+    suspend fun getItems(collectionName: String, forceLoad: Boolean = false): List<UIModel>? =
+        viewModelScope.async {
+            uiState.value = UiState.Loading
+            return@async when (val response = useCase.getItems(collectionName, forceLoad)) {
+                is DataResponse.Success -> {
+                    response.data
+                }
+                is DataResponse.Error -> {
+                    Log.e("MYNAME", response.exception.message.orEmpty())
+                    uiState.value = UiState.Error(response.exception)
+                    null
+                }
+                else -> null
+            }
+        }.await()
+
 }

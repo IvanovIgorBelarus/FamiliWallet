@@ -1,11 +1,16 @@
 package com.example.expenseobserver.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -50,8 +55,35 @@ fun MainButton(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
 private fun TransactionButtonPreview() {
     MainButton(isSelected = mutableStateOf(false))
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+fun ButtonsLay(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit
+) {
+    Row(horizontalArrangement = Arrangement.Center) {
+        MainButton(
+            modifier = Modifier.weight(1f),
+            text = R.string.cancel,
+            isSelected = mutableStateOf(false)
+        ) {
+            onCancelClick.invoke()
+        }
+        Spacer(modifier = Modifier.size(24.dp))
+        MainButton(
+            modifier = Modifier.weight(1f),
+            text = R.string.done,
+            isSelected = mutableStateOf(true)
+        ) {
+            onConfirmClick.invoke()
+        }
+        Spacer(modifier = Modifier.size(12.dp))
+    }
 }

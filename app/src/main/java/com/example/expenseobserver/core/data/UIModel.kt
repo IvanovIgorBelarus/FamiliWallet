@@ -65,6 +65,15 @@ sealed class UIModel {
         var isMainSource: Boolean = false
     ): BaseModel(id)
 
+    data class TransferModel(
+        var id: String? = null,
+        var uid: String? = null,
+        var sourceId: String? = null,
+        var targetId: String? = null,
+        var date: Long? = null,
+        var value: Double? = null
+    ): BaseModel(id)
+
     open class BaseModel(
         var itemId: String? = null
     ): UIModel()

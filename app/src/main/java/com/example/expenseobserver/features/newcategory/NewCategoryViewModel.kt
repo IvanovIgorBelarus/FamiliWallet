@@ -1,7 +1,9 @@
 package com.example.expenseobserver.features.newcategory
 
 import androidx.lifecycle.viewModelScope
+import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
+import com.example.expenseobserver.core.common.CATEGORIES
 import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.IconActionType
@@ -10,13 +12,12 @@ import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
-import com.example.expenseobserver.features.category.domain.usecase.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryViewState, CategoriesUseCase>() {
+class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryViewState, BaseUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
         uiState.value = UiState.Success(NewCategoryViewState(NewCategoryModel.getCategoryModel()))
@@ -75,7 +76,7 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
         onSuccess: () -> Unit = {}
     ) {
         updateItem(item) {
-            useCase.getCategoriesList(true)
+            getItems(CATEGORIES, true)
             onSuccess.invoke()
         }
     }
@@ -85,7 +86,7 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
         onSuccess: () -> Unit = {}
     ) {
         addItem(item) {
-            useCase.getCategoriesList(true)
+            getItems(CATEGORIES, true)
             onSuccess.invoke()
         }
     }

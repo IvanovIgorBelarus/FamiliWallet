@@ -1,6 +1,7 @@
 package com.example.expenseobserver.features.walletscreen
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,10 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.NewWalletView
-import com.example.expenseobserver.components.WalletSettings
 import com.example.expenseobserver.components.WalletSettingsView
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.data.AppIcons
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
@@ -86,14 +85,18 @@ private fun UI(
             items(viewState.walletList) { walletModel ->
                 WalletSettingsView(
                     wallet = walletModel,
-                    onSettingsClick = { item ->
-                        walletViewModel.openWalletSettings(item) {
+                    onSettingsClick = { walletItem ->
+                        walletViewModel.openWalletSettings(walletItem) {
                             navigation.navigate(Screen.WalletSettingsScreen.route)
                         }
                     },
                     onDeleteClick = { walletItem ->
                         deleteItem = walletItem
                         showDeleteDialog.value = true
+                    },
+                    onTransferClick = { walletItem ->
+                        Screen.TransferScreen.args = Bundle().apply { putString("ID", walletItem.id) }
+                        navigation.navigate(Screen.TransferScreen.route)
                     }
                 )
             }

@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.expenseobserver.components.AmountTextField
+import com.example.expenseobserver.components.ButtonsLay
 import com.example.expenseobserver.components.ColorsView
 import com.example.expenseobserver.components.CurrenciesView
 import com.example.expenseobserver.components.MainButton
@@ -185,10 +186,10 @@ private fun SettingsViews(
                 Spacer(modifier = Modifier.size(12.dp))
                 AmountTextField(
                     stringValue = value,
-                    placeHolderText = resources.getString(R.string.wallet_value_hit),
+                    placeHolderText = resources.getString(R.string.wallet_value_hint),
                     modifier = Modifier.border(BorderStroke(1.dp, bottomBarUnselectedContentColor), RoundedCornerShape(10.dp)),
                     showError = showError,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textBackgroundColor = Color.White
                 )
             }
@@ -224,31 +225,5 @@ private fun SettingsViews(
                 onConfirmClick = { onConfirmClick.invoke() }
             )
         }
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Composable
-private fun ButtonsLay(
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit
-) {
-    Row(horizontalArrangement = Arrangement.Center) {
-        MainButton(
-            modifier = Modifier.weight(1f),
-            text = R.string.cancel,
-            isSelected = mutableStateOf(false)
-        ) {
-            onCancelClick.invoke()
-        }
-        Spacer(modifier = Modifier.size(24.dp))
-        MainButton(
-            modifier = Modifier.weight(1f),
-            text = R.string.done,
-            isSelected = mutableStateOf(true)
-        ) {
-            onConfirmClick.invoke()
-        }
-        Spacer(modifier = Modifier.size(12.dp))
     }
 }

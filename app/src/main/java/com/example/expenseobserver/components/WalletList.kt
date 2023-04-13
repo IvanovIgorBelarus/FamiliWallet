@@ -77,9 +77,10 @@ fun StartScreenWalletItems(
 }
 
 @Composable
-fun TransactionsDialogWalletItems(
+fun WalletItems(
     walletsList: List<UIModel.WalletModel>,
     selectedWallet: MutableState<UIModel.WalletModel?>,
+    walletModifier: Modifier,
     onItemClick: (UIModel.WalletModel) -> Unit = {}
 ) {
     Column(
@@ -103,9 +104,7 @@ fun TransactionsDialogWalletItems(
             } else {
                 items(items = walletsList) {
                     WalletView(
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 96.dp)
-                            .padding(2.dp),
+                        modifier = walletModifier,
                         wallet = it,
                         fontSize = 10,
                         selectedWallet = selectedWallet,
@@ -124,8 +123,9 @@ fun WalletSettingsView(
     onClick: (UIModel.WalletModel) -> Unit = {},
     onSettingsClick: (UIModel.WalletModel) -> Unit = {},
     onDeleteClick: (UIModel.WalletModel) -> Unit = {},
+    onTransferClick: (UIModel.WalletModel) -> Unit = {}
 ) {
-    val width = LocalConfiguration.current.screenWidthDp.dp - 64.dp
+    val width = LocalConfiguration.current.screenWidthDp.dp - 80.dp
     val height = width * 0.6f
     Row(
         modifier = Modifier
@@ -146,21 +146,31 @@ fun WalletSettingsView(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
+            //transfer button
             WalletSettings(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(60.dp)
+                    .padding(4.dp),
+                iconId = R.drawable.ic_transfer,
+                iconSize = 36.dp,
+                onClick = { onTransferClick(wallet) },
+            )
+            //settings button
+            WalletSettings(
+                modifier = Modifier
+                    .size(60.dp)
                     .padding(4.dp),
                 iconId = AppIcons.BUILD.imageRes,
-                iconSize = 24.dp,
+                iconSize = 36.dp,
                 onClick = { onSettingsClick(wallet) },
             )
-
+            //delete button
             WalletSettings(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(60.dp)
                     .padding(4.dp),
                 iconId = AppIcons.DELETE.imageRes,
-                iconSize = 24.dp,
+                iconSize = 36.dp,
                 onClick = { onDeleteClick(wallet) },
             )
         }

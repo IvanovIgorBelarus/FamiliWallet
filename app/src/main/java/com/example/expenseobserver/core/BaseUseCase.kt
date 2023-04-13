@@ -10,4 +10,6 @@ interface BaseUseCase {
     suspend fun deleteItem(item: UIModel): DataResponse<Unit>
 
     suspend fun updateItem(item: UIModel): DataResponse<Unit>
+
+    suspend fun getItems(collectionName:String, forceLoad: Boolean = false): DataResponse<List<UIModel>>?
 }

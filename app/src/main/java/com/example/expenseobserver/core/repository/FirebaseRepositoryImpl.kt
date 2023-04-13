@@ -23,13 +23,6 @@ class FirebaseRepositoryImpl @Inject constructor() {
 
     private val db = FirebaseFirestore.getInstance()
 
-    suspend fun getSmsList(): DataResponse<List<UIModel.SmsModel>> = suspendCoroutine { continuation ->
-        db.collection(NEW_SMS).get()
-            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapSmsList(response))) }
-            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
-    }
-
-
     suspend fun getPartner(): DataResponse<UIModel.AccountModel> = suspendCoroutine { continuation ->
         if (!UserUtils.getUsersUid().isNullOrEmpty()) {
             db.collection(USERS)
@@ -40,29 +33,6 @@ class FirebaseRepositoryImpl @Inject constructor() {
         } else {
             continuation.resume(DataResponse.Error(Throwable("Нет данных о партнёре")))
         }
-    }
-
-    suspend fun getPersonTransactionList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.TransactionModel>> = suspendCoroutine { continuation ->
-        val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
-
-        db.collection(TRANSACTIONS)
-            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-            .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
-            .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
-            .get()
-            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapPersonTransactionList(response))) }
-            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
-    }
-
-
-    suspend fun getPersonCategoriesList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.CategoryModel>> = suspendCoroutine { continuation ->
-        val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
-
-        db.collection(CATEGORIES)
-            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-            .get()
-            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonCategoriesList(response))) }
-            .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 
     suspend fun deleteItem(item: UIModel?): DataResponse<Unit> = suspendCoroutine { continuation ->
@@ -115,13 +85,20 @@ class FirebaseRepositoryImpl @Inject constructor() {
         }
     }
 
-    suspend fun getWalletsList(partnerRequest: DataResponse<UIModel.AccountModel>?): DataResponse<List<UIModel.WalletModel>> = suspendCoroutine { continuation ->
+    suspend fun getItems(partnerRequest: DataResponse<UIModel.AccountModel>?, collectionName: String): DataResponse<List<UIModel>> = suspendCoroutine { continuation ->
         val partnerUid = (partnerRequest as? DataResponse.Success)?.data?.partnerUid
 
-        db.collection(WALLETS)
-            .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-            .get()
-            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.getPersonWalletsList(response))) }
+        val request = if (collectionName != CATEGORIES && collectionName != WALLETS) {
+            db.collection(collectionName)
+                .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
+                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
+                .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
+        } else {
+            db.collection(collectionName)
+                .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
+        }
+        request.get()
+            .addOnSuccessListener { response -> continuation.resume(DataResponse.Success(RepositoryMapper.mapItems(response, collectionName))) }
             .addOnFailureListener { exception -> continuation.resume(DataResponse.Error(exception)) }
     }
 }

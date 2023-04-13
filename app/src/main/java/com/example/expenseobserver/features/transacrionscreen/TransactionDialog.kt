@@ -39,7 +39,7 @@ import com.example.expenseobserver.components.CategoryRowList
 import com.example.expenseobserver.components.CustomDatePickerDialog
 import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.ThreeTabsLay
-import com.example.expenseobserver.components.TransactionsDialogWalletItems
+import com.example.expenseobserver.components.WalletItems
 import com.example.expenseobserver.components.rememberFragmentManager
 import com.example.expenseobserver.core.common.CategoryType
 import com.example.expenseobserver.core.common.rippleClickable
@@ -101,9 +101,12 @@ fun TransactionDialog(
         ) {
             DateView(showDatePickerDialog = showDatePickerDialog, operationDate = operationDate)
 
-            TransactionsDialogWalletItems(
+            WalletItems(
                 walletsList = walletData,
-                selectedWallet = selectedWallet
+                selectedWallet = selectedWallet,
+                walletModifier = Modifier
+                    .size(width = 160.dp, height = 96.dp)
+                    .padding(2.dp)
             ) { wallet ->
                 selectedWallet.value = wallet
             }
