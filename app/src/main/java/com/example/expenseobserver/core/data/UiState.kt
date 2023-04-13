@@ -3,7 +3,7 @@ package com.example.expenseobserver.core.data
 sealed class UiState<out T> {
     class Success<T>(val data: T) : UiState<T>()
 
-    class Error(val exception: Throwable): UiState<Nothing>()
+    class Error(val exception: Throwable?): UiState<Nothing>()
 
     object Loading: UiState<Nothing>()
 }

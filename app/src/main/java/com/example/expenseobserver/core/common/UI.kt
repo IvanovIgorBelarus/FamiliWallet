@@ -23,7 +23,7 @@ fun ShowScreen(
             onSuccess.invoke((uiState as UiState.Success<*>).data)
         }
         is UiState.Error -> {
-            val errorText = (uiState as UiState.Error).exception.message
+            val errorText = (uiState as UiState.Error).exception?.message.orEmpty()
             ShowErrorDialog(text = errorText)
         }
         is UiState.Loading -> LoadingScreen()

@@ -93,7 +93,7 @@ dependencies {
 
     // Hilt dependency injection
     implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.43'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.44'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
 
@@ -108,6 +108,8 @@ dependencies {
 
     //animation
     implementation "com.airbnb.android:lottie-compose:6.0.0"
+
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 
     //systemUiController
 //    implementation "com.google.accompanist:accompanist-systemuicontroller:0.15.0"
