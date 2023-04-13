@@ -1,5 +1,8 @@
 package com.example.expenseobserver.core.data
 
+import android.os.Parcel
+import android.os.Parcelable
+
 sealed class UIModel {
     data class AccountModel(
         var id: String? = null,
@@ -63,7 +66,44 @@ sealed class UIModel {
         var backgroundColor: String? = null,
         var nameBackgroundColor: String? = null,
         var isMainSource: Boolean = false
-    ): BaseModel(id)
+    ): BaseModel(id), Parcelable {
+        constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readByte() != 0.toByte()
+        ) {
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(id)
+            parcel.writeString(uid)
+            parcel.writeString(name)
+            parcel.writeString(currency)
+            parcel.writeValue(value)
+            parcel.writeString(backgroundColor)
+            parcel.writeString(nameBackgroundColor)
+            parcel.writeByte(if (isMainSource) 1 else 0)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<WalletModel> {
+            override fun createFromParcel(parcel: Parcel): WalletModel {
+                return WalletModel(parcel)
+            }
+
+            override fun newArray(size: Int): Array<WalletModel?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     data class TransferModel(
         var id: String? = null,

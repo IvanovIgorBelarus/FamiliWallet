@@ -1,6 +1,7 @@
 package com.example.expenseobserver.features.start_screen
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,8 +35,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.components.StartScreenWalletItems
+import com.example.expenseobserver.components.TransactionRow
 import com.example.expenseobserver.core.common.EXPENSES
 import com.example.expenseobserver.core.common.ShowScreen
 import com.example.expenseobserver.core.common.rippleClickable
@@ -99,7 +100,16 @@ private fun UI(
         backgroundColor = Color.White
     ) {
         LazyColumn {
-            item { StartScreenWalletItems(viewState = viewState, onSettingsClick = { navigation.navigate(Screen.WalletScreen.route) }) }
+            item {
+                StartScreenWalletItems(
+                    viewState = viewState,
+                    onSettingsClick = { navigation.navigate(Screen.WalletSettingsScreen.route) },
+                    onItemClick = { wallet ->
+                        Screen.WalletScreen.args = Bundle().apply { putParcelable("wallet", wallet) }
+                        navigation.navigate(Screen.WalletScreen.route)
+                    }
+                )
+            }
             item { DiagramView(viewState = viewState, showTimeRangeDialog = showTimeRangeDialog) }
             transactionsItems(viewState = viewState)
         }

@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.walletsettings
 
+import android.os.Build
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
@@ -10,6 +11,7 @@ import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
+import com.example.expenseobserver.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -19,7 +21,12 @@ import javax.inject.Inject
 class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettingsViewState, BaseUseCase>() {
 
     override fun getData(forceLoad: Boolean) {
-        uiState.value = UiState.Success(WalletSettingsViewState(NewWalletModel.getModel()))
+        val wallet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Screen.WalletSettingsScreen.args?.getParcelable("wallet", UIModel.WalletModel::class.java)
+        } else {
+            Screen.WalletSettingsScreen.args?.getParcelable("wallet")
+        }
+        uiState.value = UiState.Success(WalletSettingsViewState(wallet))
     }
 
     fun onButtonClick(

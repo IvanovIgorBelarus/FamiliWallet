@@ -1,5 +1,6 @@
 package com.example.expenseobserver.features.walletscreen
 
+import android.os.Build
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
@@ -8,6 +9,7 @@ import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
 import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
+import com.example.expenseobserver.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,8 +19,13 @@ class WalletViewModel @Inject constructor() : BaseViewModel<WalletScreenViewStat
 
     override fun getData(forceLoad: Boolean) {
         viewModelScope.launch {
+            val wallet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Screen.WalletScreen.args?.getParcelable("wallet", UIModel.WalletModel::class.java)
+            } else {
+                Screen.WalletScreen.args?.getParcelable("wallet")
+            }
             val walletsList = getWallets(forceLoad)
-            uiState.value = UiState.Success(WalletScreenViewState(walletsList.sortedByDescending { it.isMainSource }))
+            uiState.value = UiState.Success(WalletScreenViewState(walletsList.sortedByDescending { it.id == wallet?.id }))
         }
     }
 
