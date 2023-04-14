@@ -103,7 +103,10 @@ private fun UI(
             item {
                 StartScreenWalletItems(
                     viewState = viewState,
-                    onSettingsClick = { navigation.navigate(Screen.WalletSettingsScreen.route) },
+                    onSettingsClick = {
+                        Screen.WalletSettingsScreen.args = null
+                        navigation.navigate(Screen.WalletSettingsScreen.route)
+                                      },
                     onItemClick = { wallet ->
                         Screen.WalletScreen.args = Bundle().apply { putParcelable("wallet", wallet) }
                         navigation.navigate(Screen.WalletScreen.route)

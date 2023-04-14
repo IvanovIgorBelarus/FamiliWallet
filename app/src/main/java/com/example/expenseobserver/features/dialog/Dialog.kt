@@ -62,8 +62,8 @@ fun ShowDeleteDialog(
 ) {
     val resources = LocalContext.current.resources
 
-    val titleString = if (textResId != null) {
-        resources.getString(textResId)
+    val titleString = if (titleResId != null) {
+        resources.getString(titleResId)
     } else {
         title.orEmpty()
     }
