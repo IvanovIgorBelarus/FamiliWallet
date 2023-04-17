@@ -120,7 +120,8 @@ private fun UI(
                 items(currentItemOperations) { operationItem ->
                     OperationView(
                         item = operationItem,
-                        categoriesList = viewState.categoriesList
+                        categoriesList = viewState.categoriesList,
+                        currentItem.value
                     ) { item ->
                         deleteItem.value = item as UIModel.BaseModel
                         showDeleteDialog.value = true

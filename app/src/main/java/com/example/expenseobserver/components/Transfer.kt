@@ -9,48 +9,35 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expenseobserver.core.common.EXPENSES
-import com.example.expenseobserver.core.common.INCOMES
+import com.example.expenseobserver.R
 import com.example.expenseobserver.core.common.formatAmount
 import com.example.expenseobserver.core.common.longRippleClickable
-import com.example.expenseobserver.core.data.AppIcons
-import com.example.expenseobserver.core.data.CategoryColor
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.utils.toStringFormat
 import com.example.expenseobserver.ui.theme.backgroundColor
+import com.example.expenseobserver.ui.theme.expensesColor
 import com.example.expenseobserver.ui.theme.textColor
 import com.example.expenseobserver.ui.theme.textColorGrey
+import com.example.expenseobserver.ui.theme.walletColor
 
 @Composable
-fun TransactionsList(
-    transactionList: List<UIModel.TransactionModel>
-) {
-    LazyColumn() {
-        items(transactionList) { item ->
-            TransactionRow(transaction = item, emptyList())
-        }
-    }
-}
-
-@Composable
-fun TransactionRow(
-    transaction: UIModel.TransactionModel,
-    categoriesList: List<UIModel.CategoryModel>,
-    onClick: (UIModel.TransactionModel) -> Unit = {}
+fun TransferView(
+    walletModel: UIModel.WalletModel,
+    transfer: UIModel.TransferModel,
+    onClick: (UIModel.TransferModel) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -62,34 +49,37 @@ fun TransactionRow(
             .padding(0.dp, 4.dp)
             .fillMaxWidth()
             .requiredHeight(80.dp)
-            .longRippleClickable(onLongClick = { onClick.invoke(transaction) }),
+            .longRippleClickable(onLongClick = { onClick.invoke(transfer) }),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val itemCategory = categoriesList.firstOrNull { it.category == transaction.category && it.type == transaction.type }
-        val iconRes = AppIcons.getImageRes(itemCategory?.icon)
-        val amountText = "${transaction.value.formatAmount()} ${transaction.currency?: "BYN"}"
+        val iconColor = if (walletModel.id == transfer.targetId) walletColor else expensesColor
+        val iconRotation = if (walletModel.id == transfer.targetId) 0f else 180f
+        val amountText = "${transfer.value.formatAmount()} ${walletModel.currency ?: "BYN"}"
+        val transferText = if (walletModel.id == transfer.targetId) "Пополнение" else "Перевод"
 
         Spacer(modifier = Modifier.size(16.dp))
         Icon(
-            painter = painterResource(id = iconRes.imageRes),
+            painter = painterResource(id = R.drawable.ic_baseline_arrow_forward_24),
             contentDescription = "",
-            tint = CategoryColor.getColor(itemCategory?.color.orEmpty()).color,
-            modifier = Modifier.size(36.dp)
+            tint = iconColor,
+            modifier = Modifier
+                .size(36.dp)
+                .rotate(iconRotation)
         )
         Spacer(modifier = Modifier.size(16.dp))
         Column() {
             Text(
-                text = transaction.category.toString(),
+                text = transferText,
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center
             )
-            if (transaction.date != null) {
+            if (transfer.date != null) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
-                    text = transaction.date?.toStringFormat.orEmpty(),
+                    text = transfer.date?.toStringFormat.orEmpty(),
                     color = textColorGrey,
                     fontSize = 8.sp,
                     fontWeight = FontWeight.Medium,
@@ -111,26 +101,9 @@ fun TransactionRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun TransactionsListPreview() {
-    TransactionsList(
-        listOf(
-            UIModel.TransactionModel(type = INCOMES, category = "Получка", date = 1647464400000, value = 12.5),
-            UIModel.TransactionModel(type = EXPENSES, category = "Мороженка", date = 1647464400000, value = 10.5)
-        )
-    )
-}
-
-
-@Preview()
-@Composable
-private fun TransactionRowPreview() {
-    TransactionRow(
-        UIModel.TransactionModel(
-            type = INCOMES,
-            category = "Получка",
-            date = 1647464400000,
-            value = 12.5
-        ),
-        emptyList()
+private fun TransferViewPreview() {
+    TransferView(
+        walletModel = UIModel.WalletModel(id = "1", currency = "BYN"),
+        transfer = UIModel.TransferModel(sourceId = "1", date = 1647464400000, value = 12.00)
     )
 }
