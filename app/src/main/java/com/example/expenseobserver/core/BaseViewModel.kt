@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.data.DataResponse
 import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UiState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,36 +29,36 @@ abstract class BaseViewModel<StateView, UseCase : BaseUseCase> : ViewModel() {
 
     }
 
-    fun addItem(item: UIModel, onSuccess: suspend () -> Unit = {}) {
+    fun addItem(item: UIModel, onSuccess: suspend CoroutineScope.() -> Unit = {}) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             when (val response = useCase.addItem(item)) {
                 is DataResponse.Success -> {
-                    onSuccess.invoke()
+                    onSuccess()
                 }
                 is DataResponse.Error -> uiState.value = UiState.Error(response.exception)
             }
         }
     }
 
-    fun deleteItem(item: UIModel, onSuccess: suspend () -> Unit = {}) {
+    open fun deleteItem(item: UIModel, onSuccess: suspend CoroutineScope.() -> Unit = {}) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             when (val response = useCase.deleteItem(item)) {
                 is DataResponse.Success -> {
-                    onSuccess.invoke()
+                    onSuccess()
                 }
                 is DataResponse.Error -> uiState.value = UiState.Error(response.exception)
             }
         }
     }
 
-    fun updateItem(item: UIModel, onSuccess: suspend () -> Unit = {}) {
+    fun updateItem(item: UIModel, onSuccess: suspend CoroutineScope.() -> Unit = {}) {
         viewModelScope.launch {
             uiState.value = UiState.Loading
             when (val response = useCase.updateItem(item)) {
                 is DataResponse.Success -> {
-                    onSuccess.invoke()
+                    onSuccess()
                 }
                 is DataResponse.Error -> uiState.value = UiState.Error(response.exception)
             }

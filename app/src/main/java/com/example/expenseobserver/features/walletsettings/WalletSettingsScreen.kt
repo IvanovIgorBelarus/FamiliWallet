@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,7 +32,6 @@ import com.example.expenseobserver.components.AmountTextField
 import com.example.expenseobserver.components.ButtonsLay
 import com.example.expenseobserver.components.ColorsView
 import com.example.expenseobserver.components.CurrenciesView
-import com.example.expenseobserver.components.MainButton
 import com.example.expenseobserver.components.SwitchWithText
 import com.example.expenseobserver.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
@@ -82,13 +80,13 @@ private fun UI(
     walletSettingsViewModel: WalletSettingsViewModel? = null,
     navigation: NavHostController? = null
 ) {
-    val isNewWallet = viewState.walletModel.id == null
-    val walletName = remember { mutableStateOf(viewState.walletModel.name.orEmpty()) }
-    val currency = remember { mutableStateOf(viewState.walletModel.currency ?: Currency.BYN.name) }
-    val value = remember { mutableStateOf(viewState.walletModel.value?.toString().orEmpty()) }
-    val backgroundColor = remember { mutableStateOf(viewState.walletModel.backgroundColor ?: CategoryColor.COLOR13.name) }
-    val nameBackgroundColor = remember { mutableStateOf(viewState.walletModel.nameBackgroundColor ?: CategoryColor.COLOR10.name) }
-    val isMainSource = remember { mutableStateOf(viewState.walletModel.isMainSource) }
+    val isNewWallet = viewState.walletModel?.id == null
+    val walletName = remember { mutableStateOf(viewState.walletModel?.name.orEmpty()) }
+    val currency = remember { mutableStateOf(viewState.walletModel?.currency ?: Currency.BYN.name) }
+    val value = remember { mutableStateOf(viewState.walletModel?.value?.toString().orEmpty()) }
+    val backgroundColor = remember { mutableStateOf(viewState.walletModel?.backgroundColor ?: CategoryColor.COLOR13.name) }
+    val nameBackgroundColor = remember { mutableStateOf(viewState.walletModel?.nameBackgroundColor ?: CategoryColor.COLOR10.name) }
+    val isMainSource = remember { mutableStateOf(viewState.walletModel?.isMainSource ?: false) }
 
     val showError = remember { mutableStateOf(false) }
 
@@ -124,8 +122,8 @@ private fun UI(
                     walletSettingsViewModel?.onButtonClick(
                         isNewWallet = isNewWallet,
                         requestModel = UIModel.WalletModel(
-                            id = viewState.walletModel.id,
-                            uid = viewState.walletModel.uid,
+                            id = viewState.walletModel?.id,
+                            uid = viewState.walletModel?.uid,
                             name = walletName.value,
                             currency = currency.value,
                             value = (value.value).toDoubleOrNull(),

@@ -44,7 +44,7 @@ class DataInteractor @Inject constructor(
                 request
             }
         } else {
-            Log.d("MYNAME", "$requestName cash")
+            Log.d("MYNAME", "$requestName cache")
             cache.get(requestName)
         }
     }

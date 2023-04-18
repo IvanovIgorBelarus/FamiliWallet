@@ -119,32 +119,20 @@ fun WalletItems(
 @Preview(showBackground = true)
 @Composable
 fun WalletSettingsView(
-    wallet: UIModel.WalletModel = UIModel.WalletModel(value = 10000000.00, currency = "USD", name = "Банк"),
-    onClick: (UIModel.WalletModel) -> Unit = {},
-    onSettingsClick: (UIModel.WalletModel) -> Unit = {},
-    onDeleteClick: (UIModel.WalletModel) -> Unit = {},
-    onTransferClick: (UIModel.WalletModel) -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onTransferClick: () -> Unit = {}
 ) {
-    val width = LocalConfiguration.current.screenWidthDp.dp - 80.dp
-    val height = width * 0.6f
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.size(12.dp))
-        WalletView(
-            modifier = Modifier.size(width = width, height = height),
-            wallet = wallet,
-            fontSize = 24,
-            dotSize = 36,
-            onClick = onClick,
-        )
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.SpaceEvenly
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             //transfer button
             WalletSettings(
@@ -153,7 +141,7 @@ fun WalletSettingsView(
                     .padding(4.dp),
                 iconId = R.drawable.ic_transfer,
                 iconSize = 36.dp,
-                onClick = { onTransferClick(wallet) },
+                onClick = { onTransferClick() },
             )
             //settings button
             WalletSettings(
@@ -162,7 +150,7 @@ fun WalletSettingsView(
                     .padding(4.dp),
                 iconId = AppIcons.BUILD.imageRes,
                 iconSize = 36.dp,
-                onClick = { onSettingsClick(wallet) },
+                onClick = { onSettingsClick() },
             )
             //delete button
             WalletSettings(
@@ -171,7 +159,7 @@ fun WalletSettingsView(
                     .padding(4.dp),
                 iconId = AppIcons.DELETE.imageRes,
                 iconSize = 36.dp,
-                onClick = { onDeleteClick(wallet) },
+                onClick = { onDeleteClick() },
             )
         }
     }
