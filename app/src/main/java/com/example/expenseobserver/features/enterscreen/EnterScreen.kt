@@ -27,17 +27,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.BuildConfig
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.EnterButton
-import com.example.expenseobserver.components.TopScreenBlueHeader
-import com.example.expenseobserver.core.data.UIModel
+import com.example.components.EnterButton
+import com.example.components.TopScreenBlueHeader
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
-import com.example.expenseobserver.navigation.Screen
-import com.example.expenseobserver.ui.theme.textColor
+import com.example.data.theme.textColor
+import com.example.navigation.Screen
 
 @Composable
 fun EnterScreen(
@@ -123,7 +121,7 @@ fun EnterScreen(
                     end.linkTo(parent.end, margin = 16.dp)
                     width = Dimension.fillToConstraints
                 }) {
-                val nextDestination = if (UserUtils.isUserSignIn()) {
+                val nextDestination = if (com.example.common.utils.UserUtils.isUserSignIn()) {
                     Screen.MainScreen.route
                 } else {
                     Screen.AuthScreen.route
@@ -138,7 +136,7 @@ fun EnterScreen(
     val errorMessage = remember { mutableStateOf("") }
     when (uiState) {
         is UiState.Success -> {
-            val updateModel = (uiState as UiState.Success<UIModel.UpdateModel>).data
+            val updateModel = (uiState as UiState.Success<com.example.data.UIModel.UpdateModel>).data
             val currentVersionCode = BuildConfig.VERSION_CODE.toLong()
             if (currentVersionCode < (updateModel.versionCode ?: 0)) {
                 showUpdateDialog.value = true

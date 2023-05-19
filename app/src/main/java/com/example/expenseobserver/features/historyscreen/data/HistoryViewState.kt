@@ -1,6 +1,6 @@
 package com.example.expenseobserver.features.historyscreen.data
 
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 
 class HistoryViewState(
     var categoriesList: List<UIModel.CategoryModel>,

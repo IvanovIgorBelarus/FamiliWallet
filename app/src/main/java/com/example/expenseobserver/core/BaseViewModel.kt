@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

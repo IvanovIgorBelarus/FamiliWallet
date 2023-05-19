@@ -3,11 +3,11 @@ package com.example.expenseobserver.features.transfer
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.common.WALLETS
+import com.example.common.WALLETS
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.core.utils.UserUtils
+import com.example.common.utils.UserUtils
 import com.example.expenseobserver.features.transfer.data.TransferScreenViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async

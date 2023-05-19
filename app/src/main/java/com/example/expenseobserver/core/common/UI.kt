@@ -2,8 +2,6 @@ package com.example.expenseobserver.core.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import com.example.expenseobserver.core.BaseStateView
-import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.dialog.ShowErrorDialog

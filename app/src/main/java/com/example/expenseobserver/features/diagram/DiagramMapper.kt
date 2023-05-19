@@ -1,28 +1,26 @@
 package com.example.expenseobserver.features.diagram
 
-import com.example.expenseobserver.core.common.CategoryType
-import com.example.expenseobserver.core.common.categoryTypeFilter
-import com.example.expenseobserver.core.common.typeFilter
-import com.example.expenseobserver.core.data.AppIcons
-import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.UIModel
+import com.example.common.categoryTypeFilter
+import com.example.common.typeFilter
+import com.example.data.AppIcons
+import com.example.data.CategoryColor
 import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
-import com.example.expenseobserver.ui.theme.diagramColor0
-import com.example.expenseobserver.ui.theme.diagramColor1
-import com.example.expenseobserver.ui.theme.diagramColor2
-import com.example.expenseobserver.ui.theme.diagramColor3
-import com.example.expenseobserver.ui.theme.diagramColor4
-import com.example.expenseobserver.ui.theme.diagramColor5
-import com.example.expenseobserver.ui.theme.diagramColor6
+import com.example.data.theme.diagramColor0
+import com.example.data.theme.diagramColor1
+import com.example.data.theme.diagramColor2
+import com.example.data.theme.diagramColor3
+import com.example.data.theme.diagramColor4
+import com.example.data.theme.diagramColor5
+import com.example.data.theme.diagramColor6
 
 object DiagramMapper {
     fun mapDiagramItems(
-        expansesList: List<UIModel.TransactionModel>,
-        categoriesList: List<UIModel.CategoryModel>
+        expansesList: List<com.example.data.UIModel.TransactionModel>,
+        categoriesList: List<com.example.data.UIModel.CategoryModel>
     ): List<CategorySumItem> {
         val sumList = mutableListOf<CategorySumItem>()
-        categoriesList.categoryTypeFilter(CategoryType.EXPENSE.type).forEach { categoryItem ->
+        categoriesList.categoryTypeFilter(com.example.common.CategoryType.EXPENSE.type).forEach { categoryItem ->
             sumList.add(
                 CategorySumItem(
                     category = categoryItem.category,
@@ -31,7 +29,7 @@ object DiagramMapper {
                 )
             )
         }
-        expansesList.typeFilter(CategoryType.EXPENSE.type).forEach { transaction ->
+        expansesList.typeFilter(com.example.common.CategoryType.EXPENSE.type).forEach { transaction ->
             sumList.forEach { categorySum ->
                 if (transaction.category == categorySum.category) {
                     categorySum.sum += transaction.value ?: 0.0

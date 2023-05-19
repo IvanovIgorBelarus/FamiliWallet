@@ -22,15 +22,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.HorizontalPagerWithIndicator
-import com.example.expenseobserver.components.OperationView
-import com.example.expenseobserver.components.WalletSettingsView
-import com.example.expenseobserver.components.WalletTemplate
+import com.example.components.HorizontalPagerWithIndicator
+import com.example.components.OperationView
+import com.example.components.WalletSettingsView
+import com.example.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
-import com.example.expenseobserver.navigation.Screen
+import com.example.navigation.Screen
 
 @Composable
 fun WalletScreen(

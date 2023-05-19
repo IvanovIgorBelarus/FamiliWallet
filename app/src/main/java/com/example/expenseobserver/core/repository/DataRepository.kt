@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core.repository
 
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 
 interface DataRepository {
     suspend fun getPartner(forceLoad: Boolean = false): DataResponse<UIModel.AccountModel>?

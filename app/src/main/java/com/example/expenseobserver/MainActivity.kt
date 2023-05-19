@@ -7,12 +7,11 @@ import android.util.Base64
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.fragment.app.FragmentActivity
+import com.example.expenseobserver.core.data.FamiliWalletTheme
 import com.example.expenseobserver.navigation.AppNavigation
-import com.example.expenseobserver.ui.theme.FamiliWalletTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException

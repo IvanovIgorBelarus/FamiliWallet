@@ -3,8 +3,8 @@ package com.example.expenseobserver.features.category
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.common.CATEGORIES
-import com.example.expenseobserver.core.data.UIModel
+import com.example.common.CATEGORIES
+import com.example.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

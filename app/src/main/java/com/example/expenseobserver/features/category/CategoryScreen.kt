@@ -17,15 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.CategoryGridList
-import com.example.expenseobserver.components.ThreeTabsLay
-import com.example.expenseobserver.core.common.CategoryType
+import com.example.components.CategoryGridList
+import com.example.components.ThreeTabsLay
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.dialog.ShowDeleteDialog
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
-import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
-import com.example.expenseobserver.navigation.Screen
+import com.example.data.TransactionTabItem
+import com.example.navigation.Screen
+
 
 @Composable
 fun CategoryScreen(
@@ -62,7 +61,7 @@ fun UI(
     currentState: MutableState<Int>
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
-    var deleteItem = UIModel.CategoryModel()
+    var deleteItem = com.example.data.UIModel.CategoryModel()
 
     ShowDeleteDialog(
         titleResId = R.string.delete_category_title,
@@ -87,7 +86,7 @@ fun UI(
                     NewCategoryModel.setNewCategoryModel(
                         model = it,
                         isNewCategory = !viewState.categoriesList.contains(it),
-                        categoryType = CategoryType.getCategory(currentState.value)
+                        categoryType = com.example.common.CategoryType.getCategory(currentState.value)
                     )
                     navigation.navigate(Screen.NewCategoryScreen.route)
                 },

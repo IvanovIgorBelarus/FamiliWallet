@@ -34,34 +34,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.AmountTextField
-import com.example.expenseobserver.components.CategoryRowList
-import com.example.expenseobserver.components.CustomDatePickerDialog
-import com.example.expenseobserver.components.MainButton
-import com.example.expenseobserver.components.ThreeTabsLay
-import com.example.expenseobserver.components.WalletItems
-import com.example.expenseobserver.components.rememberFragmentManager
-import com.example.expenseobserver.core.common.CategoryType
-import com.example.expenseobserver.core.common.rippleClickable
-import com.example.expenseobserver.core.data.Currency
-import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.utils.UserUtils
-import com.example.expenseobserver.core.utils.toStringDateFormatWithToday
-import com.example.expenseobserver.features.transacrionscreen.data.TransactionTabItem
-import com.example.expenseobserver.ui.theme.backgroundColor
-import com.example.expenseobserver.ui.theme.buttonColor
-import com.example.expenseobserver.ui.theme.mainColor
-import com.example.expenseobserver.ui.theme.textColor
+import com.example.components.AmountTextField
+import com.example.components.CategoryRowList
+import com.example.components.CustomDatePickerDialog
+import com.example.components.MainButton
+import com.example.components.ThreeTabsLay
+import com.example.components.WalletItems
+import com.example.components.rememberFragmentManager
+import com.example.common.rippleClickable
+import com.example.data.Currency
+import com.example.common.utils.toStringDateFormatWithToday
+import com.example.data.TransactionTabItem
+import com.example.data.theme.backgroundColor
+import com.example.data.theme.buttonColor
+import com.example.data.theme.mainColor
+import com.example.data.theme.textColor
 import java.util.*
 
 @SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TransactionDialog(
-    categoryData: List<UIModel.CategoryModel>,
-    walletData: List<UIModel.WalletModel>,
+    categoryData: List<com.example.data.UIModel.CategoryModel>,
+    walletData: List<com.example.data.UIModel.WalletModel>,
     dismissDialog: () -> Unit,
-    onButtonClick: (transactionModel: UIModel.TransactionModel) -> Unit
+    onButtonClick: (transactionModel: com.example.data.UIModel.TransactionModel) -> Unit
 ) {
     val resources = LocalContext.current.resources
 
@@ -145,9 +141,9 @@ fun TransactionDialog(
             ) {
                 if (amount.value.isNotEmpty() && selectedCategory.value.isNotEmpty()) {
                     onButtonClick.invoke(
-                        UIModel.TransactionModel(
-                            uid = UserUtils.getUsersUid(),
-                            type = CategoryType.getCategory(currentState.value).type,
+                        com.example.data.UIModel.TransactionModel(
+                            uid = com.example.common.utils.UserUtils.getUsersUid(),
+                            type = com.example.common.CategoryType.getCategory(currentState.value).type,
                             category = selectedCategory.value,
                             currency = selectedWallet.value?.currency ?: Currency.BYN.name,
                             moneyType = selectedWallet.value?.id,
@@ -170,7 +166,7 @@ private fun DateView(
 ) {
     Row(
         modifier = Modifier
-            .rippleClickable { showDatePickerDialog.value = true }
+            .rippleClickable(backgroundColor) { showDatePickerDialog.value = true }
             .padding(4.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

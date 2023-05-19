@@ -3,13 +3,10 @@ package com.example.expenseobserver.features.newcategory
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.common.CATEGORIES
-import com.example.expenseobserver.core.data.AppIcons
-import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.IconActionType
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.AppIcons
+import com.example.data.CategoryColor
+import com.example.data.IconActionType
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.core.utils.UserUtils
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,8 +49,8 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
         }
 
         viewModelScope.launch {
-            val request = UIModel.CategoryModel(
-                uid = UserUtils.getUsersUid(),
+            val request = com.example.data.UIModel.CategoryModel(
+                uid = com.example.common.utils.UserUtils.getUsersUid(),
                 category = category,
                 type = NewCategoryModel.getCategoryType().type,
                 icon = icon.name,
@@ -72,21 +69,21 @@ class NewCategoryViewModel @Inject constructor() : BaseViewModel<NewCategoryView
     }
 
     private suspend fun updateCategory(
-        item: UIModel.CategoryModel,
+        item: com.example.data.UIModel.CategoryModel,
         onSuccess: () -> Unit = {}
     ) {
         updateItem(item) {
-            getItems(CATEGORIES, true)
+            getItems(com.example.common.CATEGORIES, true)
             onSuccess.invoke()
         }
     }
 
     private suspend fun addNewCategory(
-        item: UIModel.CategoryModel,
+        item: com.example.data.UIModel.CategoryModel,
         onSuccess: () -> Unit = {}
     ) {
         addItem(item) {
-            getItems(CATEGORIES, true)
+            getItems(com.example.common.CATEGORIES, true)
             onSuccess.invoke()
         }
     }

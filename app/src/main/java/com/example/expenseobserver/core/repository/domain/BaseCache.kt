@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core.repository.domain
 
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 
 object BaseCache : CacheRepository<DataResponse<List<UIModel>>> {
 

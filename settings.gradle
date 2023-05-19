@@ -16,3 +16,6 @@ rootProject.name = "FamiliWallet"
 include ':app'
 include ':core'
 include ':core:components'
+include ':core:navigation'
+include ':core:common'
+include ':core:data'

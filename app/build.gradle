@@ -47,6 +47,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.example.expenseobserver'
 }
 
 dependencies {
@@ -102,4 +103,9 @@ dependencies {
 
     //animation
     implementation Libs.Stuff.Lottie
+
+    implementation project(Modules.Components)
+    implementation project(Modules.Nav)
+    implementation project(Modules.Common)
+    implementation project(Modules.Data)
 }

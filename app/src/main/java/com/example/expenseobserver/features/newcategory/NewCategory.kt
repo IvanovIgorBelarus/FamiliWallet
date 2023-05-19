@@ -9,26 +9,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,21 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.AmountTextField
-import com.example.expenseobserver.components.CategoryIconGrid
-import com.example.expenseobserver.components.CategoryRowWithoutText
-import com.example.expenseobserver.components.ColorsView
-import com.example.expenseobserver.components.MainButton
+import com.example.components.AmountTextField
+import com.example.components.CategoryIconGrid
+import com.example.components.CategoryRowWithoutText
+import com.example.components.ColorsView
+import com.example.components.MainButton
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.common.rippleClickable
-import com.example.expenseobserver.core.data.AppIcons
-import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.features.historyscreen.HistoryViewModel
-import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
+import com.example.data.AppIcons
+import com.example.data.CategoryColor
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
-import com.example.expenseobserver.ui.theme.backgroundColor
-import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
+import com.example.data.theme.backgroundColor
+import com.example.data.theme.bottomBarUnselectedContentColor
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

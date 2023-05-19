@@ -1,7 +1,7 @@
 package com.example.expenseobserver
 
 import android.app.Application
-import com.example.expenseobserver.core.common.TimeRangeType
+import com.example.common.TimeRangeType
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

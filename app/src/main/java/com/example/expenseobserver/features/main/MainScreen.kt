@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.expenseobserver.components.ActionButton
-import com.example.expenseobserver.components.BottomBar
+import com.example.components.ActionButton
+import com.example.components.BottomBar
 import com.example.expenseobserver.components.TopBar
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.transacrionscreen.TransactionDialog
@@ -56,7 +56,7 @@ fun MainScreen(
         topBar = { TopBar(navigation = navController) },
         bottomBar = { BottomBar(navigation = navController) },
         floatingActionButton = {
-            ActionButton(navigation = navController) {
+            ActionButton {
                 transactionViewModel.getTransactionDialogData { categoriesData, walletsData ->
                     categoriesList.value = categoriesData
                     walletsList.value = walletsData

@@ -1,6 +1,6 @@
 package com.example.expenseobserver.features.transfer.data
 
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 
 class TransferScreenViewState(
     val walletFrom: UIModel.WalletModel,

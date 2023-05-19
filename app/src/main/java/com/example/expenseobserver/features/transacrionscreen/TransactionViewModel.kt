@@ -3,11 +3,11 @@ package com.example.expenseobserver.features.transacrionscreen
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.common.CATEGORIES
-import com.example.expenseobserver.core.common.EXPENSES
-import com.example.expenseobserver.core.common.TRANSACTIONS
-import com.example.expenseobserver.core.common.WALLETS
-import com.example.expenseobserver.core.data.UIModel
+import com.example.common.CATEGORIES
+import com.example.common.EXPENSES
+import com.example.common.TRANSACTIONS
+import com.example.common.WALLETS
+import com.example.data.UIModel
 import com.example.expenseobserver.core.data.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core
 
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 
 interface BaseUseCase {
 

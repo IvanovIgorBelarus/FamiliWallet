@@ -17,6 +17,7 @@ import com.example.expenseobserver.features.start_screen.StartScreen
 import com.example.expenseobserver.features.transfer.TransferScreen
 import com.example.expenseobserver.features.walletscreen.WalletScreen
 import com.example.expenseobserver.features.walletsettings.WalletSettingsScreen
+import com.example.navigation.Screen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

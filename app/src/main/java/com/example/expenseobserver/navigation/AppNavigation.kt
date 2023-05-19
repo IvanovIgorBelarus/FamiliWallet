@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.expenseobserver.features.authScreen.AuthScreen
 import com.example.expenseobserver.features.enterscreen.EnterScreen
 import com.example.expenseobserver.features.splashscreen.SplashScreen
+import com.example.navigation.Screen
 
 
 @ExperimentalAnimationApi

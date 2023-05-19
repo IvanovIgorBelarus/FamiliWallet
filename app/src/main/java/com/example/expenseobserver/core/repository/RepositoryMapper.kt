@@ -2,217 +2,176 @@ package com.example.expenseobserver.core.repository
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import com.example.expenseobserver.core.common.BACKGROUND_COLOR
-import com.example.expenseobserver.core.common.CATEGORIES
-import com.example.expenseobserver.core.common.CATEGORY
-import com.example.expenseobserver.core.common.COLOR
-import com.example.expenseobserver.core.common.CURRENCY
-import com.example.expenseobserver.core.common.DATE
-import com.example.expenseobserver.core.common.DESCRIPTION
-import com.example.expenseobserver.core.common.ICON
-import com.example.expenseobserver.core.common.IS_MAIN_SOURCE
-import com.example.expenseobserver.core.common.MONEY_TYPE
-import com.example.expenseobserver.core.common.NAME
-import com.example.expenseobserver.core.common.NAME_BACKGROUND_COLOR
-import com.example.expenseobserver.core.common.PARTNER_UID
-import com.example.expenseobserver.core.common.SOURCE_ID
-import com.example.expenseobserver.core.common.TARGET_ID
-import com.example.expenseobserver.core.common.TRANSACTIONS
-import com.example.expenseobserver.core.common.TRANSACTION_TYPE
-import com.example.expenseobserver.core.common.TRANSFERS
-import com.example.expenseobserver.core.common.UID
-import com.example.expenseobserver.core.common.URL
-import com.example.expenseobserver.core.common.USERS
-import com.example.expenseobserver.core.common.VALUE
-import com.example.expenseobserver.core.common.VERSION
-import com.example.expenseobserver.core.common.WALLETS
-import com.example.expenseobserver.core.data.CategoryColor
+import com.example.data.CategoryColor
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.core.data.UpdateOrAddRequestModel
-import com.example.expenseobserver.core.utils.UserUtils
 import com.google.firebase.firestore.QuerySnapshot
 
 object RepositoryMapper {
 
-//    fun mapSmsList(response: QuerySnapshot): List<UIModel.SmsModel> {
-//        val smsList = mutableListOf<UIModel.SmsModel>()
-//        response.forEach { doc ->
-//            smsList.add(
-//                UIModel.SmsModel(
-//                    id = doc.id,
-//                    date = doc.getLong(DATE),
-//                    value = doc.getDouble(VALUE),
-//                    currency = doc.getString(CURRENCY),
-//                )
-//            )
-//        }
-//        return smsList
-//    }
-
-    fun mapItems(response: QuerySnapshot, collectionName: String): List<UIModel> {
+    fun mapItems(response: QuerySnapshot, collectionName: String): List<com.example.data.UIModel> {
         return when (collectionName) {
-            TRANSACTIONS -> mapPersonTransactionList(response)
-            CATEGORIES -> getPersonCategoriesList(response)
-            WALLETS -> getPersonWalletsList(response)
-            TRANSFERS -> getPersonTransferList(response)
+            com.example.common.TRANSACTIONS -> mapPersonTransactionList(response)
+            com.example.common.CATEGORIES -> getPersonCategoriesList(response)
+            com.example.common.WALLETS -> getPersonWalletsList(response)
+            com.example.common.TRANSFERS -> getPersonTransferList(response)
             else -> emptyList()
         }
     }
 
-    fun mapPartner(response: QuerySnapshot): UIModel.AccountModel {
-        val partner = UIModel.AccountModel()
+    fun mapPartner(response: QuerySnapshot): com.example.data.UIModel.AccountModel {
+        val partner = com.example.data.UIModel.AccountModel()
         response.forEach { doc ->
-            if (doc.getString(UID) == UserUtils.getUsersUid() && doc.getString(PARTNER_UID) != null) {
+            if (doc.getString(com.example.common.UID) == com.example.common.utils.UserUtils.getUsersUid() && doc.getString(com.example.common.PARTNER_UID) != null) {
                 partner.id = doc.id
-                partner.uid = UserUtils.getUsersUid()
-                partner.partnerUid = doc.getString(PARTNER_UID)
+                partner.uid = com.example.common.utils.UserUtils.getUsersUid()
+                partner.partnerUid = doc.getString(com.example.common.PARTNER_UID)
                 return@forEach
-            } else if (doc.getString(UID) == UserUtils.getUsersUid()) {
+            } else if (doc.getString(com.example.common.UID) == com.example.common.utils.UserUtils.getUsersUid()) {
                 partner.id = doc.id
-                partner.uid = UserUtils.getUsersUid()
-                partner.partnerUid = doc.getString(PARTNER_UID)
+                partner.uid = com.example.common.utils.UserUtils.getUsersUid()
+                partner.partnerUid = doc.getString(com.example.common.PARTNER_UID)
             }
         }
         return partner
     }
 
-    fun mapPersonTransactionList(response: QuerySnapshot): List<UIModel.TransactionModel> {
-        val transactionList = mutableListOf<UIModel.TransactionModel>()
+    private fun mapPersonTransactionList(response: QuerySnapshot): List<com.example.data.UIModel.TransactionModel> {
+        val transactionList = mutableListOf<com.example.data.UIModel.TransactionModel>()
         response.forEach { doc ->
             transactionList.add(
-                UIModel.TransactionModel(
+                com.example.data.UIModel.TransactionModel(
                     id = doc.id,
-                    uid = doc.getString(UID),
-                    type = doc.getString(TRANSACTION_TYPE),
-                    category = doc.getString(CATEGORY),
-                    currency = doc.getString(CURRENCY),
-                    moneyType = doc.getString(MONEY_TYPE),
-                    value = doc.getDouble(VALUE),
-                    date = doc.getLong(DATE)
+                    uid = doc.getString(com.example.common.UID),
+                    type = doc.getString(com.example.common.TRANSACTION_TYPE),
+                    category = doc.getString(com.example.common.CATEGORY),
+                    currency = doc.getString(com.example.common.CURRENCY),
+                    moneyType = doc.getString(com.example.common.MONEY_TYPE),
+                    value = doc.getDouble(com.example.common.VALUE),
+                    date = doc.getLong(com.example.common.DATE)
                 )
             )
         }
         return transactionList
     }
 
-    fun getPersonCategoriesList(response: QuerySnapshot): List<UIModel.CategoryModel> {
-        val list = mutableListOf<UIModel.CategoryModel>()
+    private fun getPersonCategoriesList(response: QuerySnapshot): List<com.example.data.UIModel.CategoryModel> {
+        val list = mutableListOf<com.example.data.UIModel.CategoryModel>()
         response.forEach { doc ->
             list.add(
-                UIModel.CategoryModel(
+                com.example.data.UIModel.CategoryModel(
                     id = doc.id,
-                    uid = doc.getString(UID),
-                    category = doc.getString(CATEGORY),
-                    type = doc.getString(TRANSACTION_TYPE),
-                    icon = doc.getString(ICON) ?: Icons.Default.List.name,
-                    color = doc.getString(COLOR) ?: CategoryColor.UNKNOWN.name
+                    uid = doc.getString(com.example.common.UID),
+                    category = doc.getString(com.example.common.CATEGORY),
+                    type = doc.getString(com.example.common.TRANSACTION_TYPE),
+                    icon = doc.getString(com.example.common.ICON) ?: Icons.Default.List.name,
+                    color = doc.getString(com.example.common.COLOR) ?: CategoryColor.UNKNOWN.name
                 )
             )
         }
         return list
     }
 
-    fun getUpdateModel(response: QuerySnapshot): UIModel.UpdateModel = UIModel.UpdateModel().apply {
+    fun getUpdateModel(response: QuerySnapshot): com.example.data.UIModel.UpdateModel = com.example.data.UIModel.UpdateModel().apply {
         val doc = response.firstOrNull()
-        url = doc?.getString(URL)
-        versionCode = doc?.getLong(VERSION)
-        description = doc?.getString(DESCRIPTION)
+        url = doc?.getString(com.example.common.URL)
+        versionCode = doc?.getLong(com.example.common.VERSION)
+        description = doc?.getString(com.example.common.DESCRIPTION)
     }
 
-    fun getPersonWalletsList(response: QuerySnapshot): List<UIModel.WalletModel> {
-        val list = mutableListOf<UIModel.WalletModel>()
+    private fun getPersonWalletsList(response: QuerySnapshot): List<com.example.data.UIModel.WalletModel> {
+        val list = mutableListOf<com.example.data.UIModel.WalletModel>()
         response.forEach { doc ->
             list.add(
-                UIModel.WalletModel(
+                com.example.data.UIModel.WalletModel(
                     id = doc.id,
-                    uid = doc.getString(UID),
-                    name = doc.getString(NAME),
-                    currency = doc.getString(CURRENCY),
-                    value = doc.getDouble(VALUE),
-                    backgroundColor = doc.getString(BACKGROUND_COLOR),
-                    nameBackgroundColor = doc.getString(NAME_BACKGROUND_COLOR),
-                    isMainSource = doc.getBoolean(IS_MAIN_SOURCE) ?: false,
+                    uid = doc.getString(com.example.common.UID),
+                    name = doc.getString(com.example.common.NAME),
+                    currency = doc.getString(com.example.common.CURRENCY),
+                    value = doc.getDouble(com.example.common.VALUE),
+                    backgroundColor = doc.getString(com.example.common.BACKGROUND_COLOR),
+                    nameBackgroundColor = doc.getString(com.example.common.NAME_BACKGROUND_COLOR),
+                    isMainSource = doc.getBoolean(com.example.common.IS_MAIN_SOURCE) ?: false,
                 )
             )
         }
         return list
     }
 
-    fun getPersonTransferList(response: QuerySnapshot): List<UIModel.TransferModel> {
-        val list = mutableListOf<UIModel.TransferModel>()
+    private fun getPersonTransferList(response: QuerySnapshot): List<com.example.data.UIModel.TransferModel> {
+        val list = mutableListOf<com.example.data.UIModel.TransferModel>()
         response.forEach { doc ->
             list.add(
-                UIModel.TransferModel(
+                com.example.data.UIModel.TransferModel(
                     id = doc.id,
-                    uid = doc.getString(UID),
-                    sourceId = doc.getString(SOURCE_ID),
-                    targetId = doc.getString(TARGET_ID),
-                    date = doc.getLong(DATE),
-                    value = doc.getDouble(VALUE)
+                    uid = doc.getString(com.example.common.UID),
+                    sourceId = doc.getString(com.example.common.SOURCE_ID),
+                    targetId = doc.getString(com.example.common.TARGET_ID),
+                    date = doc.getLong(com.example.common.DATE),
+                    value = doc.getDouble(com.example.common.VALUE)
                 )
             )
         }
         return list
     }
 
-    fun mapUpdateOrAddRequestInfo(item: UIModel?): DataResponse<UpdateOrAddRequestModel> {
+    fun mapUpdateOrAddRequestInfo(item: com.example.data.UIModel?): DataResponse<UpdateOrAddRequestModel> {
         var requestModel = UpdateOrAddRequestModel()
         when (item) {
-            is UIModel.CategoryModel -> {
-                requestModel.collectionPath = CATEGORIES
+            is com.example.data.UIModel.CategoryModel -> {
+                requestModel.collectionPath = com.example.common.CATEGORIES
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
-                    UID to item.uid,
-                    CATEGORY to item.category,
-                    ICON to item.icon,
-                    TRANSACTION_TYPE to item.type,
-                    COLOR to item.color
+                    com.example.common.UID to item.uid,
+                    com.example.common.CATEGORY to item.category,
+                    com.example.common.ICON to item.icon,
+                    com.example.common.TRANSACTION_TYPE to item.type,
+                    com.example.common.COLOR to item.color
                 )
             }
-            is UIModel.AccountModel -> {
-                requestModel.collectionPath = USERS
+            is com.example.data.UIModel.AccountModel -> {
+                requestModel.collectionPath = com.example.common.USERS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
-                    UID to item.uid,
-                    PARTNER_UID to item.partnerUid
+                    com.example.common.UID to item.uid,
+                    com.example.common.PARTNER_UID to item.partnerUid
                 )
             }
-            is UIModel.TransactionModel -> {
-                requestModel.collectionPath = TRANSACTIONS
+            is com.example.data.UIModel.TransactionModel -> {
+                requestModel.collectionPath = com.example.common.TRANSACTIONS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
-                    UID to item.uid,
-                    TRANSACTION_TYPE to item.type,
-                    CATEGORY to item.category,
-                    CURRENCY to item.currency,
-                    MONEY_TYPE to item.moneyType,
-                    VALUE to item.value,
-                    DATE to item.date
+                    com.example.common.UID to item.uid,
+                    com.example.common.TRANSACTION_TYPE to item.type,
+                    com.example.common.CATEGORY to item.category,
+                    com.example.common.CURRENCY to item.currency,
+                    com.example.common.MONEY_TYPE to item.moneyType,
+                    com.example.common.VALUE to item.value,
+                    com.example.common.DATE to item.date
                 )
             }
-            is UIModel.WalletModel -> {
-                requestModel.collectionPath = WALLETS
+            is com.example.data.UIModel.WalletModel -> {
+                requestModel.collectionPath = com.example.common.WALLETS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
-                    UID to item.uid,
-                    NAME to item.name,
-                    CURRENCY to item.currency,
-                    VALUE to item.value,
-                    BACKGROUND_COLOR to item.backgroundColor,
-                    NAME_BACKGROUND_COLOR to item.nameBackgroundColor,
-                    IS_MAIN_SOURCE to item.isMainSource
+                    com.example.common.UID to item.uid,
+                    com.example.common.NAME to item.name,
+                    com.example.common.CURRENCY to item.currency,
+                    com.example.common.VALUE to item.value,
+                    com.example.common.BACKGROUND_COLOR to item.backgroundColor,
+                    com.example.common.NAME_BACKGROUND_COLOR to item.nameBackgroundColor,
+                    com.example.common.IS_MAIN_SOURCE to item.isMainSource
                 )
             }
-            is UIModel.TransferModel -> {
-                requestModel.collectionPath = TRANSFERS
+            is com.example.data.UIModel.TransferModel -> {
+                requestModel.collectionPath = com.example.common.TRANSFERS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
-                    UID to item.uid,
-                    SOURCE_ID to item.sourceId,
-                    TARGET_ID to item.targetId,
-                    DATE to item.date,
-                    VALUE to item.value
+                    com.example.common.UID to item.uid,
+                    com.example.common.SOURCE_ID to item.sourceId,
+                    com.example.common.TARGET_ID to item.targetId,
+                    com.example.common.DATE to item.date,
+                    com.example.common.VALUE to item.value
                 )
             }
             else -> return DataResponse.Error(Throwable("не удалось обновить запись"))

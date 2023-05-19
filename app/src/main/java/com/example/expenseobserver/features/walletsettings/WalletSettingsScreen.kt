@@ -28,18 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.AmountTextField
-import com.example.expenseobserver.components.ButtonsLay
-import com.example.expenseobserver.components.ColorsView
-import com.example.expenseobserver.components.CurrenciesView
-import com.example.expenseobserver.components.SwitchWithText
-import com.example.expenseobserver.components.WalletTemplate
+import com.example.components.AmountTextField
+import com.example.components.ButtonsLay
+import com.example.components.ColorsView
+import com.example.components.CurrenciesView
+import com.example.components.SwitchWithText
+import com.example.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.Currency
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.CategoryColor
+import com.example.data.Currency
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
-import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
+import com.example.data.theme.bottomBarUnselectedContentColor
 
 @Composable
 fun WalletSettingsScreen(
@@ -71,7 +70,7 @@ fun WalletSettingsScreen(
 private fun UI(
     modifier: Modifier = Modifier,
     viewState: WalletSettingsViewState = WalletSettingsViewState(
-        UIModel.WalletModel(
+        com.example.data.UIModel.WalletModel(
             name = "Заначка",
             currency = Currency.BYN.name,
             value = 1000.20
@@ -99,7 +98,7 @@ private fun UI(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             WalletTemplate(
-                UIModel.WalletModel(
+                com.example.data.UIModel.WalletModel(
                     name = walletName.value,
                     currency = currency.value,
                     value = value.value.toDoubleOrNull(),
@@ -121,7 +120,7 @@ private fun UI(
                 onConfirmClick = {
                     walletSettingsViewModel?.onButtonClick(
                         isNewWallet = isNewWallet,
-                        requestModel = UIModel.WalletModel(
+                        requestModel = com.example.data.UIModel.WalletModel(
                             id = viewState.walletModel?.id,
                             uid = viewState.walletModel?.uid,
                             name = walletName.value,

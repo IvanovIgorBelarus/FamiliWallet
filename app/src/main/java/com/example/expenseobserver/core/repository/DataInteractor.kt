@@ -2,7 +2,7 @@ package com.example.expenseobserver.core.repository
 
 import android.util.Log
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.UIModel
 import com.example.expenseobserver.core.repository.domain.BaseCache
 import com.example.expenseobserver.core.repository.domain.CacheRepository
 import com.example.expenseobserver.core.repository.domain.PartnerCache

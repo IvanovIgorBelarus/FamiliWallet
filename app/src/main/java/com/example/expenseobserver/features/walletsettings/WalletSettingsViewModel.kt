@@ -4,14 +4,10 @@ import android.os.Build
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.core.BaseUseCase
 import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.common.WALLETS
-import com.example.expenseobserver.core.data.CategoryColor
-import com.example.expenseobserver.core.data.UIModel
+import com.example.data.CategoryColor
 import com.example.expenseobserver.core.data.UiState
-import com.example.expenseobserver.core.utils.UserUtils
-import com.example.expenseobserver.features.walletsettings.data.NewWalletModel
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
-import com.example.expenseobserver.navigation.Screen
+import com.example.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,7 +18,7 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
 
     override fun getData(forceLoad: Boolean) {
         val wallet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Screen.WalletSettingsScreen.args?.getParcelable("wallet", UIModel.WalletModel::class.java)
+            Screen.WalletSettingsScreen.args?.getParcelable("wallet", com.example.data.UIModel.WalletModel::class.java)
         } else {
             Screen.WalletSettingsScreen.args?.getParcelable("wallet")
         }
@@ -31,7 +27,7 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
 
     fun onButtonClick(
         isNewWallet: Boolean,
-        requestModel: UIModel.WalletModel,
+        requestModel: com.example.data.UIModel.WalletModel,
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
@@ -48,18 +44,18 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
     }
 
     private fun createWallet(
-        requestModel: UIModel.WalletModel,
+        requestModel: com.example.data.UIModel.WalletModel,
         onSuccess: () -> Unit
     ) {
         addItem(requestModel
-            .apply { uid = UserUtils.getUsersUid() }) {
+            .apply { uid = com.example.common.utils.UserUtils.getUsersUid() }) {
             getWallets(true)
             onSuccess.invoke()
         }
     }
 
     private fun updateWallet(
-        requestModel: UIModel.WalletModel,
+        requestModel: com.example.data.UIModel.WalletModel,
         onSuccess: () -> Unit = {}
     ) {
         updateItem(requestModel) {
@@ -68,7 +64,7 @@ class WalletSettingsViewModel @Inject constructor() : BaseViewModel<WalletSettin
         }
     }
 
-    private suspend fun getWallets(forceLoad: Boolean) = (getItems(WALLETS, forceLoad) as? List<UIModel.WalletModel>)
+    private suspend fun getWallets(forceLoad: Boolean) = (getItems(com.example.common.WALLETS, forceLoad) as? List<com.example.data.UIModel.WalletModel>)
 
     private suspend fun getMainSource() = viewModelScope.async {
         try {

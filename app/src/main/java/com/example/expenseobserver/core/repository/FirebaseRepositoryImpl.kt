@@ -2,17 +2,17 @@ package com.example.expenseobserver.core.repository
 
 import android.util.Log
 import com.example.expenseobserver.App.Companion.dateFilterType
-import com.example.expenseobserver.core.common.CATEGORIES
-import com.example.expenseobserver.core.common.DATE
-import com.example.expenseobserver.core.common.NEW_SMS
-import com.example.expenseobserver.core.common.TRANSACTIONS
-import com.example.expenseobserver.core.common.UID
-import com.example.expenseobserver.core.common.USERS
-import com.example.expenseobserver.core.common.VERSION
-import com.example.expenseobserver.core.common.WALLETS
+import com.example.common.CATEGORIES
+import com.example.common.DATE
+import com.example.common.NEW_SMS
+import com.example.common.TRANSACTIONS
+import com.example.common.UID
+import com.example.common.USERS
+import com.example.common.VERSION
+import com.example.common.WALLETS
 import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UIModel
-import com.example.expenseobserver.core.utils.UserUtils
+import com.example.data.UIModel
+import com.example.common.utils.UserUtils
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject

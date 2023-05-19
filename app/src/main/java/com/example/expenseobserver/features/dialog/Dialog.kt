@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.expenseobserver.R
-import com.example.expenseobserver.core.common.TimeRangeType
+import com.example.common.TimeRangeType
 
 @Composable
 fun ShowErrorDialog(text: String?) {
@@ -119,7 +119,7 @@ fun ShowTimeDialog(
     text: String? = null,
     textResId: Int? = null,
     openDialog: MutableState<Boolean>,
-    onClick: (TimeRangeType) -> Unit
+    onClick: (com.example.common.TimeRangeType) -> Unit
 ) {
     val resources = LocalContext.current.resources
 
@@ -144,7 +144,7 @@ fun ShowTimeDialog(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onClick.invoke(TimeRangeType.DAY)
+                            onClick.invoke(com.example.common.TimeRangeType.DAY)
                             openDialog.value = false
                         }
                     ) {
@@ -154,7 +154,7 @@ fun ShowTimeDialog(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onClick.invoke(TimeRangeType.WEEK)
+                            onClick.invoke(com.example.common.TimeRangeType.WEEK)
                             openDialog.value = false
                         }
                     ) {
@@ -164,7 +164,7 @@ fun ShowTimeDialog(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onClick.invoke(TimeRangeType.MONTH)
+                            onClick.invoke(com.example.common.TimeRangeType.MONTH)
                             openDialog.value = false
                         }
                     ) {

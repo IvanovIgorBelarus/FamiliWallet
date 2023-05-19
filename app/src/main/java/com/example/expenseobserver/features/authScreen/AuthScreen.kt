@@ -23,13 +23,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.components.EnterButton
+import com.example.components.TopScreenBlueHeader
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.EnterButton
-import com.example.expenseobserver.components.TopScreenBlueHeader
-import com.example.expenseobserver.core.common.EnterType
 import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.loading.LoadingScreen
-import com.example.expenseobserver.navigation.Screen
+import com.example.navigation.Screen
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -48,7 +47,7 @@ fun AuthScreen(
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
     Surface {
-        val onGoogleClick = remember { mutableStateOf(EnterType.UNKNOWN) }
+        val onGoogleClick = remember { mutableStateOf(com.example.common.EnterType.UNKNOWN) }
         val isLoading = remember { mutableStateOf(false) }
         val errorMessage = remember { mutableStateOf("") }
 
@@ -57,17 +56,20 @@ fun AuthScreen(
         }
         //for google button
         when (onGoogleClick.value) {
-            EnterType.GOOGLE ->
+            com.example.common.EnterType.GOOGLE ->
                 loginWithGoogleAccount(errorMessage) {
                     navigation?.navigate(Screen.MainScreen.route)
                 }
-            EnterType.EMAIL ->
+
+            com.example.common.EnterType.EMAIL ->
                 loginWithEmailAndPassword(email = "", password = "", errorMessage = errorMessage) {
                     navigation?.navigate(Screen.MainScreen.route)
                 }
-            EnterType.FACEBOOK -> loginWithFacebook(errorMessage) {
+
+            com.example.common.EnterType.FACEBOOK -> loginWithFacebook(errorMessage) {
                 navigation?.navigate(Screen.MainScreen.route)
             }
+
             else -> {}
         }
         Crossfade(targetState = isLoading.value, animationSpec = tween(durationMillis = 0, delayMillis = 0)) {
@@ -89,7 +91,7 @@ private fun AuthScreenPreview() {
 
 @Composable
 private fun AuthScreenContent(
-    onGoogleClick: MutableState<EnterType>,
+    onGoogleClick: MutableState<com.example.common.EnterType>,
     isLoading: MutableState<Boolean>
 ) {
     val resources = LocalContext.current.resources
@@ -114,7 +116,7 @@ private fun AuthScreenContent(
                     end.linkTo(parent.end, margin = 16.dp)
                     width = Dimension.fillToConstraints
                 }) {
-            onGoogleClick.value = EnterType.GOOGLE
+            onGoogleClick.value = com.example.common.EnterType.GOOGLE
             isLoading.value = true
         }
         //Facebook пока оставим на потом

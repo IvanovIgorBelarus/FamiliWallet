@@ -33,16 +33,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.AmountTextField
-import com.example.expenseobserver.components.ButtonsLay
-import com.example.expenseobserver.components.HorizontalPagerWithIndicator
-import com.example.expenseobserver.components.WalletTemplate
+import com.example.components.AmountTextField
+import com.example.components.ButtonsLay
+import com.example.components.HorizontalPagerWithIndicator
+import com.example.components.WalletTemplate
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.common.formatAmount
+import com.example.common.formatAmount
 import com.example.expenseobserver.features.transfer.data.TransferScreenViewState
-import com.example.expenseobserver.navigation.Screen
-import com.example.expenseobserver.ui.theme.bottomBarUnselectedContentColor
-import com.example.expenseobserver.ui.theme.textColor
+import com.example.data.theme.bottomBarUnselectedContentColor
+import com.example.data.theme.textColor
+import com.example.navigation.Screen
 
 @Composable
 fun TransferScreen(

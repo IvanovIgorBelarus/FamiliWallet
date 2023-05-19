@@ -35,18 +35,17 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
-import com.example.expenseobserver.components.StartScreenWalletItems
-import com.example.expenseobserver.components.TransactionRow
-import com.example.expenseobserver.core.common.EXPENSES
+import com.example.components.StartScreenWalletItems
+import com.example.components.TransactionRow
 import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.core.common.rippleClickable
+import com.example.common.rippleClickable
 import com.example.expenseobserver.features.diagram.DiagramScreen
-import com.example.expenseobserver.features.start_screen.data.StartScreenViewState
+import com.example.data.StartScreenViewState
 import com.example.expenseobserver.features.timerange.TimeRangeDialog
-import com.example.expenseobserver.navigation.Screen
-import com.example.expenseobserver.ui.theme.backgroundColor
-import com.example.expenseobserver.ui.theme.mainColor
-import com.example.expenseobserver.ui.theme.textColor
+import com.example.data.theme.backgroundColor
+import com.example.data.theme.mainColor
+import com.example.data.theme.textColor
+import com.example.navigation.Screen
 
 @Composable
 fun StartScreen(
@@ -149,7 +148,7 @@ private fun DiagramView(
                 }
                 .size(48.dp)
                 .background(backgroundColor, RoundedCornerShape(10.dp))
-                .rippleClickable { showTimeRangeDialog.value = true },
+                .rippleClickable(backgroundColor) { showTimeRangeDialog.value = true },
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -176,7 +175,7 @@ private fun LazyListScope.transactionsItems(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (header == EXPENSES) "Расходы" else "Доходы",
+                    text = if (header == com.example.common.EXPENSES) "Расходы" else "Доходы",
                     color = textColor,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Start,

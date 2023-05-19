@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.expenseobserver.navigation.Screen
+import com.example.navigation.Screen
 
 @Composable
 fun SplashScreen(
@@ -29,10 +29,6 @@ fun SplashScreen(
     startAnimSize: Dp = 0.dp
 ) {
     Surface {
-//        val systemUiController = rememberSystemUiController()
-//        SideEffect {
-//            systemUiController.setSystemBarsColor(bottomBarContentColor)
-//        }
         Box(
             modifier = modifier
                 .fillMaxSize(),

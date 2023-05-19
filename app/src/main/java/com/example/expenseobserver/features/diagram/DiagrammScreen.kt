@@ -30,12 +30,10 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
-import com.example.expenseobserver.core.common.CategoryType
-import com.example.expenseobserver.core.data.UIModel
 import com.example.expenseobserver.features.diagram.data.CategorySumItem
 import com.example.expenseobserver.features.diagram.data.DrawItem
 import com.example.expenseobserver.features.diagram.data.OverviewItem
-import com.example.expenseobserver.ui.theme.textColor
+import com.example.data.theme.textColor
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
@@ -43,14 +41,14 @@ import kotlin.math.sin
 @Composable
 fun DiagramScreen(
     modifier: Modifier = Modifier,
-    transactionsList: List<UIModel.TransactionModel>,
-    categoriesList: List<UIModel.CategoryModel>
+    transactionsList: List<com.example.data.UIModel.TransactionModel>,
+    categoriesList: List<com.example.data.UIModel.CategoryModel>
 ) {
     if (transactionsList.isNotEmpty() && categoriesList.isNotEmpty()) {
         val expensesSumList = DiagramMapper.mapDiagramItems(transactionsList, categoriesList)
         val expensesSum = floor(DiagramMapper.getSum(expensesSumList) * 100) / 100
 
-        val incomesList = transactionsList.filter { it.type == CategoryType.INCOME.type }
+        val incomesList = transactionsList.filter { it.type == com.example.common.CategoryType.INCOME.type }
         val incomesSum = floor(incomesList.sumOf { it.value ?: 0.0 } * 100) / 100
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             DrawDiagram(expansesList = expensesSumList, summary = expensesSum)
