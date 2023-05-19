@@ -32,6 +32,8 @@ buildscript {
                         Analitics: 'com.google.firebase:firebase-analytics-ktx',
                         Hilt: "com.google.dagger:hilt-android:$daggerHiltVersion",
                         HiltCompiler: "com.google.dagger:hilt-compiler:$daggerHiltVersion",
+                        HiltCompilerKapt: "com.google.dagger:hilt-android-compiler:$daggerHiltVersion",
+                        HiltReflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
                         HiltComposeNav: 'androidx.hilt:hilt-navigation-compose:1.0.0'
                 ],
                 Testing: [
