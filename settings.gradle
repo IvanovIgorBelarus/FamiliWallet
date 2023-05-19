@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "FamiliWallet"
 include ':app'
+include ':core'
+include ':core:components'

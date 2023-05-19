@@ -4,6 +4,47 @@ buildscript {
         daggerHiltVersion = "2.44"
         navVersion = '0.15.0'
         kotlin_version = '1.8.10'
+
+        Libs = [
+                Android: [
+                        CoreKtx: "androidx.core:core-ktx:1.9.0",
+                        LifecycleRuntimeKtx: "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1",
+                ],
+                Compose: [
+                        UI: "androidx.compose.ui:ui:$compose_version",
+                        Material: "androidx.compose.material:material:1.4.0",
+                        Preview: "androidx.compose.ui:ui-tooling-preview:$compose_version",
+                        Activity: 'androidx.activity:activity-compose:1.7.0',
+                        Tooling: "androidx.compose.ui:ui-tooling:$compose_version",
+                        UiTest: "androidx.compose.ui:ui-test-manifest:$compose_version",
+                        Constraintlayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
+                        Nav: "androidx.navigation:navigation-compose:2.5.3",
+                        AnimNav: "com.google.accompanist:accompanist-navigation-animation:0.25.0",
+                        ViewPager: "androidx.paging:paging-compose:1.0.0-alpha18"
+                ],
+                Google: [
+                        Material: "com.google.android.material:material:1.7.0",
+                        BOM: 'com.google.firebase:firebase-bom:27.0.0',
+                        Firestore:  'com.google.firebase:firebase-firestore:24.4.5',
+                        Firebase: 'com.google.firebase:firebase-auth-ktx',
+                        Gms: 'com.google.android.gms:play-services-auth:20.4.1',
+                        Crashlitics: 'com.google.firebase:firebase-crashlytics-ktx',
+                        Analitics: 'com.google.firebase:firebase-analytics-ktx',
+                        Hilt: "com.google.dagger:hilt-android:$daggerHiltVersion",
+                        HiltCompiler: "com.google.dagger:hilt-compiler:$daggerHiltVersion",
+                        HiltComposeNav: 'androidx.hilt:hilt-navigation-compose:1.0.0'
+                ],
+                Testing: [
+                        JUnit: "junit:junit:4.13.2",
+                ],
+                JetBrains: [
+                       StbLib:  "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+                ],
+                Stuff: [
+                        Coil: "io.coil-kt:coil-compose:2.2.2",
+                        Lottie: "com.airbnb.android:lottie-compose:6.0.0"
+                ]
+        ]
     }
     repositories {
         google()
@@ -25,6 +66,7 @@ plugins {
     id 'com.android.application' version '7.4.2' apply false
     id 'com.android.library' version '7.4.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10' apply false
 }
 
 task clean(type: Delete) {

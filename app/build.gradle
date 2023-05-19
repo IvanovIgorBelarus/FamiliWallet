@@ -30,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -51,66 +51,53 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:1.4.0"
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation Libs.Android.CoreKtx
+    implementation Libs.Android.LifecycleRuntimeKtx
 
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation Libs.Compose.UI
+    implementation Libs.Compose.Material
+    implementation Libs.Compose.Preview
+    implementation Libs.Compose.Activity
+    implementation Libs.Compose.Constraintlayout
+    implementation Libs.Compose.ViewPager
+    debugImplementation Libs.Compose.Tooling
+    debugImplementation Libs.Compose.UiTest
+
+    implementation Libs.Google.Material
+
+    implementation Libs.JetBrains.StbLib
 
     // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:27.0.0')
-    implementation 'com.google.firebase:firebase-firestore:24.4.5'
+    implementation platform(Libs.Google.BOM)
+    implementation Libs.Google.Firestore
 
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation Libs.Google.Firebase
 
     // Also declare the dependency for the Google Play services library and specify its version
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation Libs.Google.Gms
 
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-
-
+    implementation Libs.Google.Crashlitics
+    implementation Libs.Google.Analitics
 
     //navigation
-    implementation "androidx.navigation:navigation-compose:2.5.3"
-
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.25.0"
+    implementation Libs.Compose.Nav
+    implementation Libs.Compose.AnimNav
 
     // Hilt dependency injection
-    implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.44'
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
-    kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
+    implementation Libs.Google.Hilt
+    annotationProcessor Libs.Google.HiltCompiler
+    implementation Libs.Google.HiltComposeNav
 
-    // When using Kotlin.
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     //Login with Facebook
     implementation 'com.facebook.android:facebook-login:latest.release'
 
     //Load image
-    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation Libs.Stuff.Coil
 
     //animation
-    implementation "com.airbnb.android:lottie-compose:6.0.0"
-
-    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
-
-    //systemUiController
-//    implementation "com.google.accompanist:accompanist-systemuicontroller:0.15.0"
+    implementation Libs.Stuff.Lottie
 }
