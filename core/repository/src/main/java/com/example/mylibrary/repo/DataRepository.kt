@@ -1,6 +1,6 @@
-package com.example.expenseobserver.core.repository
+package com.example.mylibrary.repo
 
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
 
 interface DataRepository {

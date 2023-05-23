@@ -2,14 +2,14 @@ package com.example.expenseobserver.features.walletscreen
 
 import android.os.Build
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import com.example.common.CATEGORIES
 import com.example.common.TRANSACTIONS
 import com.example.common.TRANSFERS
 import com.example.common.WALLETS
 import com.example.data.UIModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
 import com.example.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

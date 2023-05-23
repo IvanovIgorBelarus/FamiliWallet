@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core.di
 
-import com.example.expenseobserver.core.repository.DataInteractor
-import com.example.expenseobserver.core.repository.DataRepository
+import com.example.mylibrary.repo.DataInteractor
+import com.example.mylibrary.repo.DataRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

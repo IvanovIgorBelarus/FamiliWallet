@@ -2,10 +2,10 @@ package com.example.expenseobserver.features.walletsettings
 
 import android.os.Build
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import com.example.data.CategoryColor
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState
 import com.example.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

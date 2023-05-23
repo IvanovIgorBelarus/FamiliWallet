@@ -1,6 +1,6 @@
-package com.example.expenseobserver.core.repository.domain
+package com.example.mylibrary.repo.domain
 
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
 
 object PartnerCache : CacheRepository<DataResponse<UIModel.AccountModel>> {

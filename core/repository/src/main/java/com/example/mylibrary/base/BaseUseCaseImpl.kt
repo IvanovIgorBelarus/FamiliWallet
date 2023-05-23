@@ -1,8 +1,8 @@
-package com.example.expenseobserver.core
+package com.example.mylibrary.base
 
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
-import com.example.expenseobserver.core.repository.DataRepository
+import com.example.mylibrary.repo.DataRepository
 import javax.inject.Inject
 
 open class BaseUseCaseImpl @Inject constructor() : BaseUseCase {

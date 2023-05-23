@@ -53,7 +53,8 @@ buildscript {
                 Components: ":core:components",
                 Nav: ":core:navigation",
                 Common: ":core:common",
-                Data: ":core:data"
+                Data: ":core:data",
+                Repository: ":core:repository",
         ]
     }
     repositories {

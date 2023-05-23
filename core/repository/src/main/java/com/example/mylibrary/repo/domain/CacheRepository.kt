@@ -1,4 +1,4 @@
-package com.example.expenseobserver.core.repository.domain
+package com.example.mylibrary.repo.domain
 
 interface CacheRepository<T> {
     suspend fun put(collectionName: String, cache: T)

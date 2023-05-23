@@ -1,4 +1,4 @@
-package com.example.expenseobserver.core
+package com.example.mylibrary.base
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -6,15 +6,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-abstract class BaseViewModel<StateView, UseCase : BaseUseCase> : ViewModel() {
+abstract class BaseViewModel<StateView, UseCase : com.example.mylibrary.base.BaseUseCase> : ViewModel() {
 
     val uiState: MutableState<UiState<StateView>> = mutableStateOf(UiState.Loading)
 

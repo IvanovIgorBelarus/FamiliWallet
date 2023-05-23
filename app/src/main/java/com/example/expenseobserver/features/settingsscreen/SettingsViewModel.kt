@@ -1,7 +1,7 @@
 package com.example.expenseobserver.features.settingsscreen
 
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

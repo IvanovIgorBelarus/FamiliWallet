@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core.di
 
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseUseCaseImpl
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

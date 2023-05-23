@@ -17,7 +17,7 @@ import com.example.components.ActionButton
 import com.example.components.BottomBar
 import com.example.expenseobserver.components.TopBar
 import com.example.data.UIModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.expenseobserver.features.loading.LoadingScreen
 import com.example.expenseobserver.features.transacrionscreen.TransactionDialog
 import com.example.expenseobserver.features.transacrionscreen.TransactionViewModel

@@ -2,9 +2,9 @@ package com.example.expenseobserver.features.start_screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App.Companion.dateFilterType
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
+import com.example.data.theme.UiState
 import com.example.data.StartScreenViewState
 import com.example.expenseobserver.features.transacrionscreen.TransactionMapper
 import dagger.hilt.android.lifecycle.HiltViewModel

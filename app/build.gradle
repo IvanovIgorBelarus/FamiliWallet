@@ -108,4 +108,5 @@ dependencies {
     implementation project(Modules.Nav)
     implementation project(Modules.Common)
     implementation project(Modules.Data)
+    implementation project(Modules.Repository)
 }

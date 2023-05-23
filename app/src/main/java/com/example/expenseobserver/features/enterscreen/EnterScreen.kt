@@ -29,7 +29,7 @@ import com.example.expenseobserver.BuildConfig
 import com.example.expenseobserver.R
 import com.example.components.EnterButton
 import com.example.components.TopScreenBlueHeader
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.expenseobserver.features.dialog.ShowErrorDialog
 import com.example.expenseobserver.features.dialog.ShowUpdateDialog
 import com.example.expenseobserver.features.loading.LoadingScreen

@@ -1,16 +1,16 @@
-package com.example.expenseobserver.core.repository
+package com.example.mylibrary.repo
 
 import android.util.Log
-import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.common.CATEGORIES
 import com.example.common.DATE
 import com.example.common.NEW_SMS
 import com.example.common.TRANSACTIONS
+import com.example.common.TimeRangeType
 import com.example.common.UID
 import com.example.common.USERS
 import com.example.common.VERSION
 import com.example.common.WALLETS
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
 import com.example.common.utils.UserUtils
 import com.google.firebase.firestore.FieldPath
@@ -91,8 +91,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
         val request = if (collectionName != CATEGORIES && collectionName != WALLETS) {
             db.collection(collectionName)
                 .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), dateFilterType.startDate)
-                .whereLessThanOrEqualTo(FieldPath.of(DATE), dateFilterType.endDate)
+                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH)
+                .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH)
         } else {
             db.collection(collectionName)
                 .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))

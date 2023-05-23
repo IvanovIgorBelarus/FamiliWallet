@@ -1,11 +1,11 @@
-package com.example.expenseobserver.core.repository
+package com.example.mylibrary.repo
 
 import android.util.Log
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
-import com.example.expenseobserver.core.repository.domain.BaseCache
-import com.example.expenseobserver.core.repository.domain.CacheRepository
-import com.example.expenseobserver.core.repository.domain.PartnerCache
+import com.example.mylibrary.repo.domain.BaseCache
+import com.example.mylibrary.repo.domain.CacheRepository
+import com.example.mylibrary.repo.domain.PartnerCache
 import javax.inject.Inject
 import javax.inject.Singleton
 

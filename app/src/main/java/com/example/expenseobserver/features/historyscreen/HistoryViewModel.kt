@@ -2,8 +2,8 @@ package com.example.expenseobserver.features.historyscreen
 
 import androidx.lifecycle.viewModelScope
 import com.example.expenseobserver.App
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import com.example.common.CATEGORIES
 import com.example.common.INCOMES
 import com.example.common.TRANSACTIONS
@@ -11,7 +11,7 @@ import com.example.common.TimeRangeType
 import com.example.common.WALLETS
 import com.example.common.currentDateFilter
 import com.example.data.UIModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.common.utils.toStartOfDay
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import dagger.hilt.android.lifecycle.HiltViewModel

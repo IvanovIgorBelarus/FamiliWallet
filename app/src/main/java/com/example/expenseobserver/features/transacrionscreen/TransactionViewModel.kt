@@ -1,14 +1,14 @@
 package com.example.expenseobserver.features.transacrionscreen
 
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import com.example.common.CATEGORIES
 import com.example.common.EXPENSES
 import com.example.common.TRANSACTIONS
 import com.example.common.WALLETS
 import com.example.data.UIModel
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

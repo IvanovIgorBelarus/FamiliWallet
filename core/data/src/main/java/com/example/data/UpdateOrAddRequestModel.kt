@@ -1,4 +1,4 @@
-package com.example.expenseobserver.core.data
+package com.example.data
 
 data class UpdateOrAddRequestModel(
     var collectionPath: String = "",

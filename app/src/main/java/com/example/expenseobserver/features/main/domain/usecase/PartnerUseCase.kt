@@ -1,6 +1,6 @@
 package com.example.expenseobserver.features.main.domain.usecase
 
-import com.example.expenseobserver.core.data.DataResponse
+import com.example.data.DataResponse
 import com.example.data.UIModel
 
 interface PartnerUseCase {

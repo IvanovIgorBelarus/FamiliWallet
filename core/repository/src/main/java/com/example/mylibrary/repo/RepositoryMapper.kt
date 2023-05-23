@@ -1,15 +1,16 @@
-package com.example.expenseobserver.core.repository
+package com.example.mylibrary.repo
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import com.example.data.CategoryColor
-import com.example.expenseobserver.core.data.DataResponse
-import com.example.expenseobserver.core.data.UpdateOrAddRequestModel
+import com.example.data.DataResponse
+import com.example.data.UIModel
+import com.example.data.UpdateOrAddRequestModel
 import com.google.firebase.firestore.QuerySnapshot
 
 object RepositoryMapper {
 
-    fun mapItems(response: QuerySnapshot, collectionName: String): List<com.example.data.UIModel> {
+    fun mapItems(response: QuerySnapshot, collectionName: String): List<UIModel> {
         return when (collectionName) {
             com.example.common.TRANSACTIONS -> mapPersonTransactionList(response)
             com.example.common.CATEGORIES -> getPersonCategoriesList(response)
@@ -19,8 +20,8 @@ object RepositoryMapper {
         }
     }
 
-    fun mapPartner(response: QuerySnapshot): com.example.data.UIModel.AccountModel {
-        val partner = com.example.data.UIModel.AccountModel()
+    fun mapPartner(response: QuerySnapshot): UIModel.AccountModel {
+        val partner = UIModel.AccountModel()
         response.forEach { doc ->
             if (doc.getString(com.example.common.UID) == com.example.common.utils.UserUtils.getUsersUid() && doc.getString(com.example.common.PARTNER_UID) != null) {
                 partner.id = doc.id
@@ -36,11 +37,11 @@ object RepositoryMapper {
         return partner
     }
 
-    private fun mapPersonTransactionList(response: QuerySnapshot): List<com.example.data.UIModel.TransactionModel> {
-        val transactionList = mutableListOf<com.example.data.UIModel.TransactionModel>()
+    private fun mapPersonTransactionList(response: QuerySnapshot): List<UIModel.TransactionModel> {
+        val transactionList = mutableListOf<UIModel.TransactionModel>()
         response.forEach { doc ->
             transactionList.add(
-                com.example.data.UIModel.TransactionModel(
+                UIModel.TransactionModel(
                     id = doc.id,
                     uid = doc.getString(com.example.common.UID),
                     type = doc.getString(com.example.common.TRANSACTION_TYPE),
@@ -55,11 +56,11 @@ object RepositoryMapper {
         return transactionList
     }
 
-    private fun getPersonCategoriesList(response: QuerySnapshot): List<com.example.data.UIModel.CategoryModel> {
-        val list = mutableListOf<com.example.data.UIModel.CategoryModel>()
+    private fun getPersonCategoriesList(response: QuerySnapshot): List<UIModel.CategoryModel> {
+        val list = mutableListOf<UIModel.CategoryModel>()
         response.forEach { doc ->
             list.add(
-                com.example.data.UIModel.CategoryModel(
+                UIModel.CategoryModel(
                     id = doc.id,
                     uid = doc.getString(com.example.common.UID),
                     category = doc.getString(com.example.common.CATEGORY),
@@ -72,18 +73,18 @@ object RepositoryMapper {
         return list
     }
 
-    fun getUpdateModel(response: QuerySnapshot): com.example.data.UIModel.UpdateModel = com.example.data.UIModel.UpdateModel().apply {
+    fun getUpdateModel(response: QuerySnapshot): UIModel.UpdateModel = UIModel.UpdateModel().apply {
         val doc = response.firstOrNull()
         url = doc?.getString(com.example.common.URL)
         versionCode = doc?.getLong(com.example.common.VERSION)
         description = doc?.getString(com.example.common.DESCRIPTION)
     }
 
-    private fun getPersonWalletsList(response: QuerySnapshot): List<com.example.data.UIModel.WalletModel> {
-        val list = mutableListOf<com.example.data.UIModel.WalletModel>()
+    private fun getPersonWalletsList(response: QuerySnapshot): List<UIModel.WalletModel> {
+        val list = mutableListOf<UIModel.WalletModel>()
         response.forEach { doc ->
             list.add(
-                com.example.data.UIModel.WalletModel(
+                UIModel.WalletModel(
                     id = doc.id,
                     uid = doc.getString(com.example.common.UID),
                     name = doc.getString(com.example.common.NAME),
@@ -98,11 +99,11 @@ object RepositoryMapper {
         return list
     }
 
-    private fun getPersonTransferList(response: QuerySnapshot): List<com.example.data.UIModel.TransferModel> {
-        val list = mutableListOf<com.example.data.UIModel.TransferModel>()
+    private fun getPersonTransferList(response: QuerySnapshot): List<UIModel.TransferModel> {
+        val list = mutableListOf<UIModel.TransferModel>()
         response.forEach { doc ->
             list.add(
-                com.example.data.UIModel.TransferModel(
+                UIModel.TransferModel(
                     id = doc.id,
                     uid = doc.getString(com.example.common.UID),
                     sourceId = doc.getString(com.example.common.SOURCE_ID),
@@ -115,10 +116,10 @@ object RepositoryMapper {
         return list
     }
 
-    fun mapUpdateOrAddRequestInfo(item: com.example.data.UIModel?): DataResponse<UpdateOrAddRequestModel> {
+    fun mapUpdateOrAddRequestInfo(item: UIModel?): DataResponse<UpdateOrAddRequestModel> {
         var requestModel = UpdateOrAddRequestModel()
         when (item) {
-            is com.example.data.UIModel.CategoryModel -> {
+            is UIModel.CategoryModel -> {
                 requestModel.collectionPath = com.example.common.CATEGORIES
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
@@ -129,7 +130,7 @@ object RepositoryMapper {
                     com.example.common.COLOR to item.color
                 )
             }
-            is com.example.data.UIModel.AccountModel -> {
+            is UIModel.AccountModel -> {
                 requestModel.collectionPath = com.example.common.USERS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
@@ -137,7 +138,7 @@ object RepositoryMapper {
                     com.example.common.PARTNER_UID to item.partnerUid
                 )
             }
-            is com.example.data.UIModel.TransactionModel -> {
+            is UIModel.TransactionModel -> {
                 requestModel.collectionPath = com.example.common.TRANSACTIONS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
@@ -150,7 +151,7 @@ object RepositoryMapper {
                     com.example.common.DATE to item.date
                 )
             }
-            is com.example.data.UIModel.WalletModel -> {
+            is UIModel.WalletModel -> {
                 requestModel.collectionPath = com.example.common.WALLETS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(
@@ -163,7 +164,7 @@ object RepositoryMapper {
                     com.example.common.IS_MAIN_SOURCE to item.isMainSource
                 )
             }
-            is com.example.data.UIModel.TransferModel -> {
+            is UIModel.TransferModel -> {
                 requestModel.collectionPath = com.example.common.TRANSFERS
                 requestModel.itemId = item.id.orEmpty()
                 requestModel.data = mapOf(

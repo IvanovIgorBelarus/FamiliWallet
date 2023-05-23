@@ -1,12 +1,12 @@
 package com.example.expenseobserver.features.newcategory
 
 import androidx.lifecycle.viewModelScope
-import com.example.expenseobserver.core.BaseUseCase
-import com.example.expenseobserver.core.BaseViewModel
+import com.example.mylibrary.base.BaseUseCase
+import com.example.mylibrary.base.BaseViewModel
 import com.example.data.AppIcons
 import com.example.data.CategoryColor
 import com.example.data.IconActionType
-import com.example.expenseobserver.core.data.UiState
+import com.example.data.theme.UiState
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState
 import dagger.hilt.android.lifecycle.HiltViewModel

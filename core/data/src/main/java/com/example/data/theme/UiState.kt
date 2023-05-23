@@ -1,4 +1,4 @@
-package com.example.expenseobserver.core.data
+package com.example.data.theme
 
 sealed class UiState<out T> {
     class Success<T>(val data: T) : UiState<T>()
