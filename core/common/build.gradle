@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation Libs.Android.CoreKtx
+    implementation Libs.Testing.JUnit
     implementation platform(Libs.Google.BOM)
     implementation Libs.Google.Firestore
     implementation Libs.Google.Firebase

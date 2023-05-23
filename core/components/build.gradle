@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation Libs.Android.CoreKtx
+    implementation Libs.Testing.JUnit
 
     implementation Libs.Compose.UI
     implementation Libs.Compose.Material

@@ -39,6 +39,7 @@ dependencies {
     implementation Libs.Google.Firebase
     implementation Libs.Compose.Material
     implementation Libs.Compose.Nav
+    implementation Libs.Testing.JUnit
 
     implementation project(Modules.Data)
     implementation project(Modules.Common)
