@@ -56,7 +56,10 @@ dependencies {
 
     implementation Libs.Stuff.Coil
 
+    implementation Libs.Stuff.Lottie
+
     implementation project(Modules.Nav)
     implementation project(Modules.Data)
     implementation project(Modules.Common)
+    implementation project(Modules.Repository)
 }

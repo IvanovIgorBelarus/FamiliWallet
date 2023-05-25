@@ -37,7 +37,7 @@ import com.example.components.AmountTextField
 import com.example.components.ButtonsLay
 import com.example.components.HorizontalPagerWithIndicator
 import com.example.components.WalletTemplate
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.common.formatAmount
 import com.example.expenseobserver.features.transfer.data.TransferScreenViewState
 import com.example.data.theme.bottomBarUnselectedContentColor

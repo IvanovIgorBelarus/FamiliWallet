@@ -30,9 +30,9 @@ import com.example.expenseobserver.R
 import com.example.components.EnterButton
 import com.example.components.TopScreenBlueHeader
 import com.example.data.theme.UiState
-import com.example.expenseobserver.features.dialog.ShowErrorDialog
-import com.example.expenseobserver.features.dialog.ShowUpdateDialog
-import com.example.expenseobserver.features.loading.LoadingScreen
+import com.example.components.ShowErrorDialog
+import com.example.components.ShowUpdateDialog
+import com.example.components.LoadingScreen
 import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
 import com.example.data.theme.textColor
 import com.example.navigation.Screen

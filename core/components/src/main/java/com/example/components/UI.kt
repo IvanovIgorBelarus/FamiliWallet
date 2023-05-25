@@ -1,11 +1,9 @@
-package com.example.expenseobserver.core.common
+package com.example.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.example.mylibrary.base.BaseViewModel
 import com.example.data.theme.UiState
-import com.example.expenseobserver.features.dialog.ShowErrorDialog
-import com.example.expenseobserver.features.loading.LoadingScreen
 
 @Composable
 fun ShowScreen(

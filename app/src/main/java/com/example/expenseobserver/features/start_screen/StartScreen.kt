@@ -37,7 +37,7 @@ import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.components.StartScreenWalletItems
 import com.example.components.TransactionRow
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.common.rippleClickable
 import com.example.expenseobserver.features.diagram.DiagramScreen
 import com.example.data.StartScreenViewState

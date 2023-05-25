@@ -19,8 +19,8 @@ import androidx.navigation.NavHostController
 import com.example.expenseobserver.R
 import com.example.components.CategoryGridList
 import com.example.components.ThreeTabsLay
-import com.example.expenseobserver.core.common.ShowScreen
-import com.example.expenseobserver.features.dialog.ShowDeleteDialog
+import com.example.components.ShowScreen
+import com.example.components.ShowDeleteDialog
 import com.example.expenseobserver.features.newcategory.data.NewCategoryModel
 import com.example.data.TransactionTabItem
 import com.example.navigation.Screen

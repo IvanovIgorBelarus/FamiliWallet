@@ -33,7 +33,7 @@ import com.example.components.CategoryIconGrid
 import com.example.components.CategoryRowWithoutText
 import com.example.components.ColorsView
 import com.example.components.MainButton
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.data.AppIcons
 import com.example.data.CategoryColor
 import com.example.expenseobserver.features.newcategory.data.NewCategoryViewState

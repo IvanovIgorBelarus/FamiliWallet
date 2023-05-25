@@ -30,9 +30,9 @@ import com.example.expenseobserver.App.Companion.dateFilterType
 import com.example.expenseobserver.R
 import com.example.components.ThreeTabsLay
 import com.example.components.TransactionRow
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.common.utils.toStringDateFormatWithToday
-import com.example.expenseobserver.features.dialog.ShowDeleteDialog
+import com.example.components.ShowDeleteDialog
 import com.example.expenseobserver.features.historyscreen.data.HistoryViewState
 import com.example.data.theme.textColor
 

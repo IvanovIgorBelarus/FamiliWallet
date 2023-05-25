@@ -34,7 +34,7 @@ import com.example.components.ColorsView
 import com.example.components.CurrenciesView
 import com.example.components.SwitchWithText
 import com.example.components.WalletTemplate
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.data.CategoryColor
 import com.example.data.Currency
 import com.example.expenseobserver.features.walletsettings.data.WalletSettingsViewState

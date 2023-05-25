@@ -26,9 +26,9 @@ import com.example.components.HorizontalPagerWithIndicator
 import com.example.components.OperationView
 import com.example.components.WalletSettingsView
 import com.example.components.WalletTemplate
-import com.example.expenseobserver.core.common.ShowScreen
+import com.example.components.ShowScreen
 import com.example.data.UIModel
-import com.example.expenseobserver.features.dialog.ShowDeleteDialog
+import com.example.components.ShowDeleteDialog
 import com.example.expenseobserver.features.walletscreen.data.WalletScreenViewState
 import com.example.navigation.Screen
 

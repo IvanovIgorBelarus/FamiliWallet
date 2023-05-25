@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.loading
+package com.example.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -14,7 +14,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.expenseobserver.R
 import com.example.common.noRippleClickable
 import com.example.data.theme.textColor
 

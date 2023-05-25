@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.dialog
+package com.example.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,8 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.expenseobserver.R
-import com.example.common.TimeRangeType
 
 @Composable
 fun ShowErrorDialog(text: String?) {
