@@ -109,4 +109,8 @@ dependencies {
     implementation project(Modules.Common)
     implementation project(Modules.Data)
     implementation project(Modules.Repository)
+    implementation project(Modules.SplashScreen)
+    implementation project(Modules.SplashScreenApi)
+    implementation project(Modules.Auth)
+    implementation project(Modules.AuthApi)
 }

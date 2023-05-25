@@ -1,0 +1,107 @@
+<resources>
+    <string name="app_name">ExpensesObserver</string>
+    <string name="money">Money</string>
+    <string name="greetings">"Добро пожаловать в приложение Money"</string>
+    <string name="enter">Вход</string>
+    <string name="google">Вход через google</string>
+    <string name="facebook">Вход через facebook</string>
+    <string name="facebook_app_id">2807449099399834</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">970e7c537ca448991d93337d37192adb</string>
+    <string name="dialog_error_title">Произошла ошибка</string>
+    <string name="google_auth_error">Произошла ошибка входа через google. Попробуйте позже</string>
+    <string name="last">Последние</string>
+    <string name="card">Карта</string>
+    <string name="cash">Наличные</string>
+    <string name="confirm">Внести</string>
+    <string name="error_transaction_message">Некорректно заданы параметры</string>
+
+    <string name="hobby">Хобби</string>
+    <string name="pets">Питомцы</string>
+    <string name="food">Еда</string>
+    <string name="other">Прочее</string>
+    <string name="home">Дом</string>
+    <string name="people">Люди</string>
+    <string name="transport">Транспорт</string>
+    <string name="settings">Настройки</string>
+
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="amount">Сумма</string>
+
+    <string name="category_name_hint">Введите имя категории</string>
+    <string name="ok">Ok</string>
+
+    <string name="delete_transaction_title">Удаление операции</string>
+    <string name="delete_wallet_title">Удаление кошелька</string>
+    <string name="delete_category_title">Удаление категории</string>
+    <string name="delete_description">Вы уверены, что хотите удалить данную операцию?</string>
+    <string name="delete_wallet_description">Вы уверены, что хотите удалить этот кошелёк?</string>
+
+    <string name="update_title">Новая версия!</string>
+    <string name="update_title_description">Вышла новая версия приложения, хотите установить?</string>
+
+    <string name="time_range_title">Выбор периода отображения данных:</string>
+    <string name="time_range_day_title">За день</string>
+    <string name="time_range_week_title">За неделю</string>
+    <string name="time_range_month_title">За месяц</string>
+    <string name="time_range_other_title">За период</string>
+    <string name="time_range_start">Начало периода</string>
+    <string name="time_range_end">Конец периода</string>
+    <string name="edit">Применить</string>
+
+    <string name="currency_byn">Белорусские рубли</string>
+    <string name="currency_eur">Евро</string>
+    <string name="currency_rur">Российские рубли</string>
+    <string name="currency_usd">Доллары США</string>
+    <string name="currency_try">Турецкие лиры</string>
+    <string name="currency_aud">Австралийские доллары</string>
+    <string name="currency_amd">Армянские драмы</string>
+    <string name="currency_cad">Канадские доллары</string>
+    <string name="currency_cny">Китайские юани</string>
+    <string name="currency_czk">Чешские кроны</string>
+    <string name="currency_dkk">Датские кроны</string>
+    <string name="currency_hkd">Гонконгские доллары</string>
+    <string name="currency_huf">Венгерские форинты</string>
+    <string name="currency_isk">Исландские кроны</string>
+    <string name="currency_inr">Индийские рупии</string>
+    <string name="currency_irr">Иранские риалы</string>
+    <string name="currency_jpy">Японские йены</string>
+    <string name="currency_kzt">Казахские тенге</string>
+    <string name="currency_krw">Корейские воны</string>
+    <string name="currency_kwd">Кувейтские динары</string>
+    <string name="currency_kgs">Киргизские сомы</string>
+    <string name="currency_mdl">Молдавские леи</string>
+    <string name="currency_nzd">Новозеландские доллары</string>
+    <string name="currency_nok">Норвежские кроны</string>
+    <string name="currency_sgd">Сингапурские доллары</string>
+    <string name="currency_zar">Южноафриканские ранды</string>
+    <string name="currency_sek">Шведские кроны</string>
+    <string name="currency_chf">Швейцарские франки</string>
+    <string name="currency_gbp">Фунты стерлингов</string>
+    <string name="currency_uzs">Узбекистанские сомы</string>
+    <string name="currency_xdr">СДР (СПЗ)</string>
+    <string name="currency_tjs">Таджикские сомони</string>
+    <string name="currency_bgn">Болгарские левы</string>
+    <string name="currency_uah">Украинские гривны</string>
+    <string name="currency_pln">Польские злотые</string>
+    <string name="currency_brl">Бразильские риалы</string>
+    <string name="currency_tmt">Туркменистанские манаты</string>
+    <string name="currency_azn">Азербайджанские манаты</string>
+    <string name="currency_gel">Грузинские лари</string>
+    <string name="currency_all">Лек</string>
+    <string name="currency_dzd">Алжирский динар</string>
+    <string name="currency_ars">Аргентинское песо</string>
+    <string name="currency_bsd">Багамский доллар</string>
+    <string name="currency_rsd">Сербский динар</string>
+
+    <string name="wallet_background">Цвет фона карточки:</string>
+    <string name="wallet_name_background">Цвет фона за именем:</string>
+    <string name="wallet_name_hint">Введите название кошелька</string>
+    <string name="wallet_value_hint">Введите начальную сумму</string>
+    <string name="wallet_currency_title">Выберите валюту</string>
+    <string name="wallet_main_source">Основной источник</string>
+    <string name="transfer_amount">Введите сумму перевода</string>
+    <string name="transfer_currency_hint">Введите курс конверсии</string>
+</resources>

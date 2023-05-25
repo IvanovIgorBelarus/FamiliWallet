@@ -1,4 +1,4 @@
-package com.example.expenseobserver.core.data
+package com.example.expenseobserver.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

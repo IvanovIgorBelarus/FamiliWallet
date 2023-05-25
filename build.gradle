@@ -55,6 +55,10 @@ buildscript {
                 Common: ":core:common",
                 Data: ":core:data",
                 Repository: ":core:repository",
+                SplashScreen: ":feature:splashscreen",
+                SplashScreenApi: ":feature:splashscreen-api",
+                Auth: ":feature:auth-impl",
+                AuthApi: ":feature:auth-api",
         ]
     }
     repositories {

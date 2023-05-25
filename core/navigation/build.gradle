@@ -28,10 +28,14 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+
 }
 
 dependencies {
     implementation Libs.Android.CoreKtx
     implementation Libs.Google.HiltReflect
     implementation Libs.Testing.JUnit
+
+    api Libs.Compose.Nav
+    implementation Libs.Compose.AnimNav
 }

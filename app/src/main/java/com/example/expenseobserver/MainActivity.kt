@@ -10,23 +10,29 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.fragment.app.FragmentActivity
-import com.example.expenseobserver.core.data.FamiliWalletTheme
+import com.alseda.splashscreen_api.SplashScreenApi
+import com.example.expenseobserver.core.di.DependencyFeatureProvider
+import com.example.expenseobserver.core.theme.FamiliWalletTheme
 import com.example.expenseobserver.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import javax.inject.Inject
 
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
+    @Inject
+    lateinit var dependencyFeatureProvider: DependencyFeatureProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        getFacebookHash()
         setContent {
             FamiliWalletTheme {
-                AppNavigation()
+                AppNavigation(dependencyFeatureProvider = dependencyFeatureProvider)
             }
         }
     }

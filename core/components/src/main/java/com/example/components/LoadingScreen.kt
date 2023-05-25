@@ -35,7 +35,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun Loader() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loader))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(com.example.data.R.raw.loader))
     val progress by animateLottieCompositionAsState(composition, iterations = LottieConstants.IterateForever)
     LottieAnimation(
         composition = composition,

@@ -27,7 +27,7 @@ fun ShowErrorDialog(text: String?) {
                 openDialog.value = false
             },
             title = {
-                Text(text = resources.getString(R.string.dialog_error_title))
+                Text(text = resources.getString(com.example.data.R.string.dialog_error_title))
             },
             text = {
                 Text(text = text.orEmpty())
@@ -41,7 +41,7 @@ fun ShowErrorDialog(text: String?) {
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { openDialog.value = false }
                     ) {
-                        Text(resources.getString(R.string.ok))
+                        Text(resources.getString(com.example.data.R.string.ok))
                     }
                 }
             }
@@ -94,7 +94,7 @@ fun ShowDeleteDialog(
                         modifier = Modifier.weight(1f),
                         onClick = { openDialog.value = false }
                     ) {
-                        Text(resources.getString(R.string.cancel))
+                        Text(resources.getString(com.example.data.R.string.cancel))
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Button(
@@ -104,7 +104,7 @@ fun ShowDeleteDialog(
                             openDialog.value = false
                         }
                     ) {
-                        Text(resources.getString(R.string.ok))
+                        Text(resources.getString(com.example.data.R.string.ok))
                     }
                 }
             }
@@ -196,7 +196,7 @@ fun ShowUpdateDialog(
 
             },
             title = {
-                Text(text = resources.getString(R.string.update_title))
+                Text(text = resources.getString(com.example.data.R.string.update_title))
             },
             text = {
                 Text(text = description)
@@ -212,7 +212,7 @@ fun ShowUpdateDialog(
                         modifier = Modifier.weight(1f),
                         onClick = { openDialog.value = false }
                     ) {
-                        Text(resources.getString(R.string.cancel))
+                        Text(resources.getString(com.example.data.R.string.cancel))
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Button(
@@ -222,7 +222,7 @@ fun ShowUpdateDialog(
                             openDialog.value = false
                         }
                     ) {
-                        Text(resources.getString(R.string.ok))
+                        Text(resources.getString(com.example.data.R.string.ok))
                     }
                 }
             }

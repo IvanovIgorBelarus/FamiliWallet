@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.authScreen
+package com.alseda.auth_impl.presentation
 
 import android.app.Activity
 import android.util.Log
@@ -22,13 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import com.alseda.auth_impl.R
 import com.example.components.EnterButton
-import com.example.components.TopScreenBlueHeader
-import com.example.expenseobserver.R
-import com.example.components.ShowErrorDialog
 import com.example.components.LoadingScreen
-import com.example.navigation.Screen
+import com.example.components.ShowErrorDialog
+import com.example.components.TopScreenBlueHeader
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -43,7 +41,7 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun AuthScreen(
-    navigation: NavHostController? = null,
+    onNavigateToMain: ()-> Unit,
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
     Surface {
@@ -58,16 +56,16 @@ fun AuthScreen(
         when (onGoogleClick.value) {
             com.example.common.EnterType.GOOGLE ->
                 loginWithGoogleAccount(errorMessage) {
-                    navigation?.navigate(Screen.MainScreen.route)
+                    onNavigateToMain.invoke()
                 }
 
             com.example.common.EnterType.EMAIL ->
                 loginWithEmailAndPassword(email = "", password = "", errorMessage = errorMessage) {
-                    navigation?.navigate(Screen.MainScreen.route)
+                    onNavigateToMain.invoke()
                 }
 
             com.example.common.EnterType.FACEBOOK -> loginWithFacebook(errorMessage) {
-                navigation?.navigate(Screen.MainScreen.route)
+                onNavigateToMain.invoke()
             }
 
             else -> {}
@@ -86,7 +84,7 @@ fun AuthScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AuthScreenPreview() {
-    AuthScreen()
+    AuthScreen({})
 }
 
 @Composable
@@ -104,11 +102,11 @@ private fun AuthScreenContent(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
-            text = resources.getString(R.string.enter)
+            text = resources.getString(com.example.data.R.string.enter)
         )
 
         EnterButton(
-            text = R.string.google,
+            text = com.example.data.R.string.google,
             modifier = Modifier
                 .constrainAs(googleButton) {
                     top.linkTo(topHeader.bottom, margin = 48.dp)

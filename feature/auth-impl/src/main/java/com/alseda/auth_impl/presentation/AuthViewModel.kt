@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.authScreen
+package com.alseda.auth_impl.presentation
 
 import androidx.lifecycle.ViewModel
 import com.example.expenseobserver.features.main.domain.usecase.PartnerUseCase

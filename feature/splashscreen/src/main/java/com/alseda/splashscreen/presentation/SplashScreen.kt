@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.splashscreen
+package com.alseda.splashscreen.presentation
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -18,13 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.navigation.Screen
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    navigation: NavHostController,
+    onNavigateToStartScreen: () -> Unit,
     durationMillis: Int = 1000,
     startAnimSize: Dp = 0.dp
 ) {
@@ -39,8 +38,9 @@ fun SplashScreen(
                 targetValue = targetAnimSize,
                 animationSpec = tween(durationMillis),
                 finishedListener = {
-                    navigation.popBackStack()
-                    navigation.navigate(Screen.EnterScreen.route)
+//                    navigation.popBackStack()
+//                    navigation.navigate(Screen.EnterScreen.route)
+                    onNavigateToStartScreen.invoke()
                 }
             )
             Image(
