@@ -19,7 +19,7 @@ abstract class FeatureModule {
     ): SplashScreenApi
 
     @Binds
-    abstract fun provideSplashFeatureApi(
+    abstract fun provideAuthFeatureApi(
         authImpl: AuthImpl
     ): AuthApi
 }

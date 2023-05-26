@@ -91,8 +91,8 @@ class FirebaseRepositoryImpl @Inject constructor() {
         val request = if (collectionName != CATEGORIES && collectionName != WALLETS) {
             db.collection(collectionName)
                 .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
-                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH)
-                .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH)
+                .whereGreaterThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.startDate)
+                .whereLessThanOrEqualTo(FieldPath.of(DATE), TimeRangeType.MONTH.endDate)
         } else {
             db.collection(collectionName)
                 .whereIn(UID, listOf(UserUtils.getUsersUid(), partnerUid))
