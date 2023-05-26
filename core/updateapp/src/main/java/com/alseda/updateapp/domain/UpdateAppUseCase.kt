@@ -1,9 +1,9 @@
-package com.example.expenseobserver.features.updateversion.domain
+package com.alseda.updateapp.domain
 
 import com.example.mylibrary.base.BaseUseCase
 import com.example.data.DataResponse
 import com.example.data.UIModel
 
-interface UpdateAppUseCase: com.example.mylibrary.base.BaseUseCase {
+interface UpdateAppUseCase: BaseUseCase {
     suspend fun checkUpdates(): DataResponse<UIModel.UpdateModel>
 }

@@ -9,8 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.expenseobserver.core.di.DependencyFeatureProvider
-import com.alseda.auth_impl.presentation.AuthScreen
-import com.example.expenseobserver.features.enterscreen.EnterScreen
 import com.example.navigation.Screen
 import com.example.navigation.register
 
@@ -36,7 +34,11 @@ fun AppNavigation(
             navController = navController,
             modifier = modifier
         )
-        composable(route = Screen.EnterScreen.route) { EnterScreen(navigation = navController) }
+        register(
+            featureApi = dependencyFeatureProvider.enter(),
+            navController = navController,
+            modifier = modifier
+        )
         composable(route = Screen.MainScreen.route) { MainScreen() }
     }
 }

@@ -14,7 +14,7 @@ android {
         applicationId "com.example.familiwallet"
         minSdk 21
         targetSdk 33
-        versionCode 18
+        versionCode versionCode
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -109,8 +109,11 @@ dependencies {
     implementation project(Modules.Common)
     implementation project(Modules.Data)
     implementation project(Modules.Repository)
+    implementation project(Modules.UpdateApp)
     implementation project(Modules.SplashScreen)
     implementation project(Modules.SplashScreenApi)
     implementation project(Modules.Auth)
     implementation project(Modules.AuthApi)
+    implementation project(Modules.Enter)
+    implementation project(Modules.EnterApi)
 }

@@ -9,17 +9,19 @@ import com.alseda.auth_impl.presentation.AuthScreen
 import com.example.navigation.Screen
 import javax.inject.Inject
 
-class AuthImpl @Inject constructor(): AuthApi {
-    override val mainScreen: String = Screen.MainScreen.route
+class AuthImpl @Inject constructor() : AuthApi {
+    override val authScreenRoute: String = Screen.AuthScreen.route
+
+    override val mainScreenRoute: String = Screen.MainScreen.route
 
     override fun registerGraph(
         navGraphBuilder: NavGraphBuilder,
         navController: NavHostController,
         modifier: Modifier
     ) {
-        navGraphBuilder.composable(mainScreen){
+        navGraphBuilder.composable(authScreenRoute) {
             AuthScreen(
-                onNavigateToMain = {navController.navigate(Screen.MainScreen.route)}
+                onNavigateToMain = { navController.navigate(mainScreenRoute) }
             )
         }
     }

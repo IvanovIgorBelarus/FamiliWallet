@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.enterscreen
+package com.alseda.enter_impl.presentation
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -24,23 +24,18 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.example.expenseobserver.BuildConfig
-import com.example.expenseobserver.R
 import com.example.components.EnterButton
-import com.example.components.TopScreenBlueHeader
-import com.example.data.theme.UiState
+import com.example.components.LoadingScreen
 import com.example.components.ShowErrorDialog
 import com.example.components.ShowUpdateDialog
-import com.example.components.LoadingScreen
-import com.example.expenseobserver.features.updateversion.utils.UpdateAppUtils
+import com.example.components.TopScreenBlueHeader
+import com.example.data.theme.UiState
 import com.example.data.theme.textColor
-import com.example.navigation.Screen
 
 @Composable
 fun EnterScreen(
     modifier: Modifier = Modifier,
-    navigation: NavHostController? = null,
+    onNavigateToNextScreen: () -> Unit,
     enterViewModel: EnterViewModel = hiltViewModel()
 ) {
     val uiState by enterViewModel.getUiState()
@@ -55,7 +50,7 @@ fun EnterScreen(
             val (topHeader, image, text, button) = createRefs()
 
             TopScreenBlueHeader(
-                text = resources.getString(R.string.money),
+                text = resources.getString(com.example.data.R.string.money),
                 modifier = modifier
                     .constrainAs(topHeader) {
                         top.linkTo(parent.top)
@@ -97,11 +92,11 @@ fun EnterScreen(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
-                painter = painterResource(id = R.drawable.ic_cards),
+                painter = painterResource(id = com.example.data.R.drawable.ic_cards),
                 contentDescription = null
             )
             Text(
-                text = resources.getString(R.string.greetings),
+                text = resources.getString(com.example.data.R.string.greetings),
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 36.dp)
@@ -121,12 +116,7 @@ fun EnterScreen(
                     end.linkTo(parent.end, margin = 16.dp)
                     width = Dimension.fillToConstraints
                 }) {
-                val nextDestination = if (com.example.common.utils.UserUtils.isUserSignIn()) {
-                    Screen.MainScreen.route
-                } else {
-                    Screen.AuthScreen.route
-                }
-                navigation?.navigate(nextDestination)
+                onNavigateToNextScreen.invoke()
             }
         }
     }
@@ -137,15 +127,15 @@ fun EnterScreen(
     when (uiState) {
         is UiState.Success -> {
             val updateModel = (uiState as UiState.Success<com.example.data.UIModel.UpdateModel>).data
-            val currentVersionCode = BuildConfig.VERSION_CODE.toLong()
+            val currentVersionCode = 12.toLong()
             if (currentVersionCode < (updateModel.versionCode ?: 0)) {
                 showUpdateDialog.value = true
                 ShowUpdateDialog(
-                    text = updateModel.description ?: LocalContext.current.resources.getString(R.string.update_title_description),
+                    text = updateModel.description ?: LocalContext.current.resources.getString(com.example.data.R.string.update_title_description),
                     openDialog = showUpdateDialog
                 ) {
                     Log.e("MYNAME", LocalContext.current.applicationContext.packageName + ".provider")
-                    val up = UpdateAppUtils(
+                    val up = com.alseda.updateapp.utils.UpdateAppUtils(
                         appUrl = updateModel.url.orEmpty(),
                         showErrorDialog = { exception ->
                             error.value = true
@@ -156,6 +146,7 @@ fun EnterScreen(
                 }
             }
         }
+
         is UiState.Error -> {}
         is UiState.Loading -> {
             LoadingScreen()
@@ -174,5 +165,5 @@ fun EnterScreen(
 @Preview(showBackground = true)
 @Composable
 private fun EnterScreenPreview() {
-    EnterScreen()
+    EnterScreen(onNavigateToNextScreen = {})
 }

@@ -1,4 +1,4 @@
-package com.example.expenseobserver.features.updateversion.utils
+package com.alseda.updateapp.utils
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver

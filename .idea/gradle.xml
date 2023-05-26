@@ -18,9 +18,12 @@
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/repository" />
+            <option value="$PROJECT_DIR$/core/updateapp" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/auth-api" />
             <option value="$PROJECT_DIR$/feature/auth-impl" />
+            <option value="$PROJECT_DIR$/feature/enter-api" />
+            <option value="$PROJECT_DIR$/feature/enter-impl" />
             <option value="$PROJECT_DIR$/feature/splashscreen" />
             <option value="$PROJECT_DIR$/feature/splashscreen-api" />
           </set>

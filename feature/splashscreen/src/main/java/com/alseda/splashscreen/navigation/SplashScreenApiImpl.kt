@@ -10,18 +10,21 @@ import com.example.navigation.Screen
 import javax.inject.Inject
 
 class SplashScreenApiImpl @Inject constructor() : SplashScreenApi {
-    override val startScreenRoute: String = Screen.StartScreen.route
+
+    override val splashScreenRoute: String = Screen.SplashScreen.route
+
+    override val enterScreenRoute: String = Screen.EnterScreen.route
 
     override fun registerGraph(
         navGraphBuilder: NavGraphBuilder,
         navController: NavHostController,
         modifier: Modifier
     ) {
-        navGraphBuilder.composable(Screen.SplashScreen.route){
+        navGraphBuilder.composable(splashScreenRoute){
             SplashScreen(
                 onNavigateToStartScreen = {
                     navController.popBackStack()
-                    navController.navigate(Screen.EnterScreen.route)
+                    navController.navigate(enterScreenRoute)
                 }
             )
         }

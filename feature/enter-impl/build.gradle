@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.alseda.enter_impl'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+
+        versionCode versionCode
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.4.4"
+    }
+}
+
+dependencies {
+    implementation Libs.Android.CoreKtx
+    implementation Libs.Testing.JUnit
+
+    implementation Libs.Compose.UI
+    implementation Libs.Compose.Material
+    implementation Libs.Compose.Preview
+    implementation Libs.Compose.Constraintlayout
+
+//    implementation Libs.Google.Firebase
+//    implementation Libs.Google.Gms
+
+    // Hilt dependency injection
+    implementation Libs.Google.Hilt
+    implementation Libs.Google.HiltComposeNav
+
+    implementation project(Modules.Nav)
+    implementation project(Modules.Common)
+    implementation project(Modules.Components)
+    implementation project(Modules.Data)
+    implementation project(Modules.EnterApi)
+    implementation project(Modules.Repository)
+    implementation project(Modules.UpdateApp)
+}

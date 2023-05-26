@@ -1,5 +1,6 @@
 buildscript {
     ext {
+        versionCode = 18
         compose_version = '1.4.0'
         daggerHiltVersion = "2.44"
         navVersion = '0.15.0'
@@ -55,10 +56,14 @@ buildscript {
                 Common: ":core:common",
                 Data: ":core:data",
                 Repository: ":core:repository",
+                UpdateApp: ":core:updateapp",
                 SplashScreen: ":feature:splashscreen",
                 SplashScreenApi: ":feature:splashscreen-api",
                 Auth: ":feature:auth-impl",
                 AuthApi: ":feature:auth-api",
+                Enter: ":feature:enter-impl",
+                EnterApi: ":feature:enter-api",
+
         ]
     }
     repositories {

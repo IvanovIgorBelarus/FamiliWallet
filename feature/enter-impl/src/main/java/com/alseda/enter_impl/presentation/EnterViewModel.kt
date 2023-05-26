@@ -1,11 +1,11 @@
-package com.example.expenseobserver.features.enterscreen
+package com.alseda.enter_impl.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.alseda.updateapp.domain.UpdateAppUseCase
 import com.example.data.UIModel
 import com.example.mylibrary.base.BaseViewModel
 import com.example.data.DataResponse
 import com.example.data.theme.UiState
-import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

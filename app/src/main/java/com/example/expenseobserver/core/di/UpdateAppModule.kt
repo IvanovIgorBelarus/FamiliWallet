@@ -1,7 +1,7 @@
 package com.example.expenseobserver.core.di
 
-import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCase
-import com.example.expenseobserver.features.updateversion.domain.UpdateAppUseCaseImpl
+import com.alseda.updateapp.domain.UpdateAppUseCase
+import com.alseda.updateapp.domain.UpdateAppUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
