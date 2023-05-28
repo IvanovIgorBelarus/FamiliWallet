@@ -22,22 +22,12 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route,
+        startDestination = Screen.EnterNavGraph.route,
     ) {
-        register(
-            featureApi = dependencyFeatureProvider.splashScreen(),
+        enterNavGraph(
+            modifier = modifier,
             navController = navController,
-            modifier = modifier
-        )
-        register(
-            featureApi = dependencyFeatureProvider.auth(),
-            navController = navController,
-            modifier = modifier
-        )
-        register(
-            featureApi = dependencyFeatureProvider.enter(),
-            navController = navController,
-            modifier = modifier
+            dependencyFeatureProvider = dependencyFeatureProvider
         )
         composable(route = Screen.MainScreen.route) { MainScreen() }
     }

@@ -3,6 +3,8 @@ package com.example.navigation
 import android.os.Bundle
 
 sealed class Screen(val route: String, var title: String? = null, var icon: Int, var id: Int? = null, val stack: Stack, var args: Bundle? = null) {
+
+    object EnterNavGraph: Screen("enterNavGraph", null,R.drawable.ic_baseline_insert_photo, stack = Stack.UNKNOWN)
     object MainScreen : Screen("main", "главная",R.drawable.ic_frame_45, stack = Stack.UNKNOWN)
     object LoadingScreen : Screen("loading", "", R.drawable.ic_frame_45, stack = Stack.UNKNOWN)
     object StartScreen : Screen("main1", "Главная", R.drawable.ic_start_screen, 1, Stack.START)
