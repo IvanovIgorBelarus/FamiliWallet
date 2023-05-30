@@ -10,6 +10,7 @@ buildscript {
                 Android: [
                         CoreKtx: "androidx.core:core-ktx:1.9.0",
                         LifecycleRuntimeKtx: "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1",
+                        AppCompat: "androidx.appcompat:appcompat-resources:1.6.1",
                 ],
                 Compose: [
                         UI: "androidx.compose.ui:ui:$compose_version",
@@ -57,12 +58,15 @@ buildscript {
                 Data: ":core:data",
                 Repository: ":core:repository",
                 UpdateApp: ":core:updateapp",
+                Diagram: ":core:diagram",
                 SplashScreen: ":feature:splashscreen",
                 SplashScreenApi: ":feature:splashscreen-api",
                 Auth: ":feature:auth-impl",
                 AuthApi: ":feature:auth-api",
                 Enter: ":feature:enter-impl",
                 EnterApi: ":feature:enter-api",
+                StartApi: ":feature:start-api",
+                Start: ":feature:start-impl",
 
         ]
     }

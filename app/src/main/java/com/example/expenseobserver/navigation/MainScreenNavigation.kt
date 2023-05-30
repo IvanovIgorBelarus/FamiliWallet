@@ -13,7 +13,7 @@ import com.example.expenseobserver.features.category.CategoryScreen
 import com.example.expenseobserver.features.historyscreen.HistoryScreen
 import com.example.expenseobserver.features.newcategory.NewCategoryScreen
 import com.example.expenseobserver.features.settingsscreen.SettingsScreen
-import com.example.expenseobserver.features.start_screen.StartScreen
+import com.alseda.start_impl.presentation.StartScreen
 import com.example.expenseobserver.features.transfer.TransferScreen
 import com.example.expenseobserver.features.walletscreen.WalletScreen
 import com.example.expenseobserver.features.walletsettings.WalletSettingsScreen

@@ -7,6 +7,7 @@ import com.example.common.CATEGORIES
 import com.example.common.EXPENSES
 import com.example.common.TRANSACTIONS
 import com.example.common.WALLETS
+import com.example.common.mappers.TransactionMapper
 import com.example.data.UIModel
 import com.example.data.theme.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
